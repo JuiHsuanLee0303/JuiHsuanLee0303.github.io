@@ -1,0 +1,8 @@
+# Base
+.env
+
+# Node
+node_modules
+
+# Editor directories and files
+.vscode
