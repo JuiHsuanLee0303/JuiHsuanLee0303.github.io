@@ -70,7 +70,7 @@ const skills = [
     class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[calc(100vh-64px)] mt-16 pt-8"
   >
     <div
-      class="container mx-auto px-4 transition-all duration-1000"
+      class="container mx-auto px-4 transition-all duration-1000 mb-12"
       :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
     >
       <!-- 標題 -->
@@ -98,7 +98,7 @@ const skills = [
             class="text-slate-300 text-lg mb-10 leading-relaxed animate-fadeIn hover:text-slate-200 transition-colors duration-300"
             style="animation-delay: 0.6s"
           >
-            我是一名充滿熱情的全端工程師，擁有豐富的開發經驗。我專注於使用現代化的技術框架開發高質量的網頁應用，致力於創造優秀的使用者體驗。
+            我是一位熱愛程式開發的全端工程師，擅長運用最新的技術框架打造優質網站。我重視使用者體驗，致力於開發直覺且易用的網頁應用程式。
           </p>
 
           <!-- 個人資訊列表 -->

@@ -5,12 +5,15 @@ import { ref, onMounted } from 'vue'
 interface BasicInfo {
   label: string
   value: string
+  icon?: string
 }
 
 interface Education {
   school: string
   department: string
   period: string
+  gpa?: string
+  achievements?: string[]
 }
 
 interface WorkExperience {
@@ -18,36 +21,69 @@ interface WorkExperience {
   position: string
   period: string
   responsibilities: string[]
+  technologies?: string[]
+}
+
+interface Skill {
+  category: string
+  items: string[]
 }
 
 // 資料
 const basicInfos: BasicInfo[] = [
-  { label: '姓名', value: '李睿軒' },
-  { label: '年齡', value: `${new Date().getFullYear() - 1996}` },
+  { label: '姓名', value: '李睿軒', icon: '👨‍💻' },
+  { label: '年齡', value: `${new Date().getFullYear() - 1996}`, icon: '🎂' },
+  { label: '所在地', value: '台灣台北', icon: '📍' },
+  { label: '電子郵件', value: 'juihsuan.lee@gmail.com', icon: '📧' },
 ]
 
 const education: Education = {
   school: '國立臺灣大學',
   department: '資訊工程學系',
   period: '2014-2018',
+  // gpa: '3.8/4.0',
+  // achievements: ['系上專題競賽第一名', '校內程式競賽佳作', '參與多項開源專案貢獻'],
 }
 
 const workExperience: WorkExperience = {
   company: '國立臺北商業大學資訊與網路中心',
   position: '程式設計師',
-  period: '2022-至今',
+  period: 'Jul. 2024 - 至今',
   responsibilities: [
     '負責學校主要網站的開發與維護',
     '優化網站效能，提升使用者體驗',
     '參與網站資安設計與改進',
+    '帶領團隊完成多項重要專案',
+    '建立開發流程標準化制度',
   ],
+  technologies: ['Vue.js', 'TypeScript', 'Node.js', 'PostgreSQL'],
 }
 
-const skills: string[] = [
-  '熟練掌握 HTML5、CSS3、JavaScript/TypeScript',
-  '精通 Vue.js 前端框架',
-  '熟悉 Node.js 後端開發',
-  '具備良好的團隊合作能力',
+const skills: Skill[] = [
+  {
+    category: '前端開發',
+    items: [
+      'Vue.js/React.js 框架開發',
+      'TypeScript 開發',
+      'HTML5/CSS3/JavaScript',
+      'Tailwind CSS/SCSS',
+      'RWD 響應式設計',
+    ],
+  },
+  {
+    category: '後端開發',
+    items: [
+      'Node.js/Express',
+      'Python/Django',
+      'RESTful API 設計',
+      '資料庫設計與優化',
+      '系統架構規劃',
+    ],
+  },
+  {
+    category: '其他技能',
+    items: ['Git 版本控制', 'Docker 容器化', 'CI/CD 部署流程', '敏捷開發方法', '團隊溝通協作'],
+  },
 ]
 
 // 動畫控制
@@ -65,7 +101,7 @@ onMounted(() => {
     class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[calc(100vh-64px)] mt-16 pt-8"
   >
     <div
-      class="container mx-auto px-4 transition-all duration-1000"
+      class="container mx-auto px-4 transition-all duration-1000 mb-16"
       :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
     >
       <h1
@@ -75,82 +111,129 @@ onMounted(() => {
       </h1>
 
       <div
-        class="max-w-4xl mx-auto bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl shadow-violet-500/20 hover:shadow-violet-500/30 p-8 transition-all duration-500"
+        class="max-w-5xl mx-auto bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl shadow-violet-500/20 hover:shadow-violet-500/30 p-10 transition-all duration-500"
       >
         <!-- 基本資料 -->
-        <section class="mb-12 animate-fadeIn" style="animation-delay: 0.2s">
+        <section class="mb-14 animate-fadeIn" style="animation-delay: 0.2s">
           <h2
-            class="text-2xl font-semibold text-violet-300 pb-3 border-b border-violet-500/30 mb-6 hover:text-violet-400 transition-colors duration-300"
+            class="text-3xl font-semibold text-violet-300 pb-4 border-b-2 border-violet-500/30 mb-8 hover:text-violet-400 transition-colors duration-300"
           >
             基本資料
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
               v-for="info in basicInfos"
               :key="info.label"
-              class="flex gap-4 group transform hover:-translate-y-1 transition-all duration-300"
+              class="flex items-center gap-6 group p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-1 transition-all duration-300"
             >
-              <span class="font-medium text-violet-400 group-hover:text-violet-300"
-                >{{ info.label }}：</span
-              >
-              <span class="text-slate-300">{{ info.value }}</span>
+              <span class="text-2xl">{{ info.icon }}</span>
+              <div>
+                <span class="font-medium text-violet-400 block mb-1">{{ info.label }}</span>
+                <span class="text-slate-300">{{ info.value }}</span>
+              </div>
             </div>
           </div>
         </section>
 
         <!-- 學歷背景 -->
-        <section class="mb-12 animate-fadeIn" style="animation-delay: 0.4s">
+        <section class="mb-14 animate-fadeIn" style="animation-delay: 0.4s">
           <h2
-            class="text-2xl font-semibold text-violet-300 pb-3 border-b border-violet-500/30 mb-6 hover:text-violet-400 transition-colors duration-300"
+            class="text-3xl font-semibold text-violet-300 pb-4 border-b-2 border-violet-500/30 mb-8 hover:text-violet-400 transition-colors duration-300"
           >
             學歷背景
           </h2>
-          <div class="mt-4 transform hover:-translate-y-1 transition-all duration-300">
-            <h3 class="text-xl font-medium text-violet-400">{{ education.school }}</h3>
-            <p class="text-slate-300 mt-2">{{ education.department }} | {{ education.period }}</p>
+          <div
+            class="p-6 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-1 transition-all duration-300"
+          >
+            <h3 class="text-2xl font-medium text-violet-400 mb-4">{{ education.school }}</h3>
+            <p class="text-slate-300 text-lg mb-4">
+              {{ education.department }} | {{ education.period }}
+            </p>
+            <p class="text-violet-300 mb-4">GPA: {{ education.gpa }}</p>
+            <div class="space-y-2">
+              <p class="text-slate-200 font-medium mb-2">主要成就：</p>
+              <ul class="list-disc pl-5 space-y-2">
+                <li
+                  v-for="achievement in education.achievements"
+                  :key="achievement"
+                  class="text-slate-300 hover:text-violet-300 transition-colors duration-300"
+                >
+                  {{ achievement }}
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
         <!-- 工作經驗 -->
-        <section class="mb-12 animate-fadeIn" style="animation-delay: 0.6s">
+        <section class="mb-14 animate-fadeIn" style="animation-delay: 0.6s">
           <h2
-            class="text-2xl font-semibold text-violet-300 pb-3 border-b border-violet-500/30 mb-6 hover:text-violet-400 transition-colors duration-300"
+            class="text-3xl font-semibold text-violet-300 pb-4 border-b-2 border-violet-500/30 mb-8 hover:text-violet-400 transition-colors duration-300"
           >
             工作經驗
           </h2>
-          <div class="mt-4 transform hover:-translate-y-1 transition-all duration-300">
-            <h3 class="text-xl font-medium text-violet-400">{{ workExperience.company }}</h3>
-            <p class="text-slate-300 mt-2">
+          <div
+            class="p-6 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-1 transition-all duration-300"
+          >
+            <h3 class="text-2xl font-medium text-violet-400 mb-4">{{ workExperience.company }}</h3>
+            <p class="text-slate-300 text-lg mb-6">
               {{ workExperience.position }} | {{ workExperience.period }}
             </p>
-            <ul class="list-disc pl-5 mt-4 space-y-2 text-slate-300">
-              <li
-                v-for="(responsibility, index) in workExperience.responsibilities"
-                :key="index"
-                class="hover:text-violet-300 transition-colors duration-300"
-              >
-                {{ responsibility }}
-              </li>
-            </ul>
+
+            <div class="mb-6">
+              <h4 class="text-slate-200 font-medium mb-4">主要職責：</h4>
+              <ul class="list-disc pl-5 space-y-3">
+                <li
+                  v-for="responsibility in workExperience.responsibilities"
+                  :key="responsibility"
+                  class="text-slate-300 hover:text-violet-300 transition-colors duration-300"
+                >
+                  {{ responsibility }}
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="text-slate-200 font-medium mb-4">使用技術：</h4>
+              <div class="flex flex-wrap gap-3">
+                <span
+                  v-for="tech in workExperience.technologies"
+                  :key="tech"
+                  class="px-4 py-2 bg-violet-500/20 text-violet-300 rounded-full hover:bg-violet-500/30 transition-colors duration-300"
+                >
+                  {{ tech }}
+                </span>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- 專業技能 -->
-        <section class="mb-8 animate-fadeIn" style="animation-delay: 0.8s">
+        <section class="animate-fadeIn" style="animation-delay: 0.8s">
           <h2
-            class="text-2xl font-semibold text-violet-300 pb-3 border-b border-violet-500/30 mb-6 hover:text-violet-400 transition-colors duration-300"
+            class="text-3xl font-semibold text-violet-300 pb-4 border-b-2 border-violet-500/30 mb-8 hover:text-violet-400 transition-colors duration-300"
           >
             專業技能
           </h2>
-          <ul class="space-y-2">
-            <li
-              v-for="(skill, index) in skills"
-              :key="index"
-              class="text-slate-300 hover:text-violet-300 transform hover:-translate-x-2 transition-all duration-300"
+          <div class="grid md:grid-cols-3 gap-8">
+            <div
+              v-for="skillGroup in skills"
+              :key="skillGroup.category"
+              class="p-6 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-2 transition-all duration-300"
             >
-              ▸ {{ skill }}
-            </li>
-          </ul>
+              <h3 class="text-xl font-medium text-violet-400 mb-4">{{ skillGroup.category }}</h3>
+              <ul class="space-y-3">
+                <li
+                  v-for="item in skillGroup.items"
+                  :key="item"
+                  class="text-slate-300 hover:text-violet-300 flex items-center gap-2 transition-all duration-300"
+                >
+                  <span class="text-violet-400">▹</span>
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
         </section>
       </div>
     </div>
