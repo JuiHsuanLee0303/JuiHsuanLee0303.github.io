@@ -42,7 +42,7 @@ const education: Education = {
   department: '資訊工程學系',
   period: '2014-2018',
   // gpa: '3.8/4.0',
-  // achievements: ['系上專題競賽第一名', '校內程式競賽佳作', '參與多項開源專案貢獻'],
+  achievements: ['於TANET會議發表論文《人工智慧在資安領域趨勢之研究》'],
 }
 
 const workExperience: WorkExperience = {
@@ -65,7 +65,7 @@ const skills: Skill[] = [
     items: [
       'Vue.js/React.js 框架開發',
       'TypeScript 開發',
-      'HTML5/CSS3/JavaScript',
+      'HTML/CSS/JavaScript',
       'Tailwind CSS/SCSS',
       'RWD 響應式設計',
     ],
@@ -79,6 +79,10 @@ const skills: Skill[] = [
       '資料庫設計與優化',
       '系統架構規劃',
     ],
+  },
+  {
+    category: '人工智慧',
+    items: ['PyTorch', 'LLaMA Factory', 'Scikit-learn', 'Machine Learning', 'Deep Learning'],
   },
   {
     category: '其他技能',
@@ -149,7 +153,6 @@ onMounted(() => {
             <p class="text-slate-300 text-lg mb-4">
               {{ education.department }} | {{ education.period }}
             </p>
-            <p class="text-violet-300 mb-4">GPA: {{ education.gpa }}</p>
             <div class="space-y-2">
               <p class="text-slate-200 font-medium mb-2">主要成就：</p>
               <ul class="list-disc pl-5 space-y-2">
@@ -215,7 +218,7 @@ onMounted(() => {
           >
             專業技能
           </h2>
-          <div class="grid md:grid-cols-3 gap-8">
+          <div class="grid md:grid-cols-4 gap-8">
             <div
               v-for="skillGroup in skills"
               :key="skillGroup.category"

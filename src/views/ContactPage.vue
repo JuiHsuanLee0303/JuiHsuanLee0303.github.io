@@ -62,9 +62,20 @@ const contactInfos: ContactInfo[] = [
 const handleSubmit = async () => {
   try {
     isSubmitting.value = true
-    // 在此處理表單提交邏輯
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    // 成功處理後可以清空表單
+    // 將表單內容透過電子郵件發送
+    await fetch('https://your-backend-api.com/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: formData.value.name,
+        email: formData.value.email,
+        subject: formData.value.subject,
+        message: formData.value.message,
+      }),
+    })
+    // 成功處理後清空表單
     formData.value = {
       name: '',
       email: '',

@@ -15,7 +15,7 @@ onMounted(() => {
 const personalInfo = [
   { label: '所在地', value: '台北市', icon: '📍' },
   { label: '工作經驗', value: '5年+', icon: '💼' },
-  { label: '專業領域', value: '全端開發、網頁設計、系統架構', icon: '💡' },
+  { label: '專業領域', value: '全端開發、網頁設計、系統架構、人工智慧', icon: '💡' },
 ]
 
 // 專業技能

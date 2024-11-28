@@ -14,28 +14,37 @@ onMounted(() => {
 // 作品集資料
 const projects = [
   {
-    title: '個人作品集網站',
+    title: '個人網站',
     description: '使用 Vue 3 和 TypeScript 開發的個人作品展示網站，具備響應式設計和流暢動畫效果。',
-    image: 'https://via.placeholder.com/400x300',
+    image:
+      'https://plus.unsplash.com/premium_photo-1661288470388-c5006797bdff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     tags: ['Vue.js', 'TypeScript', 'Tailwind CSS'],
+    demo: true,
     demoLink: '#',
+    source: true,
+    sourceLink: 'https://github.com/JuiHsuanLee0303/JuiHsuanLee0303.github.io',
+  },
+  {
+    title: '大學學雜費減免系統',
+    description: '使用 Vue 3 和 Node.js 開發的大學學雜費減免系統，具備申請管理、審核流程等功能。',
+    image:
+      'https://plus.unsplash.com/premium_photo-1671796330300-71ca39909fb8?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    tags: ['Vue.js', 'Node.js', 'PostgreSQL'],
+    demo: true,
+    demoLink: 'https://test-lee-apply.ntub.edu.tw',
+    source: false,
     sourceLink: '#',
   },
   {
-    title: '電商平台',
-    description: '全端電商網站，整合金流系統、會員管理、商品管理等功能。',
-    image: 'https://via.placeholder.com/400x300',
-    tags: ['Vue.js', 'Node.js', 'MongoDB'],
+    title: 'JavaScript機器學習library',
+    description: '使用TypeScript開發的機器學習library，具備數據處理、模型訓練、預測等功能。',
+    image:
+      'https://images.unsplash.com/photo-1495592822108-9e6261896da8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    tags: ['TypeScript', 'Machine Learning', 'Scikit-learn'],
+    demo: false,
     demoLink: '#',
-    sourceLink: '#',
-  },
-  {
-    title: '任務管理系統',
-    description: '團隊協作任務管理平台，支援即時通知、進度追蹤等功能。',
-    image: 'https://via.placeholder.com/400x300',
-    tags: ['React', 'Express', 'PostgreSQL'],
-    demoLink: '#',
-    sourceLink: '#',
+    source: true,
+    sourceLink: 'https://github.com/JuiHsuanLee0303/js-ml-lib',
   },
 ]
 </script>
@@ -94,6 +103,7 @@ const projects = [
               <a
                 :href="project.demoLink"
                 class="text-violet-400 hover:text-violet-300 font-medium transition-colors duration-300"
+                v-if="project.demo"
               >
                 查看展示
               </a>
@@ -101,6 +111,7 @@ const projects = [
                 :href="project.sourceLink"
                 target="_blank"
                 class="text-violet-400 hover:text-violet-300 font-medium transition-colors duration-300"
+                v-if="project.source"
               >
                 原始碼
               </a>
