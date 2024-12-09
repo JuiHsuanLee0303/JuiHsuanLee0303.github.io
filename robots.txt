@@ -1,6 +1,0 @@
-# https://juihsuanlee0303.github.io/
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://juihsuanlee0303.github.io/sitemap.xml 
