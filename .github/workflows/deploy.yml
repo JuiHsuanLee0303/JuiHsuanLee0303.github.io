@@ -30,23 +30,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Generate robots.txt
-        run: |
-          echo "User-agent: *" > dist/robots.txt
-          echo "Allow: /" >> dist/robots.txt
-          echo "Sitemap: https://juihsuanlee0303.github.io/sitemap.xml" >> dist/robots.txt
-
-      - name: Generate sitemap
-        uses: cicirello/generate-sitemap@v1
-        with:
-          base-url-path: https://juihsuanlee0303.github.io
-          path-to-root: dist
-          include-html: true
-          additional-extensions: js,css
-
-      - name: Move sitemap
-        run: mv sitemap.xml dist/
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
