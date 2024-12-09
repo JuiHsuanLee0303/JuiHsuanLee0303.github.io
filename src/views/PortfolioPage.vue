@@ -11,18 +11,42 @@ onMounted(() => {
   }, 100)
 })
 
+interface Project {
+  title: string
+  description: string
+  image: string
+  tags: string[]
+  demo: boolean
+  demoLink: string
+  source: boolean
+  sourceLink: string
+}
+
 // 作品集資料
-const projects = [
+const projects: Project[] = [
   {
-    title: '個人網站',
-    description: '使用 Vue 3 和 TypeScript 開發的個人作品展示網站，具備響應式設計和流暢動畫效果。',
+    title: '線上題庫測驗系統',
+    description:
+      '使用 Vue 3 和 TypeScript 開發的線上題庫測驗系統，具備題目匯入與管理、測驗管理等功能。',
     image:
-      'https://plus.unsplash.com/premium_photo-1661288470388-c5006797bdff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1585432959449-b1c9c8cc49ac?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     tags: ['Vue.js', 'TypeScript', 'Tailwind CSS'],
     demo: true,
+    demoLink: 'https://juihsuanlee0303.github.io/question-practice/',
+    source: true,
+    sourceLink: 'https://github.com/JuiHsuanLee0303/question-practice',
+  },
+  {
+    title: 'HackMD CLI',
+    description:
+      '使用 JavaScript 開發的 HackMD CLI，具備使用命令行操作 HackMD 與本地、遠端同步的功能。',
+    image:
+      'https://plus.unsplash.com/premium_photo-1726754457459-d2dfa2e3a434?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    tags: ['JavaScript', 'Node.js', 'HackMD'],
+    demo: false,
     demoLink: '#',
     source: true,
-    sourceLink: 'https://github.com/JuiHsuanLee0303/JuiHsuanLee0303.github.io',
+    sourceLink: 'https://github.com/JuiHsuanLee0303/hackmd-cli',
   },
   {
     title: '大學學雜費減免系統',
@@ -31,7 +55,7 @@ const projects = [
       'https://plus.unsplash.com/premium_photo-1671796330300-71ca39909fb8?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     tags: ['Vue.js', 'Node.js', 'PostgreSQL'],
     demo: true,
-    demoLink: 'https://test-lee-apply.ntub.edu.tw',
+    demoLink: 'https://tuition-relief.ntub.edu.tw',
     source: false,
     sourceLink: '#',
   },
@@ -46,6 +70,17 @@ const projects = [
     source: true,
     sourceLink: 'https://github.com/JuiHsuanLee0303/js-ml-lib',
   },
+  {
+    title: '個人網站',
+    description: '使用 Vue 3 和 TypeScript 開發的個人作品展示網站，具備響應式設計和流暢動畫效果。',
+    image:
+      'https://plus.unsplash.com/premium_photo-1661288470388-c5006797bdff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    tags: ['Vue.js', 'TypeScript', 'Tailwind CSS'],
+    demo: true,
+    demoLink: '#',
+    source: true,
+    sourceLink: 'https://github.com/JuiHsuanLee0303/JuiHsuanLee0303.github.io',
+  },
 ]
 </script>
 
@@ -54,7 +89,7 @@ const projects = [
     class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[calc(100vh-64px)] mt-16 pt-8"
   >
     <div
-      class="container mx-auto px-4 transition-all duration-1000"
+      class="container mx-auto px-4 mb-8 lg:mb-16 transition-all duration-1000"
       :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
     >
       <h1

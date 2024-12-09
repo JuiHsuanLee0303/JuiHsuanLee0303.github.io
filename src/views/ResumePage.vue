@@ -34,16 +34,24 @@ const basicInfos: BasicInfo[] = [
   { label: '姓名', value: '李睿軒', icon: '👨‍💻' },
   { label: '年齡', value: `${new Date().getFullYear() - 1996}`, icon: '🎂' },
   { label: '所在地', value: '台灣台北', icon: '📍' },
-  { label: '電子郵件', value: 'juihsuan.lee@gmail.com', icon: '📧' },
+  { label: '電子郵件', value: 'juihsuanlee0303@gmail.com', icon: '📧' },
 ]
 
-const education: Education = {
-  school: '國立臺灣大學',
-  department: '資訊工程學系',
-  period: '2014-2018',
-  // gpa: '3.8/4.0',
-  achievements: ['於TANET會議發表論文《人工智慧在資安領域趨勢之研究》'],
-}
+const education: Education[] = [
+  {
+    school: '國立臺灣大學',
+    department: '資訊工程學系',
+    period: '2014-2018',
+    // gpa: '3.8/4.0',
+    achievements: [],
+  },
+  {
+    school: '國立臺北商業大學',
+    department: '人工智慧與商業應用碩士班',
+    period: '2024-2026',
+    achievements: ['於TANET會議發表論文《人工智慧在資安領域趨勢之研究》'],
+  },
+]
 
 const workExperience: WorkExperience = {
   company: '國立臺北商業大學資訊與網路中心',
@@ -147,17 +155,17 @@ onMounted(() => {
             學歷背景
           </h2>
           <div
-            class="p-6 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-1 transition-all duration-300"
+            class="p-6 bg-slate-700/30 rounded-xl hover:bg-slate-700/50 transform hover:-translate-y-1 transition-all duration-300 mb-6"
+            v-for="edu in education"
+            :key="edu.school"
           >
-            <h3 class="text-2xl font-medium text-violet-400 mb-4">{{ education.school }}</h3>
-            <p class="text-slate-300 text-lg mb-4">
-              {{ education.department }} | {{ education.period }}
-            </p>
+            <h3 class="text-2xl font-medium text-violet-400 mb-4">{{ edu.school }}</h3>
+            <p class="text-slate-300 text-lg mb-4">{{ edu.department }} | {{ edu.period }}</p>
             <div class="space-y-2">
               <p class="text-slate-200 font-medium mb-2">主要成就：</p>
               <ul class="list-disc pl-5 space-y-2">
                 <li
-                  v-for="achievement in education.achievements"
+                  v-for="achievement in edu.achievements"
                   :key="achievement"
                   class="text-slate-300 hover:text-violet-300 transition-colors duration-300"
                 >
