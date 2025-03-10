@@ -3,7 +3,7 @@ import HomePage from '@/views/HomePage.vue'
 import AboutPage from '@/views/AboutPage.vue'
 // import SkillsPage from '@/views/SkillsPage.vue'
 import PortfolioPage from '@/views/PortfolioPage.vue'
-// import BlogPage from '@/views/BlogPage.vue'
+import BlogPage from '@/views/BlogPage.vue'
 import ContactPage from '@/views/ContactPage.vue'
 import ResumePage from '@/views/ResumePage.vue'
 // import CertificationsPage from '@/views/CertificationsPage.vue'
@@ -29,10 +29,15 @@ const router = createRouter({
       path: '/portfolio',
       component: PortfolioPage,
     },
-    // {
-    //   path: '/blog',
-    //   component: BlogPage,
-    // },
+    {
+      path: '/blog',
+      component: BlogPage,
+    },
+    {
+      path: '/blog/:id',
+      name: 'BlogArticle',
+      component: () => import('@/views/BlogArticle.vue'),
+    },
     {
       path: '/contact',
       component: ContactPage,
