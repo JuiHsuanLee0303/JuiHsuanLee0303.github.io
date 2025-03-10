@@ -21,7 +21,7 @@ export default defineConfig({
       include: [/markdown-it/],
     },
     rollupOptions: {
-      external: ['markdown-it'],
+      external: [],
       output: {
         globals: {
           'markdown-it': 'markdownit',
