@@ -4,7 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useArticlesStore } from '@/stores/articles'
 import MarkdownIt from 'markdown-it'
 
-const md = new MarkdownIt({
+// 創建 markdown-it 實例
+const md = MarkdownIt({
   html: true,
   breaks: true,
   linkify: true,
@@ -43,14 +44,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <main v-if="article"
-    class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[calc(100vh-64px)] mt-16 pt-8">
-    <div class="container mx-auto px-4 transition-all duration-1000"
-      :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
-
+  <main
+    v-if="article"
+    class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[calc(100vh-64px)] mt-16 pt-8"
+  >
+    <div
+      class="container mx-auto px-4 transition-all duration-1000"
+      :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+    >
       <div
-        class="max-w-4xl mx-auto bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl shadow-violet-500/20 overflow-hidden">
-        <img :src="article.image" :alt="article.title" class="w-full h-64 object-contain bg-slate-900 p-6" />
+        class="max-w-4xl mx-auto bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl shadow-violet-500/20 overflow-hidden"
+      >
+        <img
+          :src="article.image"
+          :alt="article.title"
+          class="w-full h-64 object-contain bg-slate-900 p-6"
+        />
 
         <div class="p-8">
           <div class="flex items-center text-slate-400 text-sm mb-4">
@@ -64,8 +73,11 @@ onMounted(() => {
           </h1>
 
           <div class="flex flex-wrap gap-2 mb-6">
-            <span v-for="tag in article.tags" :key="tag"
-              class="px-3 py-1 bg-slate-700/50 text-violet-300 rounded-full text-sm">
+            <span
+              v-for="tag in article.tags"
+              :key="tag"
+              class="px-3 py-1 bg-slate-700/50 text-violet-300 rounded-full text-sm"
+            >
               {{ tag }}
             </span>
           </div>
@@ -77,8 +89,10 @@ onMounted(() => {
       </div>
 
       <div class="flex justify-center mt-8">
-        <router-link to="/blog"
-          class="px-6 py-3 bg-violet-500 hover:bg-violet-600 text-white rounded-full transition-colors duration-300">
+        <router-link
+          to="/blog"
+          class="px-6 py-3 bg-violet-500 hover:bg-violet-600 text-white rounded-full transition-colors duration-300"
+        >
           返回文章列表
         </router-link>
       </div>

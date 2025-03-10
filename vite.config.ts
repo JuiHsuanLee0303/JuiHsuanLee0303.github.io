@@ -13,4 +13,20 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  optimizeDeps: {
+    include: ['markdown-it'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/markdown-it/],
+    },
+    rollupOptions: {
+      external: ['markdown-it'],
+      output: {
+        globals: {
+          'markdown-it': 'markdownit',
+        },
+      },
+    },
+  },
 })
