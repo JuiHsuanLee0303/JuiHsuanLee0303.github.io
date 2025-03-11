@@ -9,7 +9,7 @@ export const useProjectsStore = defineStore('projects', {
           '使用 Vue 3 和 TypeScript 開發的線上題庫測驗系統，具備題目匯入與管理、測驗管理等功能。',
         image:
           'https://images.unsplash.com/photo-1585432959449-b1c9c8cc49ac?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        tags: ['Vue.js', 'TypeScript', 'Tailwind CSS'],
+        tags: ['Vue.js', 'TypeScript', 'Tailwind CSS', 'Pinia'],
         demo: true,
         demoLink: 'https://juihsuanlee0303.github.io/question-practice-frontend/',
         source: true,
@@ -21,7 +21,7 @@ export const useProjectsStore = defineStore('projects', {
           '使用 JavaScript 開發的 HackMD CLI，具備使用命令行操作 HackMD 與本地、遠端同步的功能。',
         image:
           'https://plus.unsplash.com/premium_photo-1726754457459-d2dfa2e3a434?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        tags: ['JavaScript', 'Node.js', 'HackMD'],
+        tags: ['JavaScript', 'Node.js'],
         demo: false,
         demoLink: '#',
         source: true,
@@ -33,7 +33,7 @@ export const useProjectsStore = defineStore('projects', {
           '使用 Vue 3 和 Node.js 開發的大學學雜費減免系統，具備申請管理、審核流程等功能。',
         image:
           'https://plus.unsplash.com/premium_photo-1671796330300-71ca39909fb8?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        tags: ['Vue.js', 'Node.js', 'PostgreSQL'],
+        tags: ['Vue.js', 'Node.js', 'Express', 'PostgreSQL', 'Sequelize'],
         demo: true,
         demoLink: 'https://tuition-relief.ntub.edu.tw',
         source: false,

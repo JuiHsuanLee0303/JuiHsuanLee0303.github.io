@@ -5,7 +5,6 @@ import AboutPage from '@/views/AboutPage.vue'
 import PortfolioPage from '@/views/PortfolioPage.vue'
 import BlogPage from '@/views/BlogPage.vue'
 import ContactPage from '@/views/ContactPage.vue'
-import ResumePage from '@/views/ResumePage.vue'
 // import CertificationsPage from '@/views/CertificationsPage.vue'
 // import NewsPage from '@/views/NewsPage.vue'
 // import FaqPage from '@/views/FaqPage.vue'
@@ -41,10 +40,6 @@ const router = createRouter({
     {
       path: '/contact',
       component: ContactPage,
-    },
-    {
-      path: '/resume',
-      component: ResumePage,
     },
     // {
     //   path: '/certifications',
