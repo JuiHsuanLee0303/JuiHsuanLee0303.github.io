@@ -4,6 +4,18 @@ export const useProjectsStore = defineStore('projects', {
   state: () => ({
     projects: [
       {
+        title: 'Auto Commit Bot',
+        description:
+          '使用大型語言模型（LLM）自動生成 Git Commit 內容的 Python 工具包。支援多種 LLM 提供商，遵循 Conventional Commits 格式，具備自動分析 git diff 並生成結構化提交訊息的功能。',
+        image:
+          'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        tags: ['Python', 'PyTorch', 'Machine Learning', 'Git', 'CLI'],
+        demo: false,
+        demoLink: '#',
+        source: true,
+        sourceLink: 'https://github.com/JuiHsuanLee/auto-commit-bot',
+      },
+      {
         title: '線上題庫測驗系統',
         description:
           '使用 Vue 3 和 TypeScript 開發的線上題庫測驗系統，具備題目匯入與管理、測驗管理等功能。',

@@ -308,6 +308,200 @@ Token 嵌入：[0.2, 0.5, -0.1], [0.3, -0.2, 0.7]
         image: new URL('@/assets/Build_a_Large Language_Model_(From_Scratch).jpg', import.meta.url)
           .href,
       },
+      {
+        date: '2025-04-01',
+        category: '技術分享',
+        title: '用 Poetry 管理 Python 專案：從入門到實戰教學',
+        content: `
+# 🎯 用 Poetry 管理 Python 專案：從入門到實戰教學
+
+Python 專案常常會遇到套件衝突、虛擬環境混亂、\`requirements.txt\` 和 \`setup.py\` 不一致的狀況。這時你可以試試看 **Poetry** — 一個現代化的 Python 專案管理工具，幫你整合依賴管理、打包、虛擬環境與發佈，讓開發流程更清晰穩定。
+
+---
+
+## 🔧 為什麼選擇 Poetry？
+
+| 傳統方式 | Poetry |
+|----------|--------|
+| \`pip + virtualenv + setup.py + requirements.txt\` | ✅ 統一整合 |
+| 虛擬環境需手動建立 | ✅ 自動建立虛擬環境 |
+| 無版本鎖定機制 | ✅ 使用 \`poetry.lock\` 可重現環境 |
+| 發佈流程繁瑣 | ✅ 一鍵打包發佈 |
+
+---
+
+## 🧪 安裝 Poetry
+
+在終端機輸入：
+
+\`\`\`bash
+curl -sSL https://install.python-poetry.org | python3 -
+\`\`\`
+
+安裝完成後請確認：
+\`\`\`bash
+poetry --version
+\`\`\`
+
+如果無法執行 \`poetry\`，請將以下路徑加入你的環境變數：
+\`\`\`
+$HOME/.local/bin  (Linux/macOS)
+%USERPROFILE%\\.poetry\\bin  (Windows)
+\`\`\`
+
+---
+
+## 🚀 使用 Poetry 建立專案
+
+\`\`\`bash
+poetry new my_project
+cd my_project
+\`\`\`
+
+這會建立以下結構：
+
+\`\`\`
+my_project/
+├── my_project/
+│   └── __init__.py
+├── tests/
+│   └── test_my_project.py
+├── pyproject.toml  👈 專案設定檔
+└── README.rst
+\`\`\`
+
+---
+
+## 📦 安裝套件（取代 pip install）
+
+\`\`\`bash
+poetry add requests
+\`\`\`
+
+會自動修改 \`pyproject.toml\` 並安裝到虛擬環境中。
+
+---
+
+## 🔬 安裝開發用依賴
+
+\`\`\`bash
+poetry add --group dev black
+poetry add --group test pytest
+\`\`\`
+
+這些依賴不會被包含在正式發佈中，只用於開發或測試階段。
+
+---
+
+## 🧪 執行虛擬環境命令
+
+你可以使用 Poetry 的虛擬環境執行指令：
+
+\`\`\`bash
+poetry run python script.py
+poetry run pytest
+\`\`\`
+
+也可以直接進入虛擬環境：
+
+\`\`\`bash
+poetry shell
+\`\`\`
+
+---
+
+## 🔨 安裝所有依賴
+
+當你 clone 一個 Poetry 專案時，使用以下指令安裝所有套件：
+
+\`\`\`bash
+poetry install
+\`\`\`
+
+若你只想裝正式依賴（不含測試、開發套件）：
+
+\`\`\`bash
+poetry install --no-dev
+\`\`\`
+
+或安裝特定群組：
+
+\`\`\`bash
+poetry install --with test,docs
+\`\`\`
+
+---
+
+## 🧠 處理特殊依賴（如 PyTorch）
+
+某些套件（如 PyTorch）安裝方式會因平台而異，此時**不建議**寫死在 \`pyproject.toml\` 裡。
+
+### 建議作法：
+
+1. 不寫入 \`pyproject.toml\`
+2. 在 \`README.md\` 中提示使用者：
+
+\`\`\`bash
+poetry run pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+\`\`\`
+
+或者使用 optional group：
+
+\`\`\`bash
+poetry add --group torch torch --optional
+\`\`\`
+
+---
+
+## 📦 打包與發佈
+
+\`\`\`bash
+poetry build
+poetry publish
+\`\`\`
+
+發佈前請設定 PyPI 帳號：
+
+\`\`\`bash
+poetry config pypi-token.pypi your_token
+\`\`\`
+
+---
+
+## 🧼 Poetry 的好處總整理
+
+- ✅ 不再需要手動管理虛擬環境
+- ✅ 所有依賴集中於 \`pyproject.toml\`
+- ✅ 支援分群組管理（正式、開發、測試、文件）
+- ✅ 發佈流程簡單安全
+- ✅ 重現性強，團隊協作一致性高
+
+---
+
+## 📁 附加：VS Code 與 Poetry 整合
+
+1. 在 VS Code 中打開專案資料夾
+2. 按 \`Ctrl+Shift+P\` → \`Python: Select Interpreter\`
+3. 選擇 \`.venv\\Scripts\\python.exe\`（或 Poetry 自動建立的環境）
+4. 開始開發！
+
+如果 Poetry 虛擬環境沒被偵測，可以執行：
+\`\`\`bash
+poetry config virtualenvs.in-project true
+poetry install
+\`\`\`
+
+這樣會讓虛擬環境建立在專案內的 \`.venv/\` 資料夾中。
+
+---
+
+## ✅ 結語
+
+Poetry 是 Python 開發者非常值得學會的工具，它不但減少繁瑣的環境與依賴管理工作，也讓團隊協作、打包與部署更有保障。如果你曾經為 \`pip freeze\`、\`requirements.txt\` 或虛擬環境抓狂，不妨現在就試試 Poetry 吧！
+`,
+        tags: ['Python', 'Poetry', '開發工具', '套件管理'],
+        image: new URL('@/assets/poetry.png', import.meta.url).href,
+      },
     ],
   }),
 })
