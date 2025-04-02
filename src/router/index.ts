@@ -37,10 +37,10 @@ const router = createRouter({
       name: 'BlogArticle',
       component: () => import('@/views/BlogArticle.vue'),
     },
-    {
-      path: '/contact',
-      component: ContactPage,
-    },
+    // {
+    //   path: '/contact',
+    //   component: ContactPage,
+    // },
     // {
     //   path: '/certifications',
     //   component: CertificationsPage,
