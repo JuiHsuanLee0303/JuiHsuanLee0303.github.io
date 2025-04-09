@@ -3,16 +3,16 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useArticlesStore } from '@/stores/articles'
 import MarkdownIt from 'markdown-it'
-import hljs from 'highlight.js/lib/core'
-import javascript from 'highlight.js/lib/languages/javascript'
-import typescript from 'highlight.js/lib/languages/typescript'
-import python from 'highlight.js/lib/languages/python'
-import 'highlight.js/styles/atom-one-dark.css'
 
-// 註冊常用的程式語言
-hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('typescript', typescript)
-hljs.registerLanguage('python', python)
+// 定義 highlight.js 的類型
+declare global {
+  interface Window {
+    hljs: {
+      getLanguage: (lang: string) => boolean
+      highlight: (code: string, options: { language: string }) => { value: string }
+    }
+  }
+}
 
 // 創建 markdown-it 實例
 const md = MarkdownIt({
@@ -20,9 +20,9 @@ const md = MarkdownIt({
   breaks: true,
   linkify: true,
   highlight: function (str: string, lang: string) {
-    if (lang && hljs.getLanguage(lang)) {
+    if (lang && window.hljs.getLanguage(lang)) {
       try {
-        return hljs.highlight(str, { language: lang }).value
+        return window.hljs.highlight(str, { language: lang }).value
       } catch {
         // 忽略錯誤，使用默認的轉義
       }
@@ -121,6 +121,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 引入 highlight.js 的樣式 */
+@import 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css';
+
 .prose {
   max-width: none;
 }
