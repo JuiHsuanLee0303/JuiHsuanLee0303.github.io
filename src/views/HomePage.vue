@@ -2,22 +2,26 @@
 import { ref, onMounted } from 'vue'
 import { useSkillsStore } from '@/stores/skills'
 import { useProjectsStore } from '@/stores/projects'
+import { useArticlesStore } from '@/stores/articles'
 
 // state management
 const isVisible = ref(false)
 const titleText = ref('')
 const skillsStore = useSkillsStore()
 const projectsStore = useProjectsStore()
+const articlesStore = useArticlesStore()
 
 // 添加滾動動畫控制
 const isInViewport = ref<{
   skills: boolean
   about: boolean
   projects: boolean
+  articles: boolean
 }>({
   skills: false,
   about: false,
   projects: false,
+  articles: false,
 })
 
 // lifecycle hook
@@ -49,6 +53,9 @@ onMounted(() => {
 
 // 獲取最新的3個專案
 const LATEST_PROJECTS = projectsStore.projects.slice(0, 3)
+
+// 獲取最新的3篇文章
+const LATEST_ARTICLES = articlesStore.sortedArticles.slice(0, 3)
 
 // 網站導覽
 const SITE_SECTIONS = [
@@ -240,6 +247,56 @@ const typeText = async (text: string) => {
             class="inline-block mt-6 text-violet-400 hover:text-violet-300 font-medium group"
           >
             查看更多
+            <span class="group-hover:translate-x-2 inline-block transition-transform duration-300"
+              >→</span
+            >
+          </router-link>
+        </div>
+      </div>
+
+      <!-- 最新文章區塊 -->
+      <div
+        class="mb-16"
+        data-section="articles"
+        :class="isInViewport.articles ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+      >
+        <div
+          class="bg-slate-800/90 p-8 rounded-xl shadow-lg shadow-violet-500/20 hover:shadow-xl hover:shadow-violet-500/30 transition-all duration-300 transform hover:-translate-y-1 animate-fadeIn backdrop-blur-sm"
+          style="animation-delay: 0.8s"
+        >
+          <h2 class="text-2xl font-semibold text-violet-400 mb-6 flex items-center">
+            <span class="text-violet-400 mr-2">📝</span>最新文章
+          </h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <router-link
+              v-for="article in LATEST_ARTICLES"
+              :key="article.title"
+              :to="`/blog/${encodeURIComponent(article.title)}`"
+              class="group"
+            >
+              <div
+                class="bg-slate-800/50 p-6 rounded-xl transition-all duration-300 hover:bg-slate-800/70 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/20"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm text-slate-400 bg-slate-700/50 px-2 py-1 rounded-full">{{
+                    article.category
+                  }}</span>
+                  <span class="text-sm text-slate-400">{{ article.date }}</span>
+                </div>
+                <h3
+                  class="text-lg font-medium text-violet-400 mb-2 group-hover:text-violet-300 transition-colors duration-300 line-clamp-2"
+                >
+                  {{ article.title }}
+                </h3>
+                <p class="text-slate-300 text-sm line-clamp-3">{{ article.content }}</p>
+              </div>
+            </router-link>
+          </div>
+          <router-link
+            to="/blog"
+            class="inline-block mt-6 text-violet-400 hover:text-violet-300 font-medium group"
+          >
+            查看更多文章
             <span class="group-hover:translate-x-2 inline-block transition-transform duration-300"
               >→</span
             >

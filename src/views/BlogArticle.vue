@@ -3,12 +3,24 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useArticlesStore } from '@/stores/articles'
 import MarkdownIt from 'markdown-it'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css'
 
 // 創建 markdown-it 實例
 const md = MarkdownIt({
   html: true,
   breaks: true,
   linkify: true,
+  highlight: function (str: string, lang: string) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang }).value
+      } catch {
+        // 忽略錯誤，使用默認的轉義
+      }
+    }
+    return '' // 使用默認的轉義
+  },
 })
 
 const route = useRoute()
@@ -160,12 +172,33 @@ onMounted(() => {
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 1rem 0;
+  overflow-x: auto;
 }
 
 :deep(.prose pre code) {
   background-color: transparent;
   padding: 0;
   color: theme('colors.slate.300');
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* 程式碼區塊的語言標籤 */
+:deep(.prose pre) {
+  position: relative;
+}
+
+:deep(.prose pre::before) {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  color: theme('colors.slate.400');
+  background-color: theme('colors.slate.800');
+  border-bottom-left-radius: 0.5rem;
 }
 
 :deep(.prose a) {
