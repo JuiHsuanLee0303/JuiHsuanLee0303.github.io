@@ -14,23 +14,6 @@ declare global {
   }
 }
 
-// 創建 markdown-it 實例
-const md = MarkdownIt({
-  html: true,
-  breaks: true,
-  linkify: true,
-  highlight: function (str: string, lang: string) {
-    if (lang && window.hljs.getLanguage(lang)) {
-      try {
-        return window.hljs.highlight(str, { language: lang }).value
-      } catch {
-        // 忽略錯誤，使用默認的轉義
-      }
-    }
-    return '' // 使用默認的轉義
-  },
-})
-
 const route = useRoute()
 const router = useRouter()
 const articlesStore = useArticlesStore()
@@ -54,6 +37,23 @@ const articleContent = computed(() => {
 if (!article.value) {
   router.push('/blog')
 }
+
+// 創建 markdown-it 實例
+const md = new MarkdownIt({
+  html: true,
+  breaks: true,
+  linkify: true,
+  highlight: function (str: string, lang: string) {
+    if (lang && window.hljs?.getLanguage(lang)) {
+      try {
+        return window.hljs.highlight(str, { language: lang }).value
+      } catch {
+        // 忽略錯誤，使用默認的轉義
+      }
+    }
+    return '' // 使用默認的轉義
+  },
+})
 
 // 頁面載入時的動畫效果
 onMounted(() => {
