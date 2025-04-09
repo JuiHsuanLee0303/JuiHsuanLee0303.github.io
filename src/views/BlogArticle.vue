@@ -43,16 +43,16 @@ const md = new MarkdownIt({
   html: true,
   breaks: true,
   linkify: true,
-  highlight: function (str: string, lang: string) {
-    if (lang && window.hljs?.getLanguage(lang)) {
-      try {
-        return window.hljs.highlight(str, { language: lang }).value
-      } catch {
-        // 忽略錯誤，使用默認的轉義
-      }
-    }
-    return '' // 使用默認的轉義
-  },
+  // highlight: function (str: string, lang: string) {
+  //   if (lang && window.hljs?.getLanguage(lang)) {
+  //     try {
+  //       return window.hljs.highlight(str, { language: lang }).value
+  //     } catch {
+  //       // 忽略錯誤，使用默認的轉義
+  //     }
+  //   }
+  //   return '' // 使用默認的轉義
+  // },
 })
 
 // 頁面載入時的動畫效果
