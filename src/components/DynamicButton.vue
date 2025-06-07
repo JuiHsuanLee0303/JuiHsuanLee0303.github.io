@@ -28,8 +28,4 @@ const props = defineProps({
 const handleClick = () => {
     emit('click')
 }
-
-onMounted(() => {
-    console.log(props.isToggle)
-})
 </script>

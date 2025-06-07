@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import Navbar from './components/Navbar.vue'
+import HomePage from './views/HomePage.vue'
+import router from './router'
 
 // 管理暗色模式狀態
 const isDark = ref(false)
@@ -53,5 +55,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Navbar :isDark="isDark" @toggle-dark-mode="toggleDarkMode" />
+  <div class="min-h-screen">
+    <Navbar :isDark="isDark" @toggle-dark-mode="toggleDarkMode" />
+    <router-view />
+  </div>
 </template>

@@ -23,7 +23,7 @@
                     </DynamicButton>
                 </a>
                 <!-- 作品集 -->
-                <a href="/">
+                <a href="/portfolio">
                     <DynamicButton :isToggle="true" trueTitle="作品集" falseTitle="作品集">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 32 32">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M26,27H6c-1.1,0-2-0.9-2-2V12c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v13C28,26.1,27.1,27,26,27z"/>
@@ -31,6 +31,14 @@
                             <line stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="10" y1="20" x2="10" y2="18"/>
                             <line stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="22" y1="20" x2="22" y2="18"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.3,10c0.9-2.9,3.5-5,6.7-5c3.2,0,5.8,2.1,6.7,5"/>
+                        </svg>
+                    </DynamicButton>
+                </a>
+                <!-- 部落格 -->
+                <a href="/blog">
+                    <DynamicButton :isToggle="true" trueTitle="部落格" falseTitle="部落格">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </DynamicButton>
                 </a>
