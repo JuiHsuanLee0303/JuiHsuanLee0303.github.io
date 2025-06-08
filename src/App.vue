@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import Navbar from './components/Navbar.vue'
+import Mouse from './components/Mouse.vue'
 import HomePage from './views/HomePage.vue'
 import router from './router'
 
@@ -57,6 +58,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="min-h-screen">
     <Navbar :isDark="isDark" @toggle-dark-mode="toggleDarkMode" />
+    <Mouse />
     <router-view />
   </div>
 </template>
