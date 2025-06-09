@@ -1,63 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500 overflow-hidden custom-cursor" ref="mainContainer">
 
-
-    <!-- 波浪背景效果 -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <svg class="absolute bottom-0 left-0 w-full h-64" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path class="wave-path-1" d="M0,60 C200,100 400,20 600,60 C800,100 1000,20 1200,60 L1200,120 L0,120 Z" 
-              fill="url(#wave-gradient-1)"/>
-        <path class="wave-path-2" d="M0,80 C200,40 400,120 600,80 C800,40 1000,120 1200,80 L1200,120 L0,120 Z" 
-              fill="url(#wave-gradient-2)"/>
-        <defs>
-          <linearGradient id="wave-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:rgba(59,130,246,0.1);stop-opacity:1" />
-            <stop offset="100%" style="stop-color:rgba(168,85,247,0.1);stop-opacity:1" />
-          </linearGradient>
-          <linearGradient id="wave-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:rgba(34,197,94,0.1);stop-opacity:1" />
-            <stop offset="100%" style="stop-color:rgba(59,130,246,0.1);stop-opacity:1" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <!-- 幾何圖形背景 -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <div class="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-blue-300/20 dark:border-blue-500/20 rotate-45 animate-spin-slow"></div>
-      <div class="absolute top-3/4 right-1/4 w-24 h-24 border-2 border-purple-300/20 dark:border-purple-500/20 rotate-12 animate-pulse-slow"></div>
-      <div class="absolute top-1/2 right-1/3 w-16 h-16 bg-gradient-to-r from-pink-300/10 to-yellow-300/10 dark:from-pink-500/10 dark:to-yellow-500/10 rounded-full animate-bounce-slow"></div>
-    </div>
-
-    <!-- 增強粒子背景效果 -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-10">
-      <div class="particles-container">
-        <div v-for="n in 80" :key="n" 
-             :class="`particle particle-${n}`"
-             :style="{ 
-               '--delay': `${Math.random() * 20}s`,
-               '--duration': `${15 + Math.random() * 10}s`,
-               '--size': `${2 + Math.random() * 6}px`,
-               '--color': getRandomParticleColor()
-             }"></div>
-      </div>
-    </div>
-
     <!-- 主要內容區域 -->
     <main class="container mx-auto px-6 py-12 relative z-10">
       <!-- 英雄區域 -->
       <section class="text-center mb-16">
         <div class="relative">
-          <!-- 背景裝飾 -->
-          <div class="absolute inset-0 -z-10">
-            <div class="absolute top-20 left-1/4 w-72 h-72 bg-blue-300 dark:bg-blue-900 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-blob animate-pulse-slow"></div>
-            <div class="absolute top-20 right-1/4 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-blob animation-delay-2000 animate-pulse-slow"></div>
-            <div class="absolute -bottom-8 left-1/3 w-72 h-72 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-xl opacity-30 animate-blob animation-delay-4000 animate-pulse-slow"></div>
-            <!-- 新增更多動態元素 -->
-            <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-cyan-200 dark:bg-cyan-800 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-2xl opacity-20 animate-spin-slow"></div>
-            <div class="absolute top-10 right-10 w-32 h-32 bg-yellow-300 dark:bg-yellow-700 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-lg opacity-40 animate-bounce-slow"></div>
-          </div>
-          
           <!-- 個人頭像 -->
           <div class="mb-8">
             <div 

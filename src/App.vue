@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import Navbar from './components/Navbar.vue'
 import Mouse from './components/Mouse.vue'
-import HomePage from './views/HomePage.vue'
+import BackgroundEffects from './components/BackgroundEffects.vue'
 import router from './router'
 
 // 管理暗色模式狀態
@@ -59,6 +59,7 @@ onBeforeUnmount(() => {
   <div class="min-h-screen">
     <Navbar :isDark="isDark" @toggle-dark-mode="toggleDarkMode" />
     <Mouse />
+    <BackgroundEffects />
     <router-view />
   </div>
 </template>
