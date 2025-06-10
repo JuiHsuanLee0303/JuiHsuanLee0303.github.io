@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500 overflow-hidden custom-cursor">
     <main class="container mx-auto px-6 py-24 relative z-10">
-      <header class="text-center mb-16">
-        <h1 class="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-fadeInUp animate-gradient-x">
+      <header class="text-center mb-16 animate-fadeInUp">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-gray-900 dark:text-white">
           我的作品集
         </h1>
-        <p class="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto animate-fadeInUp animation-delay-200">
+        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           這裡展示了我引以為傲的專案，涵蓋了從全端開發、AI 應用到資訊安全的各種實踐。
         </p>
       </header>

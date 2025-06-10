@@ -7,13 +7,18 @@
       <section class="text-center mb-16">
         <div class="relative">
           <!-- 個人頭像 -->
-          <div class="mb-8">
+          <div class="mb-8 flex justify-center">
             <div 
-              class="relative inline-block animate-float avatar-container group cursor-pointer"
+              class="grid place-items-center w-60 h-60 avatar-mobile group cursor-pointer"
               @click="openAvatarModal"
               title="點擊查看大圖"
             >
-              <div class="w-40 h-40 avatar-mobile mx-auto rounded-full bg-gradient-to-r from-blue-400 to-purple-500 dark:from-blue-600 dark:to-purple-700 p-1 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 hover:rotate-6 animate-gradient-x">
+              <!-- 光環效果 (z-0) -->
+              <div class="col-start-1 row-start-1 w-full h-full rounded-full border-2 border-blue-300 dark:border-blue-600 animate-ping opacity-30"></div>
+              <div class="col-start-1 row-start-1 w-full h-full rounded-full border border-purple-300 dark:border-purple-600 animate-ping opacity-20 animation-delay-1000"></div>
+
+              <!-- 頭像本身 (z-10) -->
+              <div class="col-start-1 row-start-1 w-full h-full z-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 dark:from-blue-600 dark:to-purple-700 p-1 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 animate-gradient-x">
                 <div class="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center backdrop-blur-sm overflow-hidden relative pointer-events-none">
                   <!-- 載入狀態 -->
                   <div 
@@ -50,25 +55,27 @@
                   >
                 </div>
               </div>
-              <!-- 狀態指示器 -->
-              <div class="absolute bottom-2 right-2 w-8 h-8 bg-green-400 dark:bg-green-500 rounded-full border-4 border-white dark:border-gray-800 animate-pulse pointer-events-none">
-                <div class="w-full h-full rounded-full bg-green-400 dark:bg-green-500 animate-ping opacity-75"></div>
+
+              <!-- 狀態指示器 (z-20) -->
+              <div class="col-start-1 row-start-1 w-full h-full z-20 pointer-events-none flex justify-end items-end p-2">
+                  <div class="w-8 h-8 bg-green-400 dark:bg-green-500 rounded-full border-4 border-white dark:border-gray-800 animate-pulse">
+                    <div class="w-full h-full rounded-full bg-green-400 dark:bg-green-500 animate-ping opacity-75"></div>
+                  </div>
               </div>
               
-              <!-- 點擊提示圖標 -->
-              <div class="absolute top-2 right-2 w-6 h-6 bg-blue-500 bg-opacity-80 dark:bg-blue-600 dark:bg-opacity-80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
-                </svg>
+              <!-- 點擊提示圖標 (z-20) -->
+              <div class="col-start-1 row-start-1 w-full h-full z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-end items-start p-2">
+                  <div class="w-6 h-6 bg-blue-500 bg-opacity-80 dark:bg-blue-600 dark:bg-opacity-80 rounded-full flex items-center justify-center">
+                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                    </svg>
+                  </div>
               </div>
-              <!-- 光環效果 -->
-              <div class="absolute inset-0 rounded-full border-2 border-blue-300 dark:border-blue-600 animate-ping opacity-30 pointer-events-none"></div>
-              <div class="absolute inset-0 rounded-full border border-purple-300 dark:border-purple-600 animate-ping opacity-20 animation-delay-1000 pointer-events-none"></div>
             </div>
           </div>
           
           <!-- 主標題 - 霓虹燈效果 -->
-          <h1 class="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-fadeInUp animate-gradient-x neon-text-effect relative">
+          <h1 class="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-fadeInUp neon-text-effect relative">
             <span class="inline-block hover:animate-bounce hover:neon-glow transition-all duration-300">J</span>
             <span class="inline-block hover:animate-bounce hover:neon-glow animation-delay-100 transition-all duration-300">u</span>
             <span class="inline-block hover:animate-bounce hover:neon-glow animation-delay-200 transition-all duration-300">i</span>

@@ -1,14 +1,14 @@
 <template>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500">
         <main class="container mx-auto px-6 py-12">
-            <section class="text-center mb-16">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-fadeInUp">
+            <header class="text-center mb-16 animate-fadeInUp">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-gray-900 dark:text-white">
                     小遊戲
                 </h1>
-                <p class="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto animate-fadeInUp animation-delay-300">
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                     一些有趣的互動小遊戲，放鬆一下吧！
                 </p>
-            </section>
+            </header>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div v-for="(game, index) in games" :key="game.id"
