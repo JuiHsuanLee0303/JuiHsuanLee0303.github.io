@@ -43,44 +43,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { games as gamesData } from '../data';
 
-const games = ref([
-    {
-        id: 1,
-        name: '猜數字',
-        description: '一個簡單的猜數字遊戲，測試你的運氣和邏輯。',
-        image: 'https://placehold.co/400x300/42b983/FFFFFF?text=Guess+Number&font=raleway',
-        link: '/games/guess-the-number'
-    },
-    {
-        id: 2,
-        name: '圈圈叉叉',
-        description: '經典的井字遊戲，挑戰你的策略思維。即將推出！',
-        image: 'https://placehold.co/400x300/3498db/FFFFFF?text=Tic-Tac-Toe&font=raleway',
-        link: null // '/games/tic-tac-toe'
-    },
-    {
-        id: 3,
-        name: '幾A幾B',
-        description: '經典的猜數字解謎遊戲，挑戰你的邏輯推理能力。',
-        image: 'https://placehold.co/400x300/8e44ad/FFFFFF?text=Bulls+and+Cows&font=raleway',
-        link: '/games/bulls-and-cows'
-    },
-    {
-        id: 4,
-        name: '殭屍射擊',
-        description: '在無盡的屍潮中生存下來！一款刺激的 2D 俯視角射擊遊戲。',
-        image: 'https://placehold.co/400x300/c0392b/FFFFFF?text=Zombie+Shooter&font=raleway',
-        link: '/games/zombie-shooter'
-    },
-    {
-        id: 5,
-        name: '星際戰機',
-        description: '駕駛你的戰機，在槍林彈雨中殺出一條血路！經典的垂直捲軸射擊遊戲。',
-        image: 'https://placehold.co/400x300/2980b9/FFFFFF?text=Aircraft+Shooter&font=raleway',
-        link: '/games/aircraft-shooter'
-    }
-]);
+const games = ref(gamesData);
 </script>
 
 <style>

@@ -1,8 +1,107 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500 overflow-hidden custom-cursor" ref="mainContainer">
 
+    <!-- 電影開場動畫 -->
+    <div 
+      v-if="showIntroAnimation" 
+      class="fixed inset-0 z-50 bg-black flex items-center justify-center intro-animation"
+      @click="skipIntro"
+    >
+      <!-- 背景動態效果 -->
+      <div class="absolute inset-0 overflow-hidden">
+        <!-- 更多星星 -->
+        <div class="stars-container">
+          <div v-for="i in 100" :key="i" class="star" :style="getStarStyle(i)"></div>
+        </div>
+        
+        <!-- 流星效果 -->
+        <div class="shooting-stars">
+          <div v-for="i in 8" :key="`shooting-${i}`" class="shooting-star" :style="getShootingStarStyle(i)"></div>
+        </div>
+        
+        <!-- 星雲效果 -->
+        <div class="nebula-container">
+          <div class="nebula nebula-1"></div>
+          <div class="nebula nebula-2"></div>
+          <div class="nebula nebula-3"></div>
+          <div class="nebula nebula-4"></div>
+          <div class="nebula nebula-5"></div>
+        </div>
+        
+        <!-- 粒子系統 -->
+        <div class="particles-container">
+          <div v-for="i in 30" :key="`particle-${i}`" class="particle" :style="getParticleStyle(i)"></div>
+        </div>
+        
+        <!-- 光線效果 -->
+        <div class="light-rays">
+          <div class="light-ray ray-1"></div>
+          <div class="light-ray ray-2"></div>
+          <div class="light-ray ray-3"></div>
+        </div>
+      </div>
+
+      <!-- 開場文字 -->
+      <div class="text-center text-white relative z-10">
+        <!-- 製作公司標誌 -->
+        <div class="mb-8 company-logo" :class="{ 'fade-in': introStep >= 1 }">
+          <div class="text-4xl font-bold text-blue-400 mb-2 glitch-text" data-text="Jui-Hsuan Lee">Jui-Hsuan Lee</div>
+          <div class="text-lg text-gray-400">Digital Portfolio</div>
+        </div>
+
+        <!-- 主標題動畫 -->
+        <div class="main-title-container" :class="{ 'title-visible': introStep >= 2 }">
+          <h1 class="text-6xl md:text-8xl font-bold mb-4 cinematic-title">
+            <span class="title-char" v-for="(char, index) in 'Jui-Hsuan Lee'" :key="index" :style="{ animationDelay: `${index * 0.15}s` }">
+              {{ char === ' ' ? '\u00A0' : char }}
+            </span>
+          </h1>
+          <!-- 標題光暈效果 -->
+          <div class="title-glow"></div>
+        </div>
+
+        <!-- 技能展示 -->
+        <div class="skills-showcase" :class="{ 'skills-visible': introStep >= 3 }">
+          <div class="skill-item" v-for="(skill, index) in showcaseSkills" :key="skill" :style="{ animationDelay: `${index * 0.3}s` }">
+            <span class="skill-text">{{ skill }}</span>
+          </div>
+        </div>
+
+        <!-- 副標題 -->
+        <div class="subtitle-container" :class="{ 'subtitle-visible': introStep >= 4 }">
+          <div class="text-xl md:text-2xl text-gray-300 mb-4">
+            <span class="typewriter-intro">{{ introText }}</span>
+            <span class="cursor-blink">|</span>
+          </div>
+        </div>
+
+        <!-- 動態背景文字 -->
+        <div class="background-text" :class="{ 'bg-text-visible': introStep >= 5 }">
+          <div class="bg-text-line" v-for="(line, index) in backgroundTexts" :key="index" :style="{ animationDelay: `${index * 0.5}s` }">
+            {{ line }}
+          </div>
+        </div>
+
+        <!-- 開始按鈕 -->
+        <div class="start-button-container" :class="{ 'button-visible': introStep >= 6 }">
+          <button 
+            @click="startMainContent"
+            class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl start-button"
+          >
+            開始探索
+          </button>
+          <div class="text-sm text-gray-500 mt-4">點擊任意處跳過</div>
+        </div>
+      </div>
+
+      <!-- 進度條 -->
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-64 h-1 bg-gray-800 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300" :style="{ width: `${introProgress}%` }"></div>
+      </div>
+    </div>
+
     <!-- 主要內容區域 -->
-    <main class="container mx-auto px-6 py-12 relative z-10">
+    <main class="container mx-auto px-6 py-12 relative z-10" :class="{ 'content-visible': !showIntroAnimation }">
       <!-- 英雄區域 -->
       <section class="text-center mb-16">
         <div class="relative">
@@ -455,17 +554,34 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import avatarImage from '../assets/avatar.png'
 
-// 打字機效果
-const displayText = ref('AI 工程師')
-const fullTexts = [
+// 匯入資料
+import { typewriterTexts, skills as skillsData, homeProjects } from '../data'
+
+// 開場動畫相關
+const showIntroAnimation = ref(true)
+const introStep = ref(0)
+const introProgress = ref(0)
+const introText = ref('')
+const introTexts = [
   '全端開發者',
-  'AI 工程師',
+  'AI 工程師', 
   '資安研究者',
-  '資料科學愛好者',
   '創新應用開發者',
   '技術內容創作者',
   '自動化工具開發者'
 ]
+
+const showcaseSkills = [
+  'Vue.js', 'React', 'Node.js', 'Python', 'TypeScript', 'Machine Learning', 'Deep Learning', 'Cybersecurity'
+]
+
+const backgroundTexts = [
+  'INNOVATION', 'TECHNOLOGY', 'CREATIVITY', 'EXCELLENCE', 'FUTURE', 'DIGITAL', 'AI', 'CODE'
+]
+
+// 打字機效果
+const displayText = ref('AI 工程師')
+const fullTexts = typewriterTexts
 
 const currentTextIndex = ref(0)
 const currentCharIndex = ref(0)
@@ -492,111 +608,137 @@ const modalTiltEffect = ref({ x: 0, y: 0 })
 const imageContainer = ref(null)
 
 // 技能數據
-const skills = ref([
-  {
-    id: 1,
-    title: '前端開發',
-    description: '精通現代前端技術，創造響應式且互動性強的使用者介面',
-    gradient: 'from-blue-500 to-cyan-500',
-    icon: 'M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z',
-    technologies: [
-      { name: 'Vue.js', color: 'blue' },
-      { name: 'React', color: 'blue' },
-      { name: 'TypeScript', color: 'blue' }
-    ],
-    skillLevels: [
-      { name: 'Vue.js', level: 95 },
-      { name: 'React', level: 90 },
-      { name: 'TypeScript', level: 88 }
-    ]
-  },
-  {
-    id: 2,
-    title: '後端開發',
-    description: '建構穩定可靠的伺服器端應用程式與API服務',
-    gradient: 'from-green-500 to-emerald-500',
-    icon: 'M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20Z',
-    technologies: [
-      { name: 'Node.js', color: 'green' },
-      { name: 'Python', color: 'green' },
-      { name: 'Express', color: 'green' }
-    ],
-    skillLevels: [
-      { name: 'Node.js', level: 92 },
-      { name: 'Python', level: 89 },
-      { name: 'Express', level: 94 }
-    ]
-  },
-  {
-    id: 3,
-    title: '雲端服務',
-    description: '熟悉雲端平台部署與DevOps實務，確保應用程式高可用性',
-    gradient: 'from-purple-500 to-pink-500',
-    icon: 'M6.5,20Q4.22,20 2.61,18.43Q1,16.85 1,14.58Q1,12.63 2.17,11.1Q3.35,9.57 5.25,9.15Q5.88,6.85 7.75,5.43Q9.63,4 12,4Q14.93,4 16.96,6.04Q19,8.07 19,11Q20.73,11.2 21.86,12.5Q23,13.78 23,15.5Q23,17.38 21.69,18.69Q20.38,20 18.5,20H6.5M6.5,18H18.5Q19.75,18 20.38,17.38Q21,16.75 21,15.5Q21,14.25 20.38,13.63Q19.75,13 18.5,13H17V11Q17,8.79 15.61,7.39Q14.21,6 12,6Q9.79,6 8.39,7.39Q7,8.79 7,11H6.5Q5.08,11 4.04,12.04Q3,13.08 3,14.5Q3,15.92 4.04,16.96Q5.08,18 6.5,18Z',
-    technologies: [
-      { name: 'AWS', color: 'purple' },
-      { name: 'Docker', color: 'purple' },
-      { name: 'GitHub Actions', color: 'purple' }
-    ],
-    skillLevels: [
-      { name: 'AWS', level: 85 },
-      { name: 'Docker', level: 90 },
-      { name: 'CI/CD', level: 87 }
-    ]
-  }
-])
+const skills = ref(skillsData)
 
 // 專案數據
-const projects = ref([
-  {
-    id: 1,
-    title: '電商平台開發',
-    description: '全功能電商平台，包含購物車、付款系統、訂單管理等完整功能',
-    gradient: 'from-blue-400 to-purple-500',
-    technologies: [
-      { name: 'Vue.js', color: 'blue' },
-      { name: 'Node.js', color: 'green' },
-      { name: 'MongoDB', color: 'yellow' }
-    ],
-    icon: 'M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'
-  },
-  {
-    id: 2,
-    title: '任務管理系統',
-    description: '團隊協作任務管理工具，支援即時通知、進度追蹤與檔案分享',
-    gradient: 'from-green-400 to-blue-500',
-    technologies: [
-      { name: 'React', color: 'blue' },
-      { name: 'Express', color: 'purple' },
-      { name: 'Redis', color: 'red' }
-    ],
-    icon: 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z'
-  },
-  {
-    id: 3,
-    title: 'AI 智能聊天機器人',
-    description: '基於大型語言模型的智能客服系統，支援多語言對話與情感分析',
-    gradient: 'from-purple-400 to-pink-500',
-    technologies: [
-      { name: 'Python', color: 'blue' },
-      { name: 'FastAPI', color: 'green' },
-      { name: 'OpenAI', color: 'purple' }
-    ],
-    icon: 'M12,2C13.65,2 15,3.35 15,5C15,6.65 13.65,8 12,8C10.35,8 9,6.65 9,5C9,3.35 10.35,2 12,2M21,9V7L15,1V3H9V1L3,7V9H21M21,10H3V18H21V10Z'
-  },
-  {
-    id: 4,
-    title: '數據可視化儀表板',
-    description: '企業級數據分析平台，提供即時數據監控與多維度報表生成',
-    gradient: 'from-cyan-400 to-blue-500',
-    technologies: [
-      { name: 'D3.js', color: 'blue' },
-      { name: 'Python', color: 'yellow' },
-      { name: 'PostgreSQL', color: 'green' }
-    ],
-    icon: 'M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M4,5V19H20V5H4M6,7H18V9H6V7M6,11H14V13H6V11M6,15H16V17H6V15Z'
+const projects = ref(homeProjects)
+
+// 開場動畫方法
+const startIntroAnimation = () => {
+  const totalDuration = 15000 // 15秒總時長
+  const stepDuration = totalDuration / 6 // 每步2.5秒
+  
+  let currentTime = 0
+  
+  const animate = () => {
+    currentTime += 100
+    
+    // 更新進度
+    introProgress.value = (currentTime / totalDuration) * 100
+    
+    // 更新步驟
+    if (currentTime >= stepDuration && introStep.value < 1) {
+      introStep.value = 1
+    }
+    if (currentTime >= stepDuration * 2 && introStep.value < 2) {
+      introStep.value = 2
+    }
+    if (currentTime >= stepDuration * 3 && introStep.value < 3) {
+      introStep.value = 3
+    }
+    if (currentTime >= stepDuration * 4 && introStep.value < 4) {
+      introStep.value = 4
+      startIntroTypewriter()
+    }
+    if (currentTime >= stepDuration * 5 && introStep.value < 5) {
+      introStep.value = 5
+    }
+    if (currentTime >= stepDuration * 6 && introStep.value < 6) {
+      introStep.value = 6
+    }
+    
+    if (currentTime < totalDuration) {
+      requestAnimationFrame(animate)
+    }
   }
-])
+  
+  animate()
+}
+
+const startIntroTypewriter = () => {
+  let textIndex = 0
+  let charIndex = 0
+  let isDeleting = false
+  
+  const typeIntro = () => {
+    const currentText = introTexts[textIndex]
+    
+    if (isDeleting) {
+      introText.value = currentText.substring(0, charIndex - 1)
+      charIndex--
+    } else {
+      introText.value = currentText.substring(0, charIndex + 1)
+      charIndex++
+    }
+    
+    if (!isDeleting && charIndex === currentText.length) {
+      setTimeout(() => { isDeleting = true }, 1000)
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false
+      textIndex = (textIndex + 1) % introTexts.length
+    }
+    
+    setTimeout(typeIntro, isDeleting ? 50 : 100)
+  }
+  
+  typeIntro()
+}
+
+const skipIntro = () => {
+  showIntroAnimation.value = false
+}
+
+const startMainContent = () => {
+  showIntroAnimation.value = false
+}
+
+const getStarStyle = (index) => {
+  const size = Math.random() * 4 + 1
+  const x = Math.random() * 100
+  const y = Math.random() * 100
+  const delay = Math.random() * 5
+  const duration = Math.random() * 3 + 1
+  
+  return {
+    width: `${size}px`,
+    height: `${size}px`,
+    left: `${x}%`,
+    top: `${y}%`,
+    animationDelay: `${delay}s`,
+    animationDuration: `${duration}s`
+  }
+}
+
+const getShootingStarStyle = (index) => {
+  const x = Math.random() * 100
+  const y = Math.random() * 100
+  const delay = Math.random() * 10
+  const duration = Math.random() * 3 + 2
+  
+  return {
+    left: `${x}%`,
+    top: `${y}%`,
+    animationDelay: `${delay}s`,
+    animationDuration: `${duration}s`
+  }
+}
+
+const getParticleStyle = (index) => {
+  const size = Math.random() * 6 + 2
+  const x = Math.random() * 100
+  const y = Math.random() * 100
+  const delay = Math.random() * 8
+  const duration = Math.random() * 4 + 2
+  
+  return {
+    width: `${size}px`,
+    height: `${size}px`,
+    left: `${x}%`,
+    top: `${y}%`,
+    animationDelay: `${delay}s`,
+    animationDuration: `${duration}s`
+  }
+}
 
 const typeWriter = () => {
   const currentText = fullTexts[currentTextIndex.value]
@@ -802,8 +944,15 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  // 開始打字機效果
-  setTimeout(typeWriter, 1000)
+  // 開始開場動畫
+  startIntroAnimation()
+  
+  // 開始打字機效果（延遲到開場動畫結束後）
+  setTimeout(() => {
+    if (!showIntroAnimation.value) {
+      setTimeout(typeWriter, 1000)
+    }
+  }, 15000)
   
   // 設置滾動動畫
   handleScroll()
@@ -832,6 +981,540 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* 開場動畫樣式 */
+.intro-animation {
+  cursor: pointer;
+}
+
+/* 星星背景 */
+.stars-container {
+  position: absolute;
+  inset: 0;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* 流星效果 */
+.shooting-stars {
+  position: absolute;
+  inset: 0;
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: linear-gradient(45deg, white, transparent);
+  border-radius: 50%;
+  animation: shooting-star 5s linear infinite;
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, white, transparent);
+  transform: translateX(-100px);
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translateX(-100px) translateY(0) rotate(45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* 粒子系統 */
+.particles-container {
+  position: absolute;
+  inset: 0;
+}
+
+.particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.8), transparent);
+  border-radius: 50%;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+@keyframes particle-float {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* 光線效果 */
+.light-rays {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.light-ray {
+  position: absolute;
+  width: 1px;
+  height: 100vh;
+  background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.3), transparent);
+  animation: light-ray 8s ease-in-out infinite;
+}
+
+.ray-1 {
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.ray-2 {
+  left: 50%;
+  animation-delay: -2.5s;
+}
+
+.ray-3 {
+  left: 80%;
+  animation-delay: -5s;
+}
+
+@keyframes light-ray {
+  0%, 100% { 
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  50% { 
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* 星雲效果 */
+.nebula-container {
+  position: absolute;
+  inset: 0;
+}
+
+.nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  animation: nebula-float 25s ease-in-out infinite;
+}
+
+.nebula-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.6), transparent);
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.nebula-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.5), transparent);
+  top: 60%;
+  right: 15%;
+  animation-delay: -7s;
+}
+
+.nebula-3 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.4), transparent);
+  bottom: 20%;
+  left: 50%;
+  animation-delay: -14s;
+}
+
+.nebula-4 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.3), transparent);
+  top: 40%;
+  right: 30%;
+  animation-delay: -10s;
+}
+
+.nebula-5 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.4), transparent);
+  bottom: 40%;
+  left: 20%;
+  animation-delay: -17s;
+}
+
+@keyframes nebula-float {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(30px, -20px) scale(1.1) rotate(90deg); }
+  50% { transform: translate(-20px, 30px) scale(0.9) rotate(180deg); }
+  75% { transform: translate(-30px, -10px) scale(1.05) rotate(270deg); }
+}
+
+/* 公司標誌動畫 */
+.company-logo {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.5s ease-out;
+}
+
+.company-logo.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 故障文字效果 */
+.glitch-text {
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.5s infinite;
+  color: #ff0000;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.5s infinite;
+  color: #00ffff;
+  z-index: -2;
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-1 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(-2px, 2px); }
+}
+
+/* 主標題動畫 */
+.main-title-container {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 2s ease-out;
+  position: relative;
+}
+
+.main-title-container.title-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cinematic-title {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #06b6d4, #10b981, #f59e0b);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+.title-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(50px) rotateX(90deg);
+  animation: title-reveal 1.2s ease-out forwards;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes title-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+/* 標題光暈效果 */
+.title-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 70%);
+  border-radius: 50%;
+  animation: title-glow-pulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes title-glow-pulse {
+  0%, 100% { 
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* 技能展示動畫 */
+.skills-showcase {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.5s ease-out;
+  margin: 2rem 0;
+}
+
+.skills-showcase.skills-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-item {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2));
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  animation: skill-float 3s ease-in-out infinite;
+}
+
+.skill-text {
+  color: #60a5fa;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+}
+
+@keyframes skill-float {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  50% { 
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* 副標題動畫 */
+.subtitle-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease-out;
+}
+
+.subtitle-container.subtitle-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 背景文字動畫 */
+.background-text {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 2s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.background-text.bg-text-visible {
+  opacity: 0.1;
+}
+
+.bg-text-line {
+  position: absolute;
+  font-size: 8rem;
+  font-weight: 900;
+  color: rgba(59, 130, 246, 0.1);
+  white-space: nowrap;
+  animation: bg-text-float 15s ease-in-out infinite;
+  transform: rotate(-15deg);
+}
+
+.bg-text-line:nth-child(1) {
+  top: 10%;
+  left: -20%;
+  animation-delay: 0s;
+}
+
+.bg-text-line:nth-child(2) {
+  top: 30%;
+  right: -30%;
+  animation-delay: -2s;
+}
+
+.bg-text-line:nth-child(3) {
+  bottom: 20%;
+  left: -25%;
+  animation-delay: -4s;
+}
+
+.bg-text-line:nth-child(4) {
+  bottom: 40%;
+  right: -20%;
+  animation-delay: -6s;
+}
+
+.bg-text-line:nth-child(5) {
+  top: 60%;
+  left: -15%;
+  animation-delay: -8s;
+}
+
+.bg-text-line:nth-child(6) {
+  top: 80%;
+  right: -25%;
+  animation-delay: -10s;
+}
+
+.bg-text-line:nth-child(7) {
+  bottom: 60%;
+  left: -10%;
+  animation-delay: -12s;
+}
+
+.bg-text-line:nth-child(8) {
+  bottom: 80%;
+  right: -15%;
+  animation-delay: -14s;
+}
+
+@keyframes bg-text-float {
+  0%, 100% { 
+    transform: rotate(-15deg) translateX(0);
+    opacity: 0.1;
+  }
+  50% { 
+    transform: rotate(-15deg) translateX(50px);
+    opacity: 0.2;
+  }
+}
+
+/* 開始按鈕動畫 */
+.start-button-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.5s ease-out;
+}
+
+.start-button-container.button-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.start-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 200% 200%;
+  animation: button-gradient 3s ease-in-out infinite;
+}
+
+.start-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.8s;
+}
+
+.start-button:hover::before {
+  left: 100%;
+}
+
+@keyframes button-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 內容顯示動畫 */
+.content-visible {
+  animation: content-fade-in 1s ease-out;
+}
+
+@keyframes content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* 動畫定義 */
 @keyframes fadeInUp {
   from {

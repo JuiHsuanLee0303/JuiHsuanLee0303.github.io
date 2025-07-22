@@ -107,67 +107,12 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { categories as categoriesData, portfolioProjects } from '../data'
 
-const categories = ref(['全部', 'Web 應用', 'AI 專案', '資料科學', '資安研究'])
+const categories = ref(categoriesData)
 const selectedCategory = ref('全部')
 
-const projects = ref([
-  {
-    id: 1,
-    title: '電商平台開發',
-    category: 'Web 應用',
-    image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80',
-    description: '全功能電商平台，包含購物車、付款系統、訂單管理等完整功能。',
-    detailedDescription: '此專案旨在建立一個現代化的電商解決方案，提供了從產品瀏覽、使用者認證、購物車管理到安全支付整合的完整流程。後端採用微服務架構，確保高可用性與擴展性。前端則專注於提供流暢且響應式的使用者體驗。',
-    technologies: ['Vue.js', 'Node.js', 'MongoDB', 'Stripe API', 'Docker', 'Redis'],
-    liveUrl: '#',
-    repoUrl: '#',
-  },
-  {
-    id: 2,
-    title: '任務管理系統',
-    category: 'Web 應用',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-    description: '團隊協作任務管理工具，支援即時通知、進度追蹤與檔案分享。',
-    detailedDescription: '一款高效的團隊協作工具，具備看板式任務管理、即時通訊、檔案共享和進度視覺化功能。透過 WebSocket 實現了即時更新，確保團隊成員間的資訊同步。',
-    technologies: ['React', 'Express', 'WebSocket', 'PostgreSQL', 'Tailwind CSS'],
-    liveUrl: '#',
-    repoUrl: '#',
-  },
-  {
-    id: 3,
-    title: 'AI 智能聊天機器人',
-    category: 'AI 專案',
-    image: 'https://images.unsplash.com/photo-1555963962-9f3c70669e23?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-    description: '基於大型語言模型的智能客服系統，支援多語言對話與情感分析。',
-    detailedDescription: '本專案利用 OpenAI GPT-4 模型，打造了一個能夠理解複雜語意、進行多輪對話並具備情感分析能力的智能客服機器人。系統可與現有客戶關係管理系統整合，自動化處理常見問題，大幅提升客戶服務效率。',
-    technologies: ['Python', 'FastAPI', 'OpenAI API', 'LangChain', 'Vector DB'],
-    liveUrl: '#',
-    repoUrl: '#',
-  },
-  {
-    id: 4,
-    title: '數據可視化儀表板',
-    category: '資料科學',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-    description: '企業級數據分析平台，提供即時數據監控與多維度報表生成。',
-    detailedDescription: '一個互動式的數據可視化儀表板，能將複雜的數據轉換為易於理解的圖表和報告。使用者可以自訂儀表板、進行數據鑽取分析，並設定預警閾值，以利於即時商業決策。',
-    technologies: ['D3.js', 'Vue.js', 'Python', 'Pandas', 'PostgreSQL'],
-    liveUrl: '#',
-    repoUrl: '#',
-  },
-  {
-    id: 5,
-    title: '自動化滲透測試工具',
-    category: '資安研究',
-    image: 'https://images.unsplash.com/photo-1599507511449-5a8b7a66b5c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-    description: '開發一款自動化工具，用於掃描網站漏洞並生成安全性報告。',
-    detailedDescription: '此工具整合了多種常見的 Web 安全掃描技術，如 SQL Injection, XSS, CSRF 檢測等。它能並行掃描多個目標，並產生詳細的 PDF 報告，其中包含漏洞描述、風險等級和修復建議，有效提升滲透測試的效率。',
-    technologies: ['Python', 'Scapy', 'OWASP ZAP API', 'Celery', 'RabbitMQ'],
-    liveUrl: null,
-    repoUrl: '#',
-  },
-])
+const projects = ref(portfolioProjects)
 
 const filteredProjects = computed(() => {
   if (selectedCategory.value === '全部') {

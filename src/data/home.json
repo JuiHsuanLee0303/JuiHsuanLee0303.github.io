@@ -1,0 +1,118 @@
+{
+  "typewriterTexts": [
+    "全端開發者",
+    "AI工程師",
+    "資安研究者",
+    "創新應用開發者",
+    "技術內容創作者",
+    "自動化工具開發者"
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "title": "前端開發",
+      "description": "精通現代前端技術，創造響應式且互動性強的使用者介面",
+      "gradient": "from-blue-500 to-cyan-500",
+      "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
+      "technologies": [
+        { "name": "HTML/CSS", "color": "blue" },
+        { "name": "JavaScript", "color": "blue" },
+        { "name": "Vue.js", "color": "blue" },
+        { "name": "TypeScript", "color": "blue" },
+        { "name": "Tailwind CSS", "color": "blue" }
+      ],
+      "skillLevels": [
+        { "name": "Vue.js", "level": 88 },
+        { "name": "TypeScript", "level": 85 },
+        { "name": "Tailwind CSS", "level": 80 }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "後端開發",
+      "description": "建構穩定可靠的伺服器端應用程式與API服務",
+      "gradient": "from-green-500 to-emerald-500",
+      "icon": "M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20Z",
+      "technologies": [
+        { "name": "Node.js", "color": "green" },
+        { "name": "Python", "color": "green" },
+        { "name": "Express", "color": "green" }
+      ],
+      "skillLevels": [
+        { "name": "Node.js", "level": 92 },
+        { "name": "Python", "level": 89 },
+        { "name": "Express", "level": 94 }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "人工智慧",
+      "description": "熟悉人工智慧技術，包括機器學習、深度學習、自然語言處理等",
+      "gradient": "from-purple-500 to-pink-500",
+      "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
+      "technologies": [
+        { "name": "Machine Learning", "color": "blue" },
+        { "name": "Deep Learning", "color": "blue" },
+        { "name": "Natural Language Processing", "color": "blue" },
+        { "name": "LLM", "color": "blue" },
+        { "name": "RAG", "color": "blue" }
+      ],
+      "skillLevels": [
+        { "name": "Machine Learning", "level": 85 },
+        { "name": "Deep Learning", "level": 80 },
+        { "name": "LLM", "level": 80 },
+        { "name": "RAG", "level": 85 }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "電商平台開發",
+      "description": "全功能電商平台，包含購物車、付款系統、訂單管理等完整功能",
+      "gradient": "from-blue-400 to-purple-500",
+      "technologies": [
+        { "name": "Vue.js", "color": "blue" },
+        { "name": "Node.js", "color": "green" },
+        { "name": "MongoDB", "color": "yellow" }
+      ],
+      "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+    },
+    {
+      "id": 2,
+      "title": "任務管理系統",
+      "description": "團隊協作任務管理工具，支援即時通知、進度追蹤與檔案分享",
+      "gradient": "from-green-400 to-blue-500",
+      "technologies": [
+        { "name": "React", "color": "blue" },
+        { "name": "Express", "color": "purple" },
+        { "name": "Redis", "color": "red" }
+      ],
+      "icon": "M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z"
+    },
+    {
+      "id": 3,
+      "title": "AI 智能聊天機器人",
+      "description": "基於大型語言模型的智能客服系統，支援多語言對話與情感分析",
+      "gradient": "from-purple-400 to-pink-500",
+      "technologies": [
+        { "name": "Python", "color": "blue" },
+        { "name": "FastAPI", "color": "green" },
+        { "name": "OpenAI", "color": "purple" }
+      ],
+      "icon": "M12,2C13.65,2 15,3.35 15,5C15,6.65 13.65,8 12,8C10.35,8 9,6.65 9,5C9,3.35 10.35,2 12,2M21,9V7L15,1V3H9V1L3,7V9H21M21,10H3V18H21V10Z"
+    },
+    {
+      "id": 4,
+      "title": "數據可視化儀表板",
+      "description": "企業級數據分析平台，提供即時數據監控與多維度報表生成",
+      "gradient": "from-cyan-400 to-blue-500",
+      "technologies": [
+        { "name": "D3.js", "color": "blue" },
+        { "name": "Python", "color": "yellow" },
+        { "name": "PostgreSQL", "color": "green" }
+      ],
+      "icon": "M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M4,5V19H20V5H4M6,7H18V9H6V7M6,11H14V13H6V11M6,15H16V17H6V15Z"
+    }
+  ]
+} 

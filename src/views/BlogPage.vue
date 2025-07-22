@@ -101,49 +101,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { blogPosts } from '../data'
 
-const posts = ref([
-  {
-    slug: 'mastering-vue-3-composition-api',
-    title: '精通 Vue 3 Composition API',
-    author: 'Jui-Hsuan Lee',
-    date: '2023年10月26日',
-    excerpt: '深入探討 Vue 3 的 Composition API 如何徹底改變我們的元件寫作方式，提供更強的類型推導、邏輯複用性與可維護性。',
-    tags: ['Vue.js', 'JavaScript', '前端開發'],
-  },
-  {
-    slug: 'building-a-restful-api-with-nodejs-and-fastify',
-    title: '使用 Node.js 與 Fastify 打造高效能 RESTful API',
-    author: 'Jui-Hsuan Lee',
-    date: '2023年10月15日',
-    excerpt: 'Fastify 以其卓越的性能和低開銷聞名。本篇文章將帶您一步步從零開始，使用 Fastify 建立一個結構清晰、速度飛快的 RESTful API 服務。',
-    tags: ['Node.js', 'Fastify', '後端開發'],
-  },
-  {
-    slug: 'introduction-to-large-language-models',
-    title: '大型語言模型（LLM）入門指南',
-    author: 'Jui-Hsuan Lee',
-    date: '2023年9月30日',
-    excerpt: '大型語言模型正在掀起 AI 領域的革命。本文將用淺顯易懂的方式介紹 LLM 的基本原理、應用場景以及如何透過 API 與之互動。',
-    tags: ['AI', 'LLM', '機器學習'],
-  },
-  {
-    slug: 'web-security-essentials-preventing-xss',
-    title: '網站安全基礎：如何防禦跨站腳本攻擊（XSS）',
-    author: 'Jui-Hsuan Lee',
-    date: '2023年9月12日',
-    excerpt: 'XSS 是最常見的網站漏洞之一。本文將詳細解析 XSS 的三種類型（儲存型、反射型、DOM 型）及其防禦策略，保護您的網站免於攻擊。',
-    tags: ['資安', 'Web Security', 'XSS'],
-  },
-  {
-    slug: 'ci-cd-with-github-actions',
-    title: '使用 GitHub Actions 實現自動化 CI/CD 流程',
-    author: 'Jui-Hsuan Lee',
-    date: '2023年8月28日',
-    excerpt: '自動化是現代軟體開發的核心。本教學將引導您設定 GitHub Actions，為您的專案建立一個完整的持續整合與持續部署（CI/CD）工作流程。',
-    tags: ['DevOps', 'CI/CD', 'GitHub'],
-  },
-]);
+const posts = ref(blogPosts)
 
 const currentPage = ref(1);
 const postsPerPage = ref(3);
