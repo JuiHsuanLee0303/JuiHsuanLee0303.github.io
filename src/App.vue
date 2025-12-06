@@ -2,7 +2,6 @@
 import { ref, onMounted, computed, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
-import ThreeBackground from './components/ThreeBackground.vue'
 import BootAnimation from './components/BootAnimation.vue'
 import ShutdownAnimation from './components/ShutdownAnimation.vue'
 
@@ -67,7 +66,6 @@ provide('shutdown', handleShutdown)
     
     <!-- 主內容（始終存在，動畫完成後顯示） -->
     <div v-if="showMainContent" class="h-screen bg-black flex flex-col overflow-hidden">
-      <ThreeBackground />
       <Navbar />
       <div 
         class="flex-1"

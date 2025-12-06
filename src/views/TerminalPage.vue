@@ -1,5 +1,11 @@
 <template>
-  <div class="h-full bg-black text-terminal-green font-mono overflow-hidden flex flex-col">
+  <div class="h-full bg-black text-terminal-green font-mono overflow-hidden flex flex-col relative">
+    <!-- 損毀動畫 -->
+    <CrashAnimation 
+      v-if="showCrashAnimation"
+      :on-complete="handleCrashComplete"
+    />
+    
     <div class="flex-1 container mx-auto px-4 py-6 flex flex-col min-h-0">
       <!-- 終端機標題 -->
       <div class="flex-shrink-0 mb-4 text-terminal-green/70 text-sm border-b border-terminal-green/30 pb-2">
@@ -11,11 +17,12 @@
         ref="outputContainer"
         class="flex-1 overflow-y-auto mb-4 space-y-2 terminal-output min-h-0"
       >
-        <div class="text-terminal-green/70 text-sm mb-4">
-          Welcome to Jui-Hsuan Lee's Interactive Terminal
-        </div>
-        <div class="text-terminal-green/70 text-sm mb-4">
-          Type 'help' to see available commands.
+        <div
+          v-for="(message, index) in terminalWelcomeMessages"
+          :key="index"
+          class="text-terminal-green/70 text-sm mb-4"
+        >
+          {{ message }}
         </div>
         
         <!-- 歷史輸出 -->
@@ -26,7 +33,7 @@
         >
           <!-- 命令提示符和輸入 -->
           <div class="flex items-start mb-1">
-            <span class="prompt-symbol mr-2">$</span>
+            <span class="prompt-symbol mr-2">{{ output.directory === '/' ? '$' : output.directory + ' $' }}</span>
             <span class="text-terminal-green">{{ output.command }}</span>
           </div>
           <!-- 命令輸出 -->
@@ -47,7 +54,7 @@
 
       <!-- 輸入區域 -->
       <div class="flex-shrink-0 flex items-center border-t border-terminal-green/30 pt-2">
-        <span class="prompt-symbol mr-2">$</span>
+        <span class="prompt-symbol mr-2">{{ currentDirectory === '/' ? '$' : currentDirectory + ' $' }}</span>
         <input
           ref="inputRef"
           v-model="currentInput"
@@ -71,8 +78,17 @@ import {
   skills, 
   conferences, 
   publications, 
-  experiences 
+  experiences,
+  terminalWelcomeMessages,
+  terminalHelpCommand,
+  terminalCommandOutputs,
+  terminalFileContents,
+  terminalLsOutputs,
+  terminalErrorMessages,
+  personalInfo,
+  quickLinks
 } from '../data'
+import CrashAnimation from '../components/CrashAnimation.vue'
 
 const router = useRouter()
 const shutdown = inject('shutdown')
@@ -82,6 +98,8 @@ const currentInput = ref('')
 const outputHistory = ref([])
 const commandHistory = ref([])
 const historyIndex = ref(-1)
+const currentDirectory = ref('/')
+const showCrashAnimation = ref(false)
 
 // 自動滾動到底部
 const scrollToBottom = () => {
@@ -110,44 +128,73 @@ const executeCommand = () => {
 
   // 解析命令
   const [cmd, ...args] = command.split(' ')
+  
+  // 檢查危險命令 rm -rf /
+  const commandLower = command.toLowerCase()
+        if ((cmd.toLowerCase() === 'rm' && args.includes('-rf') && args.includes('/')) ||
+      commandLower === 'rm -rf /' ||
+      commandLower.includes('rm -rf /')) {
+    // 顯示警告訊息
+    addOutput(command, terminalErrorMessages.rmDangerous, '')
+    currentInput.value = ''
+    scrollToBottom()
+    
+    // 延遲觸發損毀動畫
+    setTimeout(() => {
+      showCrashAnimation.value = true
+    }, 1000)
+    return
+  }
   let result = ''
   let error = ''
 
   try {
     switch (cmd.toLowerCase()) {
       case 'whoami':
-        result = `Jui-Hsuan Lee
-學術研究者 | AI工程師 | 資安研究者`
+        result = terminalCommandOutputs.whoami.template
+          .replace('{publicationsCount}', publications.length)
+          .replace('{conferencesCount}', conferences.length)
+          .replace('{experiencesCount}', experiences.length)
+        break
+
+      case 'pwd':
+        result = currentDirectory.value
+        break
+
+      case 'cd':
+        const cdResult = handleCdCommand(args[0] || '')
+        if (cdResult.error) {
+          error = cdResult.error
+        } else {
+          currentDirectory.value = cdResult.directory
+          // cd 命令不顯示輸出，只改變目錄
+          currentInput.value = ''
+          return
+        }
         break
 
       case 'cat':
         if (!args[0]) {
-          error = 'cat: missing file operand'
+          error = terminalErrorMessages.catMissingOperand
         } else {
-          result = handleCatCommand(args[0])
+          const filePath = resolvePath(args[0])
+          result = handleCatCommand(filePath)
           if (!result) {
-            error = `cat: ${args[0]}: No such file or directory`
+            error = terminalErrorMessages.catNoSuchFile.replace('{file}', args[0])
           }
         }
         break
 
       case 'ls':
-        result = handleLsCommand(args[0] || '')
+        const lsPath = args[0] || currentDirectory.value
+        result = handleLsCommand(lsPath)
         break
 
       case 'help':
-        result = `Available commands:
-  whoami              - Display user information
-  cat <file>          - Display file contents
-                        Files: about.txt, research.txt, experience.txt
-  ls [directory]      - List directory contents
-                        Directories: skills/, conferences/, publications/, experiences/
-  ./quick_links.sh    - Show quick links
-  shutdown            - Shutdown the system
-  poweroff            - Power off the system
-  halt                - Halt the system
-  clear               - Clear terminal
-  help                - Show this help message`
+        result = terminalHelpCommand.title + '\n' +
+          terminalHelpCommand.commands.map(cmd => 
+            `  ${cmd.command.padEnd(20)} - ${cmd.description}`
+          ).join('\n')
         break
 
       case 'clear':
@@ -158,7 +205,7 @@ const executeCommand = () => {
       case 'shutdown':
       case 'poweroff':
       case 'halt':
-        result = 'Initiating system shutdown...'
+        result = terminalCommandOutputs.shutdown
         addOutput(command, result, error)
         currentInput.value = ''
         scrollToBottom()
@@ -170,18 +217,70 @@ const executeCommand = () => {
         }, 1000)
         return
 
+      // 彩蛋命令
+      case 'coffee':
+        result = terminalCommandOutputs.coffee
+        break
+
+      case 'paper':
+        const recentPubs = publications.slice(0, 3).map((pub, idx) => 
+          `  ${idx + 1}. ${pub.title} (${pub.year})`
+        ).join('\n')
+        result = terminalCommandOutputs.paper.template
+          .replace('{publicationsCount}', publications.length)
+          .replace('{conferencesCount}', conferences.length)
+          .replace('{recentPublications}', recentPubs)
+        break
+
+      case 'rag':
+        result = terminalCommandOutputs.rag
+        break
+
+      case 'llm':
+        result = terminalCommandOutputs.llm
+        break
+
+      case 'tanet':
+        const tanetConfs = conferences.filter(c => c.title.includes('TANET')).map((conf, idx) => 
+          `${idx + 1}. ${conf.title}\n   Date: ${conf.date}\n   Location: ${conf.location}\n   Paper: ${conf.paperTitle}\n   Type: ${conf.presentationType}`
+        ).join('\n\n')
+        result = terminalCommandOutputs.tanet.template
+          .replace('{tanetConferences}', tanetConfs)
+          .replace('{tanetCount}', conferences.filter(c => c.title.includes('TANET')).length)
+        break
+
+      case 'research':
+        result = terminalCommandOutputs.research.template
+          .replace('{publicationsCount}', publications.length)
+          .replace('{conferencesCount}', conferences.length)
+        break
+
+      case 'easter-egg':
+      case 'egg':
+        result = terminalCommandOutputs['easter-egg']
+        break
+
+      case 'howdoyouturnthison':
+        result = terminalCommandOutputs.howdoyouturnthison
+        break
+
       default:
         if (command.startsWith('./')) {
           if (command === './quick_links.sh') {
-            result = `[1] 學術研究 - /research
-[2] 工作經歷 - /experience
-[3] 聯絡我 - mailto:juihsuanlee0303@gmail.com
-[4] GitHub - https://github.com`
+            result = quickLinks.map((link, idx) => {
+              const path = link.type === 'mailto' ? `mailto:${personalInfo.email}` : 
+                          link.type === 'external' ? personalInfo.github : link.path
+              return `[${idx + 1}] ${link.label} - ${path}`
+            }).join('\n')
           } else {
-            error = `bash: ${command}: No such file or directory`
+            error = terminalErrorMessages.bashNoSuchFile.replace('{command}', command)
           }
         } else {
-          error = `bash: ${cmd}: command not found`
+          // 有趣的錯誤訊息
+          const funnyMessages = terminalErrorMessages.commandNotFound.map(msg => 
+            msg.replace('{cmd}', cmd)
+          )
+          error = funnyMessages[Math.floor(Math.random() * funnyMessages.length)]
         }
     }
   } catch (e) {
@@ -198,71 +297,189 @@ const addOutput = (command, result, error) => {
     command,
     result,
     error,
+    directory: currentDirectory.value,
     timestamp: new Date()
   })
 }
 
-const handleCatCommand = (filename) => {
-  switch (filename) {
-    case 'about.txt':
-      return `> 歡迎來到我的學術研究網站
+// 解析路徑（支援相對路徑和絕對路徑）
+const resolvePath = (path) => {
+  if (path.startsWith('/')) {
+    // 絕對路徑
+    return path
+  } else {
+    // 相對路徑
+    if (currentDirectory.value === '/') {
+      return '/' + path
+    } else {
+      return currentDirectory.value + '/' + path
+    }
+  }
+}
 
-> 我專注於人工智慧、自然語言處理、資訊安全等領域的研究
+// 標準化路徑（移除多餘的斜線和處理 ..）
+const normalizePath = (path) => {
+  // 移除末尾的斜線（除了根目錄）
+  let normalized = path.replace(/\/+$/, '') || '/'
+  
+  // 處理 .. 和 .
+  const parts = normalized.split('/').filter(p => p !== '' && p !== '.')
+  const result = []
+  
+  for (const part of parts) {
+    if (part === '..') {
+      if (result.length > 0) {
+        result.pop()
+      }
+    } else {
+      result.push(part)
+    }
+  }
+  
+  return '/' + result.join('/')
+}
 
-> 致力於將理論研究與實際應用相結合，推動技術創新`
+const handleCdCommand = (target) => {
+  if (!target || target === '~') {
+    // cd 或 cd ~ 回到根目錄
+    return { directory: '/', error: null }
+  }
+  
+  if (target === '-') {
+    // cd - 回到上一個目錄（簡化處理，回到根目錄）
+    return { directory: '/', error: null }
+  }
+  
+  // 解析路徑
+  let targetPath = target.startsWith('/') ? target : currentDirectory.value + '/' + target
+  targetPath = normalizePath(targetPath)
+  
+  // 檢查目錄是否存在
+  const validDirectories = ['/', '/skills', '/conferences', '/publications', '/experiences']
+  
+  if (validDirectories.includes(targetPath)) {
+    return { directory: targetPath, error: null }
+  } else {
+    return { directory: currentDirectory.value, error: terminalErrorMessages.cdNoSuchDirectory.replace('{dir}', target) }
+  }
+}
 
-    case 'research.txt':
-      return `學術研究
+const handleCatCommand = (filePath) => {
+  // 標準化路徑
+  const normalizedPath = normalizePath(filePath)
+  
+  // 提取文件名
+  const filename = normalizedPath.split('/').pop()
+  
+  switch (normalizedPath) {
+    case '/about.txt':
+    case '/README.txt':
+      return terminalFileContents['about.txt']
 
-研討會參與與論文發表記錄
+    case '/research.txt':
+      return terminalFileContents['research.txt'].template
+        .replace('{conferencesCount}', conferences.length)
+        .replace('{publicationsCount}', publications.length)
 
-研討會數量: ${conferences.length}
-論文數量: ${publications.length}
-
-使用 'ls conferences/' 查看研討會列表
-使用 'ls publications/' 查看論文列表`
-
-    case 'experience.txt':
-      return `工作經歷
-
-專業工作經驗與職責
-
-工作經歷數量: ${experiences.length}
-
-使用 'ls experiences/' 查看工作經歷列表`
+    case '/experience.txt':
+      return terminalFileContents['experience.txt'].template
+        .replace('{experiencesCount}', experiences.length)
 
     default:
+      // 檢查是否在子目錄中
+      if (normalizedPath.startsWith('/skills/')) {
+        const skillName = normalizedPath.replace('/skills/', '')
+        const skill = skills.find(s => s.title === skillName)
+        if (skill) {
+          return `技能: ${skill.title}
+
+${skill.description}
+
+技術棧:
+${skill.technologies.map(t => `  - ${t.name}`).join('\n')}
+
+技能等級:
+${skill.skillLevels.map(l => `  ${l.name}: ${l.level}%`).join('\n')}`
+        }
+      } else if (normalizedPath.startsWith('/conferences/')) {
+        const confName = normalizedPath.replace('/conferences/', '')
+        const conf = conferences.find(c => c.title === confName)
+        if (conf) {
+          return `研討會: ${conf.title}
+
+日期: ${conf.date}
+地點: ${conf.location}
+類型: ${conf.type}
+報告形式: ${conf.presentationType}
+
+論文標題: ${conf.paperTitle}
+
+作者: ${conf.authors.join(', ')}`
+        }
+      } else if (normalizedPath.startsWith('/publications/')) {
+        const pubName = normalizedPath.replace('/publications/', '')
+        const pub = publications.find(p => p.title === pubName)
+        if (pub) {
+          return `論文: ${pub.title}
+
+作者: ${pub.authors.join(', ')}
+年份: ${pub.year}
+類型: ${pub.type}
+
+${pub.journal ? `期刊: ${pub.journal}` : ''}
+${pub.conference ? `會議: ${pub.conference}` : ''}
+
+關鍵字: ${pub.keywords.join(', ')}`
+        }
+      } else if (normalizedPath.startsWith('/experiences/')) {
+        const expName = normalizedPath.replace('/experiences/', '')
+        const exp = experiences.find(e => `${e.position}@${e.company}` === expName)
+        if (exp) {
+          return `工作經歷: ${exp.position}
+
+公司: ${exp.company}
+地點: ${exp.location}
+期間: ${exp.startDate}${exp.isCurrent ? ' - 仍在職' : ` - ${exp.endDate}`}
+產業: ${exp.industry}
+公司規模: ${exp.companySize}
+
+職責:
+${exp.responsibilities.map(r => `  - ${r}`).join('\n')}
+
+技術:
+${exp.technologies.map(t => `  - ${t}`).join('\n')}`
+        }
+      }
       return null
   }
 }
 
 const handleLsCommand = (directory) => {
-  if (!directory) {
-    return `about.txt
-research.txt
-experience.txt
-skills/
-conferences/
-publications/
-experiences/
-quick_links.sh`
-  }
+  // 解析路徑
+  let targetPath = directory.startsWith('/') ? directory : currentDirectory.value + '/' + directory
+  targetPath = normalizePath(targetPath)
+  
+  // 移除末尾斜線
+  const cleanPath = targetPath.replace(/\/$/, '') || '/'
+  
+  switch (cleanPath) {
+    case '/':
+      return terminalLsOutputs['/']
 
-  switch (directory.replace(/\/$/, '')) {
-    case 'skills':
+    case '/skills':
       return skills.map(skill => skill.title).join('\n')
 
-    case 'conferences':
+    case '/conferences':
       return conferences.map(conf => `${conf.title} (${conf.date})`).join('\n')
 
-    case 'publications':
+    case '/publications':
       return publications.map(pub => `${pub.title} (${pub.year})`).join('\n')
 
-    case 'experiences':
-      return experiences.map(exp => `${exp.position} @ ${exp.company} (${exp.startDate}${exp.isCurrent ? '-仍在職' : `-${exp.endDate}`})`).join('\n')
+    case '/experiences':
+      return experiences.map(exp => `${exp.position}@${exp.company} (${exp.startDate}${exp.isCurrent ? '-仍在職' : `-${exp.endDate}`})`).join('\n')
 
     default:
-      return `ls: cannot access '${directory}': No such file or directory`
+      return terminalErrorMessages.lsCannotAccess.replace('{dir}', directory)
   }
 }
 
@@ -301,9 +518,16 @@ watch(currentInput, () => {
   }
 })
 
+const handleCrashComplete = () => {
+  // 損毀動畫完成後，停留在藍屏狀態
+  // 用戶需要手動重新整理頁面才能恢復
+}
+
 onMounted(() => {
   // 顯示歡迎訊息
-  addOutput('', 'Welcome to Jui-Hsuan Lee\'s Interactive Terminal\nType \'help\' to see available commands.', '')
+  const readmeContent = terminalFileContents['README.txt']
+  const welcomeMsg = readmeContent + '\n\n' + terminalWelcomeMessages.join('\n')
+  addOutput('cat README.txt', welcomeMsg, '')
   
   // 聚焦輸入框
   nextTick(() => {

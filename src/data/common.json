@@ -1,0 +1,42 @@
+{
+  "personalInfo": {
+    "name": "Jui-Hsuan Lee",
+    "chineseName": "李睿軒",
+    "title": "全端工程師 | AI 工程師 | AI 應用顧問",
+    "email": "juihsuanlee0303@gmail.com",
+    "github": "https://github.com"
+  },
+  "asciiArt": "██╗    ██╗ █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗\n██║    ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║\n██║ █╗ ██║███████║██████╔╝██████╔╝█████╗  ██╔██╗ ██║\n██║███╗██║██╔══██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║\n╚███╔███╔╝██║  ██║██║  ██║██║  ██║███████╗██║ ╚████║\n ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝",
+  "aboutText": [
+    "> 歡迎來到我的個人網站",
+    "> 我專注於人工智慧、自然語言處理、資訊安全等領域的研究",
+    "> 致力於 LLM 研究與開發 AI 應用，推動技術創新"
+  ],
+  "quickLinks": [
+    {
+      "id": 1,
+      "label": "學術研究",
+      "type": "router",
+      "path": "/research"
+    },
+    {
+      "id": 2,
+      "label": "工作經歷",
+      "type": "router",
+      "path": "/experience"
+    },
+    {
+      "id": 3,
+      "label": "聯絡我",
+      "type": "mailto",
+      "path": "mailto:juihsuanlee0303@gmail.com"
+    },
+    {
+      "id": 4,
+      "label": "GitHub",
+      "type": "external",
+      "path": "https://github.com"
+    }
+  ]
+}
+

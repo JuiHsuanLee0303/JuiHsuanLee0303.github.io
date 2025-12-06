@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-screen bg-black text-terminal-green font-mono overflow-hidden">
-    <!-- 3D視覺化元素 -->
-    <div class="fixed top-20 right-10 w-64 h-64 z-0 opacity-30 hidden lg:block">
-      <Interactive3D type="default" :autoRotate="true" :rotationSpeed="0.01" />
-    </div>
-    
     <div class="container mx-auto px-6 py-12 relative z-10">
       <!-- 頁面標題 -->
       <header class="mb-12">
@@ -43,7 +38,7 @@
                   {{ experience.company }}
                 </div>
                 <div class="text-terminal-green/60 text-sm">
-                  {{ experience.location }} · {{ experience.industry }} · {{ experience.companySize }}
+                  {{ experience.location }}
                 </div>
               </div>
               <div class="text-right ml-4">
@@ -97,7 +92,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { experiences } from '../data'
-import Interactive3D from '../components/Interactive3D.vue'
 
 const isTyping = ref(false)
 

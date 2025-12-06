@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-screen bg-black text-terminal-green font-mono overflow-hidden">
-    <!-- 3D視覺化元素 -->
-    <div class="fixed top-20 right-10 w-64 h-64 z-0 opacity-30 hidden lg:block">
-      <Interactive3D type="paper" :autoRotate="true" :rotationSpeed="0.01" />
-    </div>
-    
     <div class="container mx-auto px-6 py-12 relative z-10">
       <!-- 頁面標題 -->
       <header class="mb-12">
@@ -209,21 +204,14 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { conferences, publications } from '../data'
-import Interactive3D from '../components/Interactive3D.vue'
+import { conferences, publications, researchFilters } from '../data'
 
 const isTyping = ref(false)
 const activeFilter = ref('all')
 const expandedConferences = ref({})
 const expandedPublications = ref({})
 
-const filters = [
-  { label: '全部', value: 'all' },
-  { label: '2025', value: '2025' },
-  { label: '2024', value: '2024' },
-  { label: '會議論文', value: 'conference' },
-  { label: '碩士學位論文', value: 'thesis' }
-]
+const filters = researchFilters
 
 const filteredConferences = computed(() => {
   if (activeFilter.value === 'all') {

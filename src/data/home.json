@@ -1,30 +1,30 @@
 {
   "typewriterTexts": [
-    "AI研究員",
-    "自然語言處理專家",
-    "資安研究者",
-    "機器學習工程師",
-    "學術研究者",
-    "深度學習實踐者"
+    "AI 應用顧問",
+    "AI 工程師",
+    "全端工程師",
+    "水肺潛水員"
   ],
   "skills": [
     {
       "id": 1,
       "title": "前端開發",
-      "description": "精通現代前端技術，創造響應式且互動性強的使用者介面",
+      "description": "精通現代前端技術，創造響應式的使用者介面",
       "gradient": "from-blue-500 to-cyan-500",
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
       "technologies": [
-        { "name": "HTML/CSS", "color": "blue" },
-        { "name": "JavaScript", "color": "blue" },
-        { "name": "Vue.js", "color": "blue" },
-        { "name": "TypeScript", "color": "blue" },
-        { "name": "Tailwind CSS", "color": "blue" }
+        { "name": "HTML/CSS", "color": "blue", "experience": "3年以上經驗，熟悉響應式設計與現代CSS特性" },
+        { "name": "JavaScript", "color": "blue", "experience": "3年以上經驗，精通ES6+、非同步程式設計與模組化開發" },
+        { "name": "Vue.js", "color": "blue", "experience": "2年以上經驗，熟悉Vue 2/3、Composition API與狀態管理" },
+        { "name": "TypeScript", "color": "blue", "experience": "2年以上經驗，使用TypeScript開發大型專案，熟悉型別系統" },
+        { "name": "Tailwind CSS", "color": "blue", "experience": "2年以上經驗，使用Tailwind CSS建構現代化UI介面" },
+        { "name": "React", "color": "blue", "experience": "1年經驗，熟悉Hooks、Context API與React生態系" }
       ],
       "skillLevels": [
-        { "name": "Vue.js", "level": 88 },
-        { "name": "TypeScript", "level": 85 },
-        { "name": "Tailwind CSS", "level": 80 }
+        { "name": "Vue.js", "level": 90, "experience": "主導多個 Vue 專案開發，包括此個人網站與企業級應用" },
+        { "name": "TypeScript", "level": 80, "experience": "在多個專案中採用TypeScript提升程式碼品質與維護性" },
+        { "name": "Tailwind CSS", "level": 90, "experience": "使用Tailwind CSS快速建構響應式與現代化的使用者介面" },
+        { "name": "React", "level": 65, "experience": "參與React專案開發，熟悉函數式元件與Hooks模式" }
       ]
     },
     {
@@ -34,34 +34,38 @@
       "gradient": "from-green-500 to-emerald-500",
       "icon": "M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20Z",
       "technologies": [
-        { "name": "Node.js", "color": "green" },
-        { "name": "Python", "color": "green" },
-        { "name": "Express", "color": "green" }
+        { "name": "Node.js", "color": "green", "experience": "3年以上經驗，建構高效能後端服務與API" },
+        { "name": "Python", "color": "green", "experience": "8年以上經驗，用於資料處理、AI開發與後端服務" },
+        { "name": "Express", "color": "green", "experience": "3年以上經驗，使用Express建構RESTful API與微服務架構" },
+        { "name": "FastAPI", "color": "green", "experience": "3年經驗，使用FastAPI開發高效能AI服務與API" },
+        { "name": "Django", "color": "green", "experience": "2年經驗，使用Django開發全端Web應用與管理系統" }
       ],
       "skillLevels": [
-        { "name": "Node.js", "level": 92 },
-        { "name": "Python", "level": 89 },
-        { "name": "Express", "level": 94 }
+        { "name": "Node.js", "level": 95, "experience": "主導多個Node.js後端專案，建構可擴展的API服務" },
+        { "name": "Python", "level": 90, "experience": "廣泛使用Python進行AI研究、資料分析與後端開發" },
+        { "name": "Express", "level": 95, "experience": "使用Express建構企業級後端服務，熟悉中介軟體與路由設計" },
+        { "name": "FastAPI", "level": 85, "experience": "使用FastAPI開發AI相關服務，熟悉非同步處理與API文件自動生成" },
+        { "name": "Django", "level": 75, "experience": "使用Django開發管理系統與全端應用，熟悉ORM與模板系統" }
       ]
     },
     {
       "id": 3,
       "title": "人工智慧",
-      "description": "熟悉人工智慧技術，包括機器學習、深度學習、自然語言處理等",
+      "description": "熟悉人工智慧技術，包括大型語言模型、檢索增強生成、微調等",
       "gradient": "from-purple-500 to-pink-500",
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
       "technologies": [
-        { "name": "Machine Learning", "color": "blue" },
-        { "name": "Deep Learning", "color": "blue" },
-        { "name": "Natural Language Processing", "color": "blue" },
-        { "name": "LLM", "color": "blue" },
-        { "name": "RAG", "color": "blue" }
+        { "name": "Machine Learning", "color": "blue", "experience": "3年以上經驗，熟悉監督式與非監督式學習演算法" },
+        { "name": "Deep Learning", "color": "blue", "experience": "2年以上經驗，使用TensorFlow與PyTorch開發深度學習模型" },
+        { "name": "Large Language Models", "color": "blue", "experience": "深入研究大型語言模型，包括GPT、BERT等模型的應用與微調" },
+        { "name": "Retrieval-Augmented Generation", "color": "blue", "experience": "實作RAG系統，結合向量資料庫與LLM提升回答準確性" },
+        { "name": "Model Context Protocol", "color": "blue", "experience": "熟悉Model Context Protocol，整合AI模型與外部工具" }
       ],
       "skillLevels": [
-        { "name": "Machine Learning", "level": 85 },
-        { "name": "Deep Learning", "level": 80 },
-        { "name": "LLM", "level": 80 },
-        { "name": "RAG", "level": 85 }
+        { "name": "Large Language Models", "level": 90, "experience": "主導多個LLM應用專案，包括資安輔助系統與問答系統開發" },
+        { "name": "Retrieval-Augmented Generation", "level": 85, "experience": "實作RAG架構，結合檢索技術與生成模型提升系統效能" },
+        { "name": "Model Context Protocol", "level": 80, "experience": "熟悉Model Context Protocol，整合AI模型與外部工具" },
+        { "name": "Fine-tuning", "level": 90, "experience": "進行多個LLM微調專案，包括指令微調與領域適配" }
       ]
     }
   ],
@@ -69,7 +73,7 @@
     {
       "id": 1,
       "title": "檢索增強生成與微調大語言模型於資安管理應用",
-      "description": "結合RAG技術與微調LLM，開發個人化資安輔助系統，提供情境感知的安全建議與指導",
+      "description": "結合RAG技術與微調LLM，開發個人化資安輔助系統，提供合規檢查、風險評估與建議",
       "gradient": "from-blue-400 to-purple-500",
       "technologies": [
         { "name": "RAG", "color": "blue" },
@@ -81,7 +85,7 @@
     {
       "id": 2,
       "title": "結合生成式AI與領域專家協同流程",
-      "description": "建立高品質LLM指令微調資料集的協同方法，結合GenAI與專家審核機制，資料通過率提升至96.3%",
+      "description": "結合GenAI與專家審核機制建立高品質LLM指令微調資料集的協同方法",
       "gradient": "from-green-400 to-blue-500",
       "technologies": [
         { "name": "Generative AI", "color": "blue" },
@@ -101,18 +105,6 @@
         { "name": "Trend Analysis", "color": "purple" }
       ],
       "icon": "M12,2C13.65,2 15,3.35 15,5C15,6.65 13.65,8 12,8C10.35,8 9,6.65 9,5C9,3.35 10.35,2 12,2M21,9V7L15,1V3H9V1L3,7V9H21M21,10H3V18H21V10Z"
-    },
-    {
-      "id": 4,
-      "title": "個人化資安輔助AI代理系統",
-      "description": "基於RAG與微調LLM設計的AI代理，提供個人化資安協助，適應不同用戶需求與技術背景",
-      "gradient": "from-cyan-400 to-blue-500",
-      "technologies": [
-        { "name": "AI Agent", "color": "blue" },
-        { "name": "RAG", "color": "yellow" },
-        { "name": "Personalization", "color": "green" }
-      ],
-      "icon": "M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M4,5V19H20V5H4M6,7H18V9H6V7M6,11H14V13H6V11M6,15H16V17H6V15Z"
     }
   ]
 } 

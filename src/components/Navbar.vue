@@ -4,12 +4,12 @@
             <!-- Logo/Brand Name -->
             <div class="flex items-center">
                 <router-link to="/" class="terminal-link">
-                    <div class="terminal-prompt">
+                    <div class="terminal-prompt text-xs">
                         <span class="prompt-symbol">$</span>
                         <span class="text-terminal-green">whoami</span>
                         <span class="cursor-blink ml-1">_</span>
                     </div>
-                    <div class="text-terminal-green text-sm mt-1 ml-6">
+                    <div class="text-terminal-green text-xl mt-1 ml-6">
                         Jui-Hsuan Lee
                     </div>
                 </router-link>

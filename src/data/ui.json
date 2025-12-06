@@ -1,0 +1,55 @@
+{
+  "researchFilters": [
+    { "label": "全部", "value": "all" },
+    { "label": "2025", "value": "2025" },
+    { "label": "2024", "value": "2024" },
+    { "label": "會議論文", "value": "conference" },
+    { "label": "碩士學位論文", "value": "thesis" }
+  ],
+  "bootAnimation": {
+    "bios": {
+      "version": "BIOS Version 2.0.0",
+      "copyright": "Copyright (C) 2024 Jui-Hsuan Lee",
+      "messages": [
+        "Initializing system...",
+        "Checking RAM... OK",
+        "Checking CPU... OK",
+        "Checking storage... OK",
+        "Loading boot sector...",
+        "Detecting AI research papers... Found {paperCount} papers",
+        "Loading cybersecurity knowledge base... OK"
+      ]
+    },
+    "system": {
+      "bootCompleted": "System boot completed.",
+      "startingServices": "Starting services...",
+      "services": [
+        "[OK] Network service",
+        "[OK] File system",
+        "[OK] Display service",
+        "[OK] RAG (Retrieval-Augmented Generation) module",
+        "[OK] LLM fine-tuning service",
+        "[OK] Cybersecurity AI agent"
+      ]
+    },
+    "welcome": {
+      "title": "Welcome to Jui-Hsuan Lee's Website",
+      "subtitle": "System ready. Initializing interface..."
+    },
+    "command": {
+      "command": "./start.sh",
+      "outputLines": [
+        "Initializing components...",
+        "Loading research papers database...",
+        "Connecting to AI services...",
+        "Rendering interface...",
+        "Preparing cybersecurity knowledge base..."
+      ]
+    },
+    "completion": {
+      "message": "✓ System initialization complete",
+      "redirect": "Redirecting to homepage..."
+    }
+  }
+}
+

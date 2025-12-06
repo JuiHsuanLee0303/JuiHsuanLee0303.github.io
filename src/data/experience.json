@@ -4,12 +4,10 @@
       "id": 1,
       "company": "薩摩亞商安盛資訊股份有限公司台灣分公司",
       "position": "研發管理AI應用顧問",
-      "location": "台北市中山區",
+      "location": "台北市 中山區",
       "startDate": "2026-01",
       "endDate": null,
       "isCurrent": true,
-      "industry": "電腦軟體服務業",
-      "companySize": "1~30人",
       "responsibilities": [
         "開發 Agile PLM MCP Server：開發 Agile PLM MCP Server，實現以自然語言與 Agile PLM 互動的 AI 系統。",
         "建置 AI 系統：主導端到端 AI 解決方案的開發，涵蓋檢索增強生成（RAG）架構、自然語言處理（NLP）/大型語言模型（LLM）應用，以及系統部署，支援實際商業需求。",
@@ -29,12 +27,10 @@
       "id": 2,
       "company": "薩摩亞商安盛資訊股份有限公司台灣分公司",
       "position": "AI實習生",
-      "location": "台北市中山區",
+      "location": "台北市 中山區",
       "startDate": "2025-05",
       "endDate": "2025-12",
       "isCurrent": false,
-      "industry": "電腦軟體服務業",
-      "companySize": "1~30人",
       "responsibilities": [
         "開發 Model Context Protocol (MCP) Server：設計與實作 MCP Server，實現大型語言模型與企業系統的整合，包括 JWT 驗證機制、檢索管線設計及向量資料庫串接",
         "建置 AI 系統：主導端到端 AI 解決方案的開發，涵蓋檢索增強生成（RAG）架構、自然語言處理（NLP）/大型語言模型（LLM）應用，以及系統部署，支援實際商業需求",
@@ -48,6 +44,25 @@
         "NLP",
         "JWT",
         "Vector Database"
+      ]
+    },
+    {
+      "id": 3,
+      "company": "國立臺北商業大學資訊與網路中心",
+      "position": "程式設計師",
+      "location": "台北市 中正區",
+      "startDate": "2024-07",
+      "endDate": "2026-01",
+      "isCurrent": false,
+      "responsibilities": [
+        "開發並維護學雜費減免與弱勢助學金系統：開發並維護學雜費減免與弱勢助學金系統，協助學生簡化申請流程以及簡化承辦人員作業。"
+      ],
+      "technologies": [
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "HTML/CSS",
+        "JavaScript"
       ]
     }
   ]

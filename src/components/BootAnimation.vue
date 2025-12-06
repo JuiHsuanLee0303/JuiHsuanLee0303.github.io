@@ -7,28 +7,37 @@
       <div class="w-full max-w-4xl px-6 py-8">
         <!-- BIOS 開機訊息 -->
         <div v-if="stage >= 1" class="space-y-1 text-sm">
-          <div class="text-terminal-green/80">BIOS Version 2.0.0</div>
-          <div class="text-terminal-green/60">Copyright (C) 2024</div>
-          <div class="text-terminal-green/60 mt-4">Initializing system...</div>
-          <div v-if="stage >= 2" class="text-terminal-green/60">Checking RAM... OK</div>
-          <div v-if="stage >= 2" class="text-terminal-green/60">Checking CPU... OK</div>
-          <div v-if="stage >= 2" class="text-terminal-green/60">Checking storage... OK</div>
-          <div v-if="stage >= 2" class="text-terminal-green/60">Loading boot sector...</div>
+          <div class="text-terminal-green/80">{{ bootAnimationData.bios.version }}</div>
+          <div class="text-terminal-green/60">{{ bootAnimationData.bios.copyright }}</div>
+          <div
+            v-for="(message, index) in biosMessages"
+            :key="index"
+            v-if="stage >= 2 || index === 0"
+            class="text-terminal-green/60"
+            :class="{ 'mt-4': index === 0 }"
+          >
+            {{ message }}
+          </div>
         </div>
 
         <!-- 系統載入訊息 -->
         <div v-if="stage >= 3" class="mt-6 space-y-1 text-sm">
-          <div class="text-terminal-green/70">System boot completed.</div>
-          <div class="text-terminal-green/70">Starting services...</div>
-          <div v-if="stage >= 4" class="text-terminal-green/60">[OK] Network service</div>
-          <div v-if="stage >= 4" class="text-terminal-green/60">[OK] File system</div>
-          <div v-if="stage >= 4" class="text-terminal-green/60">[OK] Display service</div>
+          <div class="text-terminal-green/70">{{ bootAnimationData.system.bootCompleted }}</div>
+          <div class="text-terminal-green/70">{{ bootAnimationData.system.startingServices }}</div>
+          <div
+            v-for="(service, index) in bootAnimationData.system.services"
+            :key="index"
+            v-if="stage >= 4"
+            class="text-terminal-green/60"
+          >
+            {{ service }}
+          </div>
         </div>
 
         <!-- 歡迎字樣 -->
         <div v-if="stage >= 5" class="mt-8">
-          <div class="text-terminal-green text-lg mb-2">Welcome to Jui-Hsuan Lee's Website</div>
-          <div class="text-terminal-green/70 text-sm">System ready. Initializing interface...</div>
+          <div class="text-terminal-green text-lg mb-2">{{ bootAnimationData.welcome.title }}</div>
+          <div class="text-terminal-green/70 text-sm">{{ bootAnimationData.welcome.subtitle }}</div>
         </div>
 
         <!-- 自動輸入指令 -->
@@ -64,8 +73,8 @@
 
         <!-- 完成訊息 -->
         <div v-if="stage >= 8" class="mt-6 text-terminal-green/80 text-sm">
-          <div>✓ System initialization complete</div>
-          <div class="mt-2 text-terminal-green/60">Redirecting to homepage...</div>
+          <div>{{ bootAnimationData.completion.message }}</div>
+          <div class="mt-2 text-terminal-green/60">{{ bootAnimationData.completion.redirect }}</div>
         </div>
       </div>
     </div>
@@ -73,7 +82,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { publications, bootAnimationData } from '../data'
 
 const props = defineProps({
   onComplete: {
@@ -90,13 +100,18 @@ const commandOutput = ref([])
 const showProgress = ref(false)
 const progress = ref(0)
 
-const fullCommand = './start.sh'
-const outputLines = [
-  'Initializing components...',
-  'Loading assets...',
-  'Connecting to services...',
-  'Rendering interface...'
-]
+// 讓模板可以訪問 publications
+const paperCount = publications.length
+
+// 動態生成 BIOS 訊息
+const biosMessages = computed(() => {
+  return bootAnimationData.bios.messages.map(msg => 
+    msg.replace('{paperCount}', paperCount)
+  )
+})
+
+const fullCommand = bootAnimationData.command.command
+const outputLines = bootAnimationData.command.outputLines
 
 let timers = []
 

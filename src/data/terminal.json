@@ -1,0 +1,75 @@
+{
+  "welcomeMessages": [
+    "Welcome to Jui-Hsuan Lee's Interactive Terminal",
+    "Type 'help' to see available commands."
+  ],
+  "helpCommand": {
+    "title": "Available commands:",
+    "commands": [
+      { "command": "pwd", "description": "Print working directory" },
+      { "command": "cd [directory]", "description": "Change directory" },
+      { "command": "ls [directory]", "description": "List directory contents" },
+      { "command": "cat <file>", "description": "Display file contents" },
+      { "command": "whoami", "description": "Display user information" },
+      { "command": "./quick_links.sh", "description": "Show quick links" },
+      { "command": "shutdown", "description": "Shutdown the system" },
+      { "command": "poweroff", "description": "Power off the system" },
+      { "command": "halt", "description": "Halt the system" },
+      { "command": "clear", "description": "Clear terminal" },
+      { "command": "help", "description": "Show this help message" }
+    ]
+  },
+  "commandOutputs": {
+    "whoami": {
+      "template": "Jui-Hsuan Lee (李睿軒)\n學術研究者 | AI工程師 | 資安研究者\n\n研究領域：\n  - Retrieval-Augmented Generation (RAG)\n  - Large Language Models (LLM) Fine-tuning\n  - AI在資安領域的應用\n  - 生成式AI與領域專家協同流程\n\n論文發表：{publicationsCount} 篇\n研討會參與：{conferencesCount} 場\n工作經歷：{experiencesCount} 項",
+      "dynamicFields": ["publicationsCount", "conferencesCount", "experiencesCount"]
+    },
+    "coffee": "☕ Coffee Status: ACTIVE\n\nResearch shows that coffee consumption is directly proportional \nto research productivity. Current level: OPTIMAL\n\nFun fact: Studies suggest that 96.3% of researchers prefer coffee \nwhile working on LLM fine-tuning datasets. (Source: Personal experience)",
+    "paper": {
+      "template": "📄 Research Papers Statistics\n\nTotal Publications: {publicationsCount}\nTotal Conferences: {conferencesCount}\n\nRecent Publications:\n{recentPublications}",
+      "dynamicFields": ["publicationsCount", "conferencesCount", "recentPublications"]
+    },
+    "rag": "🔍 Retrieval-Augmented Generation (RAG)\n\nRAG is one of my main research focuses!\n\nKey Concepts:\n  - Combines retrieval-based and generation-based approaches\n  - Enhances LLM responses with external knowledge\n  - Reduces hallucination in domain-specific tasks\n\nMy Research:\n  - RAG-based cybersecurity AI agent\n  - Personalized information security assistance\n  - Domain-specific knowledge integration",
+    "llm": "🤖 Large Language Models (LLM)\n\nLLM Fine-tuning & Instruction Tuning Specialist\n\nResearch Areas:\n  - Instruction tuning dataset construction\n  - Domain expert collaboration workflows\n  - GenAI-assisted data generation\n  - Quality improvement through iterative refinement\n\nKey Achievement:\n  Data pass rate improved from 49.6% to 96.3% \n  in 3 iteration cycles! 🎉",
+    "tanet": {
+      "template": "🌐 TANET (臺灣網際網路研討會)\n\nConference Participation History:\n\n{tanetConferences}\n\nTotal TANET participations: {tanetCount}",
+      "dynamicFields": ["tanetConferences", "tanetCount"]
+    },
+    "research": {
+      "template": "🔬 Research Focus Areas\n\n1. AI in Cybersecurity\n   - Personalized security assistance systems\n   - RAG-based AI agents\n   - Domain-specific LLM applications\n\n2. LLM Fine-tuning\n   - High-quality instruction tuning datasets\n   - GenAI + Domain Expert collaboration\n   - Iterative quality improvement workflows\n\n3. Information Security\n   - Security regulation compliance\n   - AI-powered security guidance\n   - Context-aware recommendations\n\nPublications: {publicationsCount} papers\nConferences: {conferencesCount} participations",
+      "dynamicFields": ["publicationsCount", "conferencesCount"]
+    },
+    "easter-egg": "🥚 Easter Egg Found!\n\nCongratulations! You've discovered a hidden feature.\n\nAbout Me:\n  Name: Jui-Hsuan Lee (李睿軒)\n  Role: AI Research Consultant\n  Company: 薩摩亞商安盛資訊股份有限公司台灣分公司\n  \nResearch Interests:\n  • RAG (Retrieval-Augmented Generation)\n  • LLM Fine-tuning & Instruction Tuning\n  • AI in Cybersecurity Applications\n  • GenAI + Domain Expert Collaboration\n\nFun Facts:\n  • Published papers at TANET 2024, TANET 2025, EURO 2025\n  • Achieved 96.3% data pass rate in LLM dataset construction\n  • Specialized in MCP Server development\n  • Expert in Agile PLM, Polarion, Teamcenter AI integration",
+    "howdoyouturnthison": "🚗 Cheat Code Activated!\n\nAge of Empires cheat code detected!\n\nA sports car has been spawned!\n\nFun fact: This is one of the most famous cheat codes from Age of Empires II. It spawns a car that can run over units and destroy buildings.\n\nNostalgia level: MAXIMUM ⚡\n\nEnjoy your ride! 🏁",
+    "shutdown": "Initiating system shutdown..."
+  },
+  "fileContents": {
+    "about.txt": "> 歡迎來到我的個人網站\n> 我專注於人工智慧、自然語言處理、資訊安全等領域的研究\n> 致力於 LLM 研究與開發 AI 應用，推動技術創新",
+    "README.txt": "> 歡迎來到我的個人網站\n> 我專注於人工智慧、自然語言處理、資訊安全等領域的研究\n> 致力於 LLM 研究與開發 AI 應用，推動技術創新",
+    "research.txt": {
+      "template": "學術研究\n\n研討會參與與論文發表記錄\n\n研討會數量: {conferencesCount}\n論文數量: {publicationsCount}\n\n使用 'ls conferences/' 查看研討會列表\n使用 'ls publications/' 查看論文列表",
+      "dynamicFields": ["conferencesCount", "publicationsCount"]
+    },
+    "experience.txt": {
+      "template": "工作經歷\n\n專業工作經驗與職責\n\n工作經歷數量: {experiencesCount}\n\n使用 'ls experiences/' 查看工作經歷列表",
+      "dynamicFields": ["experiencesCount"]
+    }
+  },
+  "lsOutputs": {
+    "/": "about.txt\nresearch.txt\nexperience.txt\nREADME.txt\nskills/\nconferences/\npublications/\nexperiences/\nquick_links.sh"
+  },
+  "errorMessages": {
+    "commandNotFound": [
+      "bash: {cmd}: command not found",
+      "bash: {cmd}: 找不到指令，試試 'help' 看看有什麼可用"
+    ],
+    "catMissingOperand": "cat: missing file operand",
+    "catNoSuchFile": "cat: {file}: No such file or directory",
+    "cdNoSuchDirectory": "cd: {dir}: No such file or directory",
+    "lsCannotAccess": "ls: cannot access '{dir}': No such file or directory",
+    "bashNoSuchFile": "bash: {command}: No such file or directory",
+    "rmDangerous": "rm: it is dangerous to operate recursively on '/'\\nrm: use --no-preserve-root to override this failsafe"
+  },
+  "readmeCommand": "cat README.txt"
+}
+

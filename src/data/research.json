@@ -54,20 +54,17 @@
         "李睿軒",
         "徐國鈞"
       ],
-      "journal": "Journal of Artificial Intelligence Research",
       "conference": null,
       "year": 2026,
       "abstract": "本研究提出了一個基於Transformer架構的新型跨語言自然語言處理模型，能夠在低資源語言之間進行有效的知識轉移。實驗結果顯示，該模型在多個跨語言任務上取得了優異的表現。",
       "keywords": [
-        "自然語言處理",
-        "Transformer",
-        "跨語言學習",
-        "深度學習"
+        "檢索增強生成(Retrieval-Augmented Generation)",
+        "微調大語言模型(Fine-Tuned LLM)",
+        "資安管理"
       ],
-      "pdfLink": "https://example.com/papers/2024-transformer.pdf",
-      "type": "碩士學位論文",
-      "volume": "45",
-      "pages": "123-145"
+      "pdfLink": "/publications/檢索增強生成與微調大語言模型於資安管理應用之研究.pdf",
+      "type": "會議論文",
+      "venue": "臺灣網際網路研討會 TANET 2026"
     },
     {
       "id": 2,

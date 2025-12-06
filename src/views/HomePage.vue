@@ -15,8 +15,8 @@
         </div>
         
         <div class="text-terminal-green text-lg md:text-xl mt-4">
-          <div class="mb-2">Jui-Hsuan Lee</div>
-          <div class="text-terminal-green/70 text-sm">// 學術研究者 | AI工程師 | 資安研究者</div>
+          <div class="mb-2">{{ personalInfo.name }}</div>
+          <div class="text-terminal-green/70 text-sm">// {{ personalInfo.title }}</div>
         </div>
       </header>
 
@@ -28,14 +28,8 @@
         </div>
         <div class="terminal-card p-6 mb-6">
           <div class="space-y-4 text-terminal-green/80">
-            <p>
-              > 歡迎來到我的個人網站
-            </p>
-            <p>
-              > 我專注於人工智慧、自然語言處理、資訊安全等領域的研究
-            </p>
-            <p>
-              > 致力於將理論研究與實際應用相結合，推動技術創新
+            <p v-for="(line, index) in aboutText" :key="index">
+              {{ line }}
             </p>
           </div>
         </div>
@@ -65,9 +59,19 @@
               <div
                 v-for="tech in skill.technologies"
                 :key="tech.name"
-                class="text-terminal-green/60 text-xs"
+                class="text-terminal-green/60 text-xs relative group cursor-pointer"
+                @mouseenter="hoveredItem = { type: 'tech', name: tech.name, experience: tech.experience }"
+                @mouseleave="hoveredItem = null"
               >
                 - {{ tech.name }}
+                <div
+                  v-if="hoveredItem && hoveredItem.type === 'tech' && hoveredItem.name === tech.name"
+                  class="experience-tooltip"
+                >
+                  <div class="text-terminal-green text-xs p-2">
+                    {{ tech.experience }}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="mt-4 space-y-2">
@@ -76,8 +80,22 @@
                 :key="level.name"
                 class="text-xs"
               >
-                <div class="flex justify-between mb-1">
-                  <span class="text-terminal-green/70">{{ level.name }}</span>
+                <div class="flex justify-between mb-1 relative">
+                  <span
+                    class="text-terminal-green/70 cursor-pointer relative group"
+                    @mouseenter="hoveredItem = { type: 'skill', name: level.name, experience: level.experience }"
+                    @mouseleave="hoveredItem = null"
+                  >
+                    {{ level.name }}
+                    <div
+                      v-if="hoveredItem && hoveredItem.type === 'skill' && hoveredItem.name === level.name"
+                      class="experience-tooltip"
+                    >
+                      <div class="text-terminal-green text-xs p-2">
+                        {{ level.experience }}
+                      </div>
+                    </div>
+                  </span>
                   <span class="text-terminal-green/50">{{ level.level }}%</span>
                 </div>
                 <div class="w-full bg-terminal-green/10 border border-terminal-green/30 h-2">
@@ -131,28 +149,22 @@
         </div>
         <div class="terminal-card p-6">
           <div class="space-y-2 text-terminal-green/80">
-            <div>
-              <span class="text-terminal-green">[1]</span>
-              <router-link to="/research" class="ml-2 hover:text-terminal-green underline">
-                學術研究
+            <div v-for="link in quickLinks" :key="link.id">
+              <span class="text-terminal-green">[{{ link.id }}]</span>
+              <router-link
+                v-if="link.type === 'router'"
+                :to="link.path"
+                class="ml-2 hover:text-terminal-green underline"
+              >
+                {{ link.label }}
               </router-link>
-            </div>
-            <div>
-              <span class="text-terminal-green">[2]</span>
-              <router-link to="/experience" class="ml-2 hover:text-terminal-green underline">
-                工作經歷
-              </router-link>
-            </div>
-            <div>
-              <span class="text-terminal-green">[3]</span>
-              <a href="mailto:juihsuanlee0303@gmail.com" class="ml-2 hover:text-terminal-green underline">
-                聯絡我
-              </a>
-            </div>
-            <div>
-              <span class="text-terminal-green">[4]</span>
-              <a href="https://github.com" target="_blank" class="ml-2 hover:text-terminal-green underline">
-                GitHub
+              <a
+                v-else
+                :href="link.path"
+                :target="link.type === 'external' ? '_blank' : undefined"
+                class="ml-2 hover:text-terminal-green underline"
+              >
+                {{ link.label }}
               </a>
             </div>
           </div>
@@ -173,7 +185,15 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { typewriterTexts, skills as skillsData, homeProjects } from '../data'
+import {
+  typewriterTexts,
+  skills as skillsData,
+  homeProjects,
+  personalInfo,
+  asciiArt,
+  aboutText,
+  quickLinks
+} from '../data'
 
 const isTyping = ref(false)
 const displayText = ref('')
@@ -184,15 +204,7 @@ let typeTimeout = null
 
 const skills = ref(skillsData)
 const projects = ref(homeProjects)
-
-const asciiArt = `
-██╗    ██╗ █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗
-██║    ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║
-██║ █╗ ██║███████║██████╔╝██████╔╝█████╗  ██╔██╗ ██║
-██║███╗██║██╔══██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║
-╚███╔███╔╝██║  ██║██║  ██║██║  ██║███████╗██║ ╚████║
- ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝                              
-`
+const hoveredItem = ref(null)
 
 const typeWriter = () => {
   const currentText = typewriterTexts[currentTextIndex.value]
@@ -300,5 +312,44 @@ onUnmounted(() => {
 .terminal-card:hover {
   border-color: #00ff00;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.experience-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  z-index: 50;
+  min-width: 200px;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(0, 255, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+  animation: fadeIn 0.2s ease-in;
+}
+
+.experience-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 20px;
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 255, 0, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group:hover .text-terminal-green\/60 {
+  color: rgba(0, 255, 0, 0.8);
+  transition: color 0.2s ease;
 }
 </style>
