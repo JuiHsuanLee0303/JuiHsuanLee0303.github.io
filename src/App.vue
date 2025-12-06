@@ -1,65 +1,80 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, computed, provide } from 'vue'
+import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
-import Mouse from './components/Mouse.vue'
-import BackgroundEffects from './components/BackgroundEffects.vue'
-import router from './router'
+import ThreeBackground from './components/ThreeBackground.vue'
+import BootAnimation from './components/BootAnimation.vue'
+import ShutdownAnimation from './components/ShutdownAnimation.vue'
 
-// 管理暗色模式狀態
-const isDark = ref(false)
-
-// 切換暗色模式
-const toggleDarkMode = () => {
-  isDark.value = !isDark.value
-  localStorage.setItem('darkMode', isDark.value.toString())
-  updateDarkModeClass()
-}
-
-// 更新文檔類別
-const updateDarkModeClass = () => {
-  if (isDark.value) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
-}
-
-// 初始化暗色模式
-onMounted(() => {
-  // 檢查 localStorage 中的設定
-  const savedDarkMode = localStorage.getItem('darkMode')
-  if (savedDarkMode !== null) {
-    isDark.value = savedDarkMode === 'true'
-  } else {
-    // 如果沒有保存的設定，則使用系統偏好
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-  }
-  updateDarkModeClass()
-})
-
-// 監聽系統主題變化
-const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-const handleMediaQueryChange = (e) => {
-  if (localStorage.getItem('darkMode') === null) {
-    isDark.value = e.matches
-    updateDarkModeClass()
-  }
-}
+const route = useRoute()
+const isTerminalPage = computed(() => route.path === '/terminal')
+const showBootAnimation = ref(false)
+const showShutdownAnimation = ref(false)
+const showMainContent = ref(true)
 
 onMounted(() => {
-  mediaQuery.addEventListener('change', handleMediaQueryChange)
+  // 確保文檔始終使用深色模式（終端機風格）
+  document.documentElement.classList.add('dark')
+  
+  // 檢查是否已經看過開機動畫
+  const hasSeenBootAnimation = localStorage.getItem('hasSeenBootAnimation')
+  
+  if (!hasSeenBootAnimation) {
+    // 第一次訪問，顯示開機動畫
+    showBootAnimation.value = true
+    showMainContent.value = false
+  }
 })
 
-onBeforeUnmount(() => {
-  mediaQuery.removeEventListener('change', handleMediaQueryChange)
-})
+const handleBootAnimationComplete = () => {
+  // 設置標記，表示已經看過動畫
+  localStorage.setItem('hasSeenBootAnimation', 'true')
+  // 隱藏動畫
+  showBootAnimation.value = false
+  showMainContent.value = true
+}
+
+const handleShutdown = () => {
+  // 顯示關機動畫
+  showShutdownAnimation.value = true
+  showMainContent.value = false
+}
+
+const handleShutdownComplete = () => {
+  // 清除開機動畫標記，這樣重新整理後會顯示開機動畫
+  localStorage.removeItem('hasSeenBootAnimation')
+  // 關機動畫完成後，頁面會保持全黑狀態
+  // 用戶需要重新整理頁面才會看到開機動畫
+}
+
+// 提供關機函數給子組件使用
+provide('shutdown', handleShutdown)
 </script>
 
 <template>
-  <div class="min-h-screen">
-    <Navbar :isDark="isDark" @toggle-dark-mode="toggleDarkMode" />
-    <Mouse />
-    <BackgroundEffects />
-    <router-view />
+  <div class="h-screen bg-black flex flex-col overflow-hidden">
+    <!-- 開機動畫（覆蓋在主內容上方） -->
+    <BootAnimation 
+      v-if="showBootAnimation"
+      :on-complete="handleBootAnimationComplete"
+    />
+    
+    <!-- 關機動畫（覆蓋在主內容上方） -->
+    <ShutdownAnimation 
+      v-if="showShutdownAnimation"
+      :on-complete="handleShutdownComplete"
+    />
+    
+    <!-- 主內容（始終存在，動畫完成後顯示） -->
+    <div v-if="showMainContent" class="h-screen bg-black flex flex-col overflow-hidden">
+      <ThreeBackground />
+      <Navbar />
+      <div 
+        class="flex-1"
+        :class="isTerminalPage ? 'overflow-hidden' : 'overflow-y-auto'"
+      >
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>

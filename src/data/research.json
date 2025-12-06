@@ -1,0 +1,116 @@
+{
+  "conferences": [
+    {
+      "id": 1,
+      "title": "臺灣網際網路研討會 TANET 2025",
+      "date": "2025-10-22",
+      "location": "宜蘭，台灣",
+      "type": "國內會議",
+      "paperTitle": "結合生成式人工智慧與領域專家之協同流程：以資安法規為例建立高品質 LLM 指令微調資料集",
+      "abstract": "隨著大型語言模型（Large Language Models, LLMs）於專業領域中的應用日益廣泛，如何提升其於特定領域內的可信度與實用性，成為當前研究與實務的重要課題。為此，進行指令微調（instruction tuning）已成為關鍵技術之一，而高品質資料集的建立則為影響微調效果的一大核心挑戰。傳統方法倚賴領域專家手動撰寫資料，不僅耗費大量人力，亦難以持續擴展。本研究提出一套結合生成式人工智慧（Generative AI, GenAI）與領域專家審核機制與迴圈式自動再生成流程之協同方法，旨在有效且可追溯地建立高品質之指令微調資料集。本研究以資全法規為實證場域，首先透過提示詞工程（prompt engineering）導入相關法規條文，利用大語言模型生成候選的資料集；接續由多位資安領域專家針對正確性、完整性與可解釋性進行嚴謹審核。通過審核者納入最終資料集，未通過者則依據專家回饋再度驅動生成模型進行資料再產出，持續迭代直至品質達標。實驗中以多種參數規模之開源模型為基礎，評估其在本協同流程下之資料品質表現，並量化再生成機制所帶來之品質提升幅度。初步結果顯示，於 3 輪迴圈內，資料通過率由 49.6% 提升至 96.3% 驗證本方法於效率與品質兩個維度的優勢。綜上所述，本文所提出之流程具備可監管性與可追蹤性，能顯著提升專業領域 LLM 指令微調資料集之構建效率與品質，亦可作為其他高度規範領域（如醫療、法律、金融）開發私有化語言模型之實務參考範式。",
+      "link": "https://tanet2025.niu.edu.tw/",
+      "authors": [
+        "李睿軒",
+        "徐國鈞"
+      ],
+      "presentationType": "口頭報告"
+    },
+    {
+      "id": 2,
+      "title": "European Conference on Operational Research (EURO) 2025",
+      "date": "2025-06-22",
+      "location": "Leeds，United Kingdom",
+      "type": "國際會議",
+      "paperTitle": "Designing an AI-Powered Agent for Personalized Information Security Assistance Using RAG and Fine-Tuned LLMs",
+      "abstract": "This research presents an innovative approach to developing personalized information security assistance systems by leveraging Retrieval-Augmented Generation (RAG) and fine-tuned Large Language Models (LLMs). The system addresses the growing complexity of cybersecurity threats and the need for accessible, user-friendly security guidance. By combining RAG techniques with domain-specific fine-tuning, we create an intelligent agent capable of providing context-aware security recommendations tailored to individual users' needs and technical backgrounds.",
+      "link": "https://euro2025leeds.uk",
+      "authors": [
+        "Jui-Hsuan Lee",
+        "Kuo-Chun Hsu"
+      ],
+      "presentationType": "口頭報告"
+    },
+    {
+      "id": 3,
+      "title": "臺灣網際網路研討會 TANET 2024",
+      "date": "2024-10-24",
+      "location": "台北，台灣",
+      "type": "國內會議",
+      "paperTitle": "人工智慧在資安應用趨勢之研究",
+      "abstract": "隨著資安領域所面對的攻擊樣態快速更迭、日益複雜。使得傳統的資安防禦措施越來越難以應對新型態的資安風險。與此同時人工智慧(Artificial Intelligence, AI)相關的技術突破，其應用在各個領域持續蓬勃發展，也為資安領域帶來進步的可能性。因此越來越多研究將人工智慧導入資安領域，以提高防護與面對風險的能力。 然而，儘管人工智慧技術在資安應用中展現巨大潛力，但這一領域仍面對諸多挑戰。為了更好理解人工智慧在資安領域的應用現況與未來發展方向，本文採用系統性文獻回顧(Systematic Literature Review)的方法，綜合分析近年來的相關研究。本文旨在通過系統性地整理及分析現有文獻，總結人工智慧在資安應用中的主要趨勢，並識別出該領域未來可能的研究方向與實務應用可能面臨到的挑戰。",
+      "link": "https://tanet2024.conf.nycu.edu.tw",
+      "authors": [
+        "李睿軒",
+        "徐國鈞"
+      ],
+      "presentationType": "海報展示"
+    }
+  ],
+  "publications": [
+    {
+      "id": 1,
+      "title": "檢索增強生成與微調大語言模型於資安管理應用之研究",
+      "authors": [
+        "李睿軒",
+        "徐國鈞"
+      ],
+      "journal": "Journal of Artificial Intelligence Research",
+      "conference": null,
+      "year": 2026,
+      "abstract": "本研究提出了一個基於Transformer架構的新型跨語言自然語言處理模型，能夠在低資源語言之間進行有效的知識轉移。實驗結果顯示，該模型在多個跨語言任務上取得了優異的表現。",
+      "keywords": [
+        "自然語言處理",
+        "Transformer",
+        "跨語言學習",
+        "深度學習"
+      ],
+      "pdfLink": "https://example.com/papers/2024-transformer.pdf",
+      "type": "碩士學位論文",
+      "volume": "45",
+      "pages": "123-145"
+    },
+    {
+      "id": 2,
+      "title": "人工智慧在資安應用趨勢之研究",
+      "authors": [
+        "李睿軒",
+        "徐國鈞"
+      ],
+      "journal": null,
+      "conference": "臺灣網際網路研討會 TANET 2024",
+      "year": 2024,
+      "abstract": "隨著資安領域所面對的攻擊樣態快速更迭、日益複雜。使得傳統的資安防禦措施越來越難以應對新型態的資安風險。與此同時人工智慧(Artificial Intelligence, AI)相關的技術突破，其應用在各個領域持續蓬勃發展，也為資安領域帶來進步的可能性。因此越來越多研究將人工智慧導入資安領域，以提高防護與面對風險的能力。 然而，儘管人工智慧技術在資安應用中展現巨大潛力，但這一領域仍面對諸多挑戰。為了更好理解人工智慧在資安領域的應用現況與未來發展方向，本文採用系統性文獻回顧(Systematic Literature Review)的方法，綜合分析近年來的相關研究。本文旨在通過系統性地整理及分析現有文獻，總結人工智慧在資安應用中的主要趨勢，並識別出該領域未來可能的研究方向與實務應用可 能面臨到的挑戰。 ",
+      "keywords": [
+        "人工智慧",
+        "資安應用",
+        "系統性文獻回顧",
+        "趨勢分析"
+      ],
+      "pdfLink": "/publications/人工智慧在資安應用趨勢之研究.pdf",
+      "type": "會議論文",
+      "venue": "臺灣網際網路研討會 TANET 2024"
+    },
+    {
+      "id": 3,
+      "title": "結合生成式人工智慧與領域專家之協同流程：以資安法規為例建立高品質 LLM 指令微調資料集",
+      "authors": [
+        "李睿軒",
+        "徐國鈞"
+      ],
+      "journal": null,
+      "conference": "臺灣網際網路研討會 TANET 2025",
+      "year": 2025,
+      "abstract": "隨著大型語言模型（Large Language Models, LLMs）於專業領域中的應用日益廣泛，如何提升其於特定領域內的可信度與實用性，成為當前研究與實務的重要課題。為此，進行指令微調（instruction tuning）已成為關鍵技術之一，而高品質資料集的建立則為影響微調效果的一大核心挑戰。傳統方法倚賴領域專家手動撰寫資料，不僅耗費大量人力，亦難以持續擴展。本研究提出一套結合生成式人工智慧（Generative AI, GenAI）與領域專家審核機制與迴圈式自動再生成流程之協同方法，旨在有效且可追溯地建立高品質之指令微調資料集。本研究以資全法規為實證場域，首先透過提示詞工程（prompt engineering）導入相關法規條文，利用大語言模型生成候選的資料集；接續由多位資安領域專家針對正確性、完整性與可解釋性進行嚴謹審核。通過審核者納入最終資料集，未通過者則依據專家回饋再度驅動生成模型進行資料再產出，持續迭代直至品質達標。實驗中以多種參數規模之開源模型為基礎，評估其在本協同流程下之資料品質表現，並量化再生成機制所帶來之品質提升幅度。初步結果顯示，於 3 輪迴圈內，資料通過率由 49.6% 提升至 96.3% 驗證本方法於效率與品質兩個維度的優勢。綜上所述，本文所提出之流程具備可監管性與可追蹤性，能顯著提升專業領域 LLM 指令微調資料集之構建效率與品質，亦可作為其他高度規範領域（如醫療、法律、金融）開發私有化語言模型之實務參考範式。",
+      "keywords": [
+        "生成式人工智慧",
+        "領域專家",
+        "協同流程",
+        "資安法規",
+        "LLM 指令微調資料集"
+      ],
+      "pdfLink": "/publications/結合生成式人工智慧與領域專家之協同流程^7以資安法規為例建立高品質 LLM 指令微調資料集.pdf",
+      "type": "期刊論文",
+      "venue": "臺灣網際網路研討會 TANET 2025"
+    }
+  ]
+}

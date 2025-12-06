@@ -1,111 +1,72 @@
 <template>
-    <nav class="bg-white dark:bg-gray-900 shadow-md py-4 transition-colors duration-300 px-6 relative">
+    <nav class="bg-black border-b border-terminal-green/30 py-3 px-6 relative font-mono">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo/Brand Name -->
             <div class="flex items-center">
-                <router-link to="/">
-                    <h1 class="text-xl font-bold dark:text-white handwriting-animation">
-                        <span v-for="(char, index) in nameChars" 
-                              :key="index" 
-                              :style="{ animationDelay: `${index * 0.1}s` }"
-                              class="inline-block opacity-0 animate-handwrite">
-                            {{ char === ' ' ? '\u00A0' : char }}
-                        </span>
-                    </h1>
+                <router-link to="/" class="terminal-link">
+                    <div class="terminal-prompt">
+                        <span class="prompt-symbol">$</span>
+                        <span class="text-terminal-green">whoami</span>
+                        <span class="cursor-blink ml-1">_</span>
+                    </div>
+                    <div class="text-terminal-green text-sm mt-1 ml-6">
+                        Jui-Hsuan Lee
+                    </div>
                 </router-link>
             </div>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-6">
                 <!-- 導航項目 -->
                 <router-link 
                     v-for="item in navItems" 
                     :key="item.path"
                     :to="item.path"
+                    class="terminal-nav-item"
+                    active-class="active"
                 >
-                    <DynamicButton :isToggle="true" :trueTitle="item.name" :falseTitle="item.name">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon" />
-                        </svg>
-                    </DynamicButton>
+                    <span class="text-terminal-green/70 hover:text-terminal-green transition-colors">
+                        [{{ item.name }}]
+                    </span>
                 </router-link>
-                
-                <!-- 切換亮暗模式 -->
-                <DynamicButton 
-                    @click="handleToggleDarkMode" 
-                    :isToggle="isDark" 
-                    :trueTitle="darkModeText.dark" 
-                    :falseTitle="darkModeText.light"
+                <!-- 關機按鈕 -->
+                <button 
+                    @click="handleShutdown"
+                    class="terminal-nav-item text-terminal-green/70 hover:text-terminal-green transition-colors"
+                    title="Shutdown"
                 >
-                    <!-- 太陽圖示 (淺色模式) -->
-                    <svg 
-                        v-show="!isDark"
-                        class="w-6 h-6 transform transition-all duration-300"
-                        :class="{ 'rotate-180 scale-110': !isDark }"
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24"
-                    >
-                        <path 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                            stroke-width="2" 
-                            :d="darkModeIcons.light" 
-                        />
-                    </svg>
-                    
-                    <!-- 月亮圖示 (深色模式) -->
-                    <svg 
-                        v-show="isDark"
-                        class="w-6 h-6 transform transition-all duration-300"
-                        :class="{ 'rotate-0 scale-110': isDark }"
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24"
-                    >
-                        <path 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                            stroke-width="2" 
-                            :d="darkModeIcons.dark" 
-                        />
-                    </svg>
-                </DynamicButton>
+                    <span>[Shutdown]</span>
+                </button>
             </div>
 
             <!-- Mobile Menu Button -->
             <div class="md:hidden flex items-center">
-                <button @click="toggleMobileMenu" class="text-gray-800 dark:text-white focus:outline-none p-2">
-                    <svg v-if="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button @click="toggleMobileMenu" class="text-terminal-green focus:outline-none p-2">
+                    <span v-if="!isMobileMenuOpen" class="text-2xl">☰</span>
+                    <span v-else class="text-2xl">✕</span>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Menu -->
         <transition name="slide-fade">
-            <div v-show="isMobileMenuOpen" class="md:hidden mt-4 absolute w-full left-0 z-20">
-                <div class="flex flex-col items-stretch gap-2 bg-white dark:bg-gray-800 p-4 shadow-lg">
+            <div v-show="isMobileMenuOpen" class="md:hidden mt-4 absolute w-full left-0 z-20 bg-black border border-terminal-green/30">
+                <div class="flex flex-col items-stretch gap-2 p-4">
                     <router-link 
                         v-for="item in navItems" 
                         :key="item.path"
                         :to="item.path" 
-                        class="flex items-center gap-4 px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                        class="px-4 py-2 text-terminal-green/70 hover:text-terminal-green hover:bg-terminal-green/10 transition-colors"
+                        @click="toggleMobileMenu"
                     >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon" />
-                        </svg>
-                        <span>{{ item.name }}</span>
+                        [{{ item.name }}]
                     </router-link>
-                    <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                    <button @click="handleToggleDarkMode" class="flex items-center gap-4 px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md w-full">
-                        <svg v-show="!isDark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="darkModeIcons.light" />
-                        </svg>
-                        <svg v-show="isDark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="darkModeIcons.dark" />
-                        </svg>
-                        <span>{{ isDark ? darkModeText.dark : darkModeText.light }}</span>
+                    <!-- 關機按鈕（行動版） -->
+                    <button 
+                        @click="handleShutdown"
+                        class="px-4 py-2 text-left text-terminal-green/70 hover:text-terminal-green hover:bg-terminal-green/10 transition-colors"
+                    >
+                        [Shutdown]
                     </button>
                 </div>
             </div>
@@ -114,91 +75,70 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import DynamicButton from './DynamicButton.vue'
-import { navItems, darkModeIcons, darkModeText } from '../data'
+import { ref, inject } from 'vue'
+import { useRoute } from 'vue-router'
+import { navItems } from '../data'
 
-// Props
-const props = defineProps({
-    isDark: {
-        type: Boolean,
-        default: false
-    }
-})
-
-// Emits
-const emit = defineEmits(['toggle-dark-mode'])
-
-// 手寫動畫相關
-const nameChars = ref([])
-const fullName = 'Jui-Hsuan Lee'
-
-// RWD
+const route = useRoute()
 const isMobileMenuOpen = ref(false)
+const shutdown = inject('shutdown')
 
 const toggleMobileMenu = () => {
     isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
-onMounted(() => {
-    nameChars.value = fullName.split('')
-})
-
-// 切換暗色模式
-const handleToggleDarkMode = () => {
-    emit('toggle-dark-mode')
+const handleShutdown = () => {
+    if (shutdown) {
+        shutdown()
+    }
+    // 關閉行動版選單
+    isMobileMenuOpen.value = false
 }
 </script>
 
 <style scoped>
-/* 手寫動畫 */
-@keyframes handwrite {
-    0% {
-        opacity: 0;
-        transform: translateY(10px) rotate(-2deg);
-    }
-    50% {
-        opacity: 0.7;
-        transform: translateY(-2px) rotate(1deg);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) rotate(0deg);
-    }
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.animate-handwrite {
-    animation: handwrite 0.6s ease-out forwards;
+.prompt-symbol {
+  color: #00ff00;
+  font-weight: bold;
 }
 
-.handwriting-animation {
-    font-family: 'Edu NSW ACT Cursive', cursive;
+.cursor-blink {
+  animation: blink 1s infinite;
+  color: #00ff00;
 }
 
-/* 為手寫效果添加一些微妙的變化 */
-.animate-handwrite:nth-child(even) {
-    animation-timing-function: ease-in-out;
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
 }
 
-.animate-handwrite:nth-child(3n) {
-    animation-duration: 0.7s;
+.terminal-link {
+  text-decoration: none;
 }
 
-/* 按鈕懸停效果 */
-button:hover svg {
-    animation: bounce 0.6s ease-in-out;
+.terminal-nav-item {
+  position: relative;
+  text-decoration: none;
 }
 
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0) rotate(0deg) scale(1.05);
-    }
-    40% {
-        transform: translateY(-4px) rotate(-5deg) scale(1.1);
-    }
-    60% {
-        transform: translateY(-2px) rotate(5deg) scale(1.08);
-    }
+.terminal-nav-item.active span,
+.terminal-nav-item.router-link-active span {
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+.terminal-nav-item:hover span {
+  color: #00ff00;
 }
 
 /* Mobile Menu Transition */

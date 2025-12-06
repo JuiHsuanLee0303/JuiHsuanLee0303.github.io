@@ -1,3 +1,240 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-terminal-green: #00ff00;
+  --color-terminal-green-bright: #39ff14;
+  --color-terminal-green-dim: rgba(0, 255, 0, 0.5);
+  --color-terminal-bg: #000000;
+  --color-terminal-bg-alt: #0a0a0a;
+}
+
+/* 終端機風格全局樣式 */
+:root {
+  --terminal-green: #00ff00;
+  --terminal-green-bright: #39ff14;
+  --terminal-green-dim: #00ff0080;
+  --terminal-bg: #000000;
+  --terminal-bg-alt: #0a0a0a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--terminal-bg);
+  color: var(--terminal-green);
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', 'Monaco', 'Consolas', monospace;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+  background-color: var(--terminal-bg);
+}
+
+/* 終端機綠色文字 */
+.text-terminal-green {
+  color: var(--terminal-green);
+}
+
+/* 終端機光標閃爍動畫 */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+  color: var(--terminal-green);
+}
+
+/* 打字機效果 */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.typing-effect {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40, end);
+}
+
+/* 終端機提示符 */
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+}
+
+.prompt-symbol {
+  color: var(--terminal-green);
+  font-weight: bold;
+}
+
+/* 終端機風格滾動條 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-green-dim);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-green);
+}
+
+/* 終端機風格連結 */
+a {
+  color: var(--terminal-green);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--terminal-green-bright);
+  text-decoration: underline;
+}
+
+/* 終端機風格按鈕 */
+button {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  cursor: pointer;
+}
+
+/* 終端機風格輸入框 */
+input, textarea {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  background-color: var(--terminal-bg-alt);
+  color: var(--terminal-green);
+  border: 1px solid var(--terminal-green-dim);
+  padding: 0.5rem;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 10px var(--terminal-green-dim);
+}
+
+/* 終端機風格選擇框 */
+select {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  background-color: var(--terminal-bg-alt);
+  color: var(--terminal-green);
+  border: 1px solid var(--terminal-green-dim);
+  padding: 0.5rem;
+}
+
+/* ASCII藝術效果 */
+.ascii-art {
+  font-family: 'Courier New', monospace;
+  white-space: pre;
+  line-height: 1.2;
+  color: var(--terminal-green);
+}
+
+/* 終端機風格卡片 */
+.terminal-card {
+  background-color: var(--terminal-bg-alt);
+  border: 1px solid var(--terminal-green-dim);
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.terminal-card:hover {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 20px var(--terminal-green-dim);
+}
+
+/* 終端機風格代碼塊 */
+code {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  background-color: var(--terminal-bg-alt);
+  color: var(--terminal-green);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid var(--terminal-green-dim);
+}
+
+pre {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  background-color: var(--terminal-bg-alt);
+  color: var(--terminal-green);
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--terminal-green-dim);
+  overflow-x: auto;
+}
+
+/* 終端機風格表格 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid var(--terminal-green-dim);
+}
+
+th, td {
+  border: 1px solid var(--terminal-green-dim);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+th {
+  background-color: var(--terminal-bg-alt);
+  color: var(--terminal-green);
+  font-weight: bold;
+}
+
+td {
+  color: var(--terminal-green-dim);
+}
+
+/* 終端機風格分隔線 */
+hr {
+  border: none;
+  border-top: 1px solid var(--terminal-green-dim);
+  margin: 1rem 0;
+}
+
+/* 終端機風格標籤 */
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--terminal-bg-alt);
+  border: 1px solid var(--terminal-green-dim);
+  color: var(--terminal-green-dim);
+  font-size: 0.875rem;
+  border-radius: 3px;
+}
+
+/* 終端機風格徽章 */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--terminal-green-dim);
+  color: var(--terminal-bg);
+  font-size: 0.75rem;
+  border-radius: 3px;
+  font-weight: bold;
+}

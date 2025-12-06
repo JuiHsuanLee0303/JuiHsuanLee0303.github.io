@@ -1,11 +1,11 @@
 {
   "typewriterTexts": [
-    "全端開發者",
-    "AI工程師",
+    "AI研究員",
+    "自然語言處理專家",
     "資安研究者",
-    "創新應用開發者",
-    "技術內容創作者",
-    "自動化工具開發者"
+    "機器學習工程師",
+    "學術研究者",
+    "深度學習實踐者"
   ],
   "skills": [
     {
@@ -68,49 +68,49 @@
   "projects": [
     {
       "id": 1,
-      "title": "電商平台開發",
-      "description": "全功能電商平台，包含購物車、付款系統、訂單管理等完整功能",
+      "title": "檢索增強生成與微調大語言模型於資安管理應用",
+      "description": "結合RAG技術與微調LLM，開發個人化資安輔助系統，提供情境感知的安全建議與指導",
       "gradient": "from-blue-400 to-purple-500",
       "technologies": [
-        { "name": "Vue.js", "color": "blue" },
-        { "name": "Node.js", "color": "green" },
-        { "name": "MongoDB", "color": "yellow" }
+        { "name": "RAG", "color": "blue" },
+        { "name": "LLM", "color": "green" },
+        { "name": "Fine-tuning", "color": "yellow" }
       ],
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
     },
     {
       "id": 2,
-      "title": "任務管理系統",
-      "description": "團隊協作任務管理工具，支援即時通知、進度追蹤與檔案分享",
+      "title": "結合生成式AI與領域專家協同流程",
+      "description": "建立高品質LLM指令微調資料集的協同方法，結合GenAI與專家審核機制，資料通過率提升至96.3%",
       "gradient": "from-green-400 to-blue-500",
       "technologies": [
-        { "name": "React", "color": "blue" },
-        { "name": "Express", "color": "purple" },
-        { "name": "Redis", "color": "red" }
+        { "name": "Generative AI", "color": "blue" },
+        { "name": "Instruction Tuning", "color": "purple" },
+        { "name": "Domain Expert", "color": "green" }
       ],
       "icon": "M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z"
     },
     {
       "id": 3,
-      "title": "AI 智能聊天機器人",
-      "description": "基於大型語言模型的智能客服系統，支援多語言對話與情感分析",
+      "title": "人工智慧在資安應用趨勢研究",
+      "description": "採用系統性文獻回顧方法，分析AI在資安領域的應用現況、主要趨勢與未來研究方向",
       "gradient": "from-purple-400 to-pink-500",
       "technologies": [
-        { "name": "Python", "color": "blue" },
-        { "name": "FastAPI", "color": "green" },
-        { "name": "OpenAI", "color": "purple" }
+        { "name": "AI Security", "color": "blue" },
+        { "name": "Systematic Review", "color": "green" },
+        { "name": "Trend Analysis", "color": "purple" }
       ],
       "icon": "M12,2C13.65,2 15,3.35 15,5C15,6.65 13.65,8 12,8C10.35,8 9,6.65 9,5C9,3.35 10.35,2 12,2M21,9V7L15,1V3H9V1L3,7V9H21M21,10H3V18H21V10Z"
     },
     {
       "id": 4,
-      "title": "數據可視化儀表板",
-      "description": "企業級數據分析平台，提供即時數據監控與多維度報表生成",
+      "title": "個人化資安輔助AI代理系統",
+      "description": "基於RAG與微調LLM設計的AI代理，提供個人化資安協助，適應不同用戶需求與技術背景",
       "gradient": "from-cyan-400 to-blue-500",
       "technologies": [
-        { "name": "D3.js", "color": "blue" },
-        { "name": "Python", "color": "yellow" },
-        { "name": "PostgreSQL", "color": "green" }
+        { "name": "AI Agent", "color": "blue" },
+        { "name": "RAG", "color": "yellow" },
+        { "name": "Personalization", "color": "green" }
       ],
       "icon": "M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M4,5V19H20V5H4M6,7H18V9H6V7M6,11H14V13H6V11M6,15H16V17H6V15Z"
     }
