@@ -1,5 +1,93 @@
-# Vue 3 + Vite
+# Jui-Hsuan Lee Portfolio
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Personal portfolio site for **Jui-Hsuan Lee**, focused on:
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+- AI Engineer / LLM / RAG Engineer positioning
+- Enterprise AI integration and AI Agent workflows
+- Research, experience, and interactive terminal-style presentation
+
+Live site:
+[https://juihsuanlee0303.github.io/](https://juihsuanlee0303.github.io/)
+
+## Stack
+
+- Vue 3
+- Vite
+- Vue Router
+- Tailwind CSS
+
+## Main Sections
+
+- `Home`: positioning, featured case studies, skills, and contact links
+- `Research`: conferences, publications, abstracts, and PDF links
+- `Experience`: timeline-based work experience and highlights
+- `Terminal`: interactive shell-style portfolio exploration
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build locally:
+
+```bash
+npm run preview
+```
+
+## Deployment
+
+This project is deployed to **GitHub Pages** using the `gh-pages` branch.
+
+Publish the latest build:
+
+```bash
+npm run deploy
+```
+
+The deploy script will:
+
+1. Build the site into `dist`
+2. Publish `dist` to the `gh-pages` branch
+
+## Project Structure
+
+```text
+src/
+  components/    Shared UI components
+  data/          Content and portfolio data
+  router/        Route and metadata handling
+  views/         Page-level Vue views
+public/
+  publications/  PDF files for publications
+```
+
+## Content Updates
+
+Most portfolio content is managed in:
+
+- `src/data/common.json`
+- `src/data/home.json`
+- `src/data/experience.json`
+- `src/data/research.json`
+- `src/data/terminal.json`
+
+## Notes
+
+- PDF assets for publications should be placed in `public/publications`
+- Research page links use public URLs such as `/publications/filename.pdf`
+- After updating source code, GitHub Pages will not refresh until `npm run deploy` is executed
