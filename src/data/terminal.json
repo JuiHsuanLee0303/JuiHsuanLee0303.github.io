@@ -1,6 +1,6 @@
 {
   "welcomeMessages": [
-    "Welcome to Jui-Hsuan Lee's Interactive Terminal",
+    "juihsuan@portfolio: interactive shell session started",
     "Type 'help' to see available commands."
   ],
   "helpCommand": {
@@ -11,6 +11,10 @@
       { "command": "ls [directory]", "description": "List directory contents" },
       { "command": "cat <file>", "description": "Display file contents" },
       { "command": "whoami", "description": "Display user information" },
+      { "command": "history", "description": "Show command history" },
+      { "command": "date", "description": "Display current local time" },
+      { "command": "uname", "description": "Print system information" },
+      { "command": "echo <text>", "description": "Print text to the terminal" },
       { "command": "./quick_links.sh", "description": "Show quick links" },
       { "command": "shutdown", "description": "Shutdown the system" },
       { "command": "poweroff", "description": "Power off the system" },
@@ -72,4 +76,3 @@
   },
   "readmeCommand": "cat README.txt"
 }
-

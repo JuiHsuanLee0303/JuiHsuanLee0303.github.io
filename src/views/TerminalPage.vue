@@ -6,74 +6,123 @@
       :on-complete="handleCrashComplete"
     />
     
-    <div class="flex-1 container mx-auto px-4 py-6 flex flex-col min-h-0">
+    <div class="flex-1 container mx-auto px-4 py-4 md:py-6 flex flex-col min-h-0">
       <!-- 終端機標題 -->
-      <div class="flex-shrink-0 mb-4 text-terminal-green/70 text-sm border-b border-terminal-green/30 pb-2">
-        Terminal - Interactive Shell
+      <div class="flex-shrink-0 mb-4 flex flex-col gap-3 rounded-3xl border border-terminal-green/20 bg-black/45 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)] md:flex-row md:items-center md:justify-between">
+        <div>
+          <div class="text-terminal-green/70 text-sm">Terminal - Interactive Shell</div>
+          <div class="mt-1 text-xs text-terminal-green/45">使用上下方向鍵瀏覽歷史，或點擊下方快捷指令快速探索。</div>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span class="rounded-full border border-terminal-green/20 px-3 py-1.5 text-terminal-green/60">cwd {{ currentDirectory }}</span>
+          <span class="rounded-full border border-terminal-green/20 px-3 py-1.5 text-terminal-green/60">history {{ commandHistory.length }}</span>
+          <button
+            @click="runShortcut('clear')"
+            class="rounded-full border border-terminal-green/20 px-3 py-1.5 text-terminal-green/70 hover:border-terminal-green/50 hover:text-terminal-green"
+          >
+            clear
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-shrink-0 mb-4 flex flex-wrap gap-2">
+        <button
+          v-for="shortcut in quickCommands"
+          :key="shortcut.command"
+          @click="runShortcut(shortcut.command)"
+          class="rounded-full border border-terminal-green/20 bg-terminal-green/5 px-3 py-2 text-xs text-terminal-green/70 hover:border-terminal-green/55 hover:bg-terminal-green/10 hover:text-terminal-green"
+        >
+          {{ shortcut.label }}
+        </button>
       </div>
 
       <!-- 終端機輸出區域 -->
-      <div 
-        ref="outputContainer"
-        class="flex-1 overflow-y-auto mb-4 space-y-2 terminal-output min-h-0"
+      <div
+        class="flex-1 mb-4 rounded-3xl border border-terminal-green/18 bg-black/45 shadow-[0_12px_30px_rgba(0,0,0,0.25)] min-h-0 flex flex-col overflow-hidden"
+        @click="focusInput"
       >
-        <div
-          v-for="(message, index) in terminalWelcomeMessages"
-          :key="index"
-          class="text-terminal-green/70 text-sm mb-4"
-        >
-          {{ message }}
-        </div>
-        
-        <!-- 歷史輸出 -->
-        <div
-          v-for="(output, index) in outputHistory"
-          :key="index"
-          class="output-item"
-        >
-          <!-- 命令提示符和輸入 -->
-          <div class="flex items-start mb-1">
-            <span class="prompt-symbol mr-2">{{ output.directory === '/' ? '$' : output.directory + ' $' }}</span>
-            <span class="text-terminal-green">{{ output.command }}</span>
+        <div class="terminal-window-bar border-b border-terminal-green/12 bg-black/55 px-4 py-3 md:px-5">
+          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2">
+                <span class="window-dot window-dot-red"></span>
+                <span class="window-dot window-dot-amber"></span>
+                <span class="window-dot window-dot-green"></span>
+              </div>
+              <div class="text-xs text-terminal-green/55">shell://juihsuan@portfolio{{ currentDirectory }}</div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-[11px] text-terminal-green/45">
+              <span class="rounded-full border border-terminal-green/15 px-2 py-1">click terminal to focus</span>
+              <span class="rounded-full border border-terminal-green/15 px-2 py-1">enter to run</span>
+              <span class="rounded-full border border-terminal-green/15 px-2 py-1">tab to complete</span>
+              <span class="rounded-full border border-terminal-green/15 px-2 py-1">ctrl+l to clear</span>
+            </div>
           </div>
-          <!-- 命令輸出 -->
-          <div 
-            v-if="output.result"
-            class="ml-6 text-terminal-green/80 whitespace-pre-wrap"
-            v-html="output.result"
-          ></div>
-          <!-- 錯誤訊息 -->
-          <div 
-            v-if="output.error"
-            class="ml-6 text-red-400"
+        </div>
+        <div 
+          ref="outputContainer"
+          class="flex-1 overflow-y-auto p-4 md:p-5 space-y-2 terminal-output min-h-0"
+        >
+          <div
+            v-for="(output, index) in outputHistory"
+            :key="index"
+            class="output-item rounded-2xl border border-transparent px-2 py-2 hover:border-terminal-green/10"
           >
-            {{ output.error }}
+            <!-- 命令提示符和輸入 -->
+            <div class="mb-1 flex items-start gap-2">
+              <span class="output-timestamp">{{ formatTimestamp(output.timestamp) }}</span>
+              <span class="prompt-symbol mr-1">{{ formatPrompt(output.directory) }}</span>
+              <span :class="getCommandClass(output)">{{ output.command }}</span>
+            </div>
+            <!-- 命令輸出 -->
+            <div 
+              v-if="output.result"
+              :class="['ml-[5.15rem] whitespace-pre-wrap', getResultClass(output)]"
+            >{{ output.result }}</div>
+            <!-- 錯誤訊息 -->
+            <div 
+              v-if="output.error"
+              class="ml-[5.15rem] terminal-error whitespace-pre-wrap"
+            >
+              {{ output.error }}
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- 輸入區域 -->
-      <div class="flex-shrink-0 flex items-center border-t border-terminal-green/30 pt-2">
-        <span class="prompt-symbol mr-2">{{ currentDirectory === '/' ? '$' : currentDirectory + ' $' }}</span>
-        <input
-          ref="inputRef"
-          v-model="currentInput"
-          @keydown="handleKeyDown"
-          @keyup.enter="executeCommand"
-          type="text"
-          class="flex-1 bg-transparent border-none outline-none text-terminal-green font-mono"
-          placeholder=""
-          autofocus
-        />
-        <span class="cursor-blink ml-1">_</span>
+        <div class="border-t border-terminal-green/15 bg-black/55 px-4 py-3 md:px-5 md:py-4">
+          <div class="flex items-center">
+            <span class="prompt-symbol mr-2">{{ formatPrompt(currentDirectory) }}</span>
+            <input
+              ref="inputRef"
+              v-model="currentInput"
+              @keydown="handleKeyDown"
+              @keyup.enter="executeCommand"
+              type="text"
+              class="flex-1 bg-transparent border-none outline-none text-terminal-green font-mono"
+              placeholder="Try: help, whoami, research, paper, tanet"
+              autofocus
+            />
+            <span class="cursor-blink ml-1">_</span>
+          </div>
+          <div v-if="commandSuggestions.length > 0" class="mt-3 flex flex-wrap gap-2">
+            <button
+              v-for="suggestion in commandSuggestions"
+              :key="suggestion.label"
+              @click="applySuggestion(suggestion.value)"
+              class="suggestion-chip rounded-full border border-terminal-green/18 px-3 py-1.5 text-xs text-terminal-green/65 hover:border-terminal-green/50 hover:text-terminal-green"
+            >
+              <span class="suggestion-label">{{ suggestion.label }}</span>
+              <span v-if="suggestion.meta" class="ml-2 text-terminal-green/35">{{ suggestion.meta }}</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch, inject } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, nextTick, watch, inject, computed } from 'vue'
 import { 
   skills, 
   conferences, 
@@ -90,7 +139,6 @@ import {
 } from '../data'
 import CrashAnimation from '../components/CrashAnimation.vue'
 
-const router = useRouter()
 const shutdown = inject('shutdown')
 const inputRef = ref(null)
 const outputContainer = ref(null)
@@ -99,7 +147,96 @@ const outputHistory = ref([])
 const commandHistory = ref([])
 const historyIndex = ref(-1)
 const currentDirectory = ref('/')
+const previousDirectory = ref('/')
 const showCrashAnimation = ref(false)
+const shellUser = 'juihsuan'
+const shellHost = 'portfolio'
+const validDirectories = ['/', '/skills', '/conferences', '/publications', '/experiences']
+const rootFiles = ['about.txt', 'research.txt', 'experience.txt', 'README.txt', 'quick_links.sh']
+const availableCommands = [
+  'pwd',
+  'cd',
+  'ls',
+  'cat',
+  'whoami',
+  'history',
+  'date',
+  'uname',
+  'echo',
+  './quick_links.sh',
+  'shutdown',
+  'poweroff',
+  'halt',
+  'clear',
+  'help',
+  'coffee',
+  'paper',
+  'rag',
+  'llm',
+  'tanet',
+  'research',
+  'easter-egg',
+  'egg',
+  'howdoyouturnthison'
+]
+
+const quickCommands = [
+  { label: 'help', command: 'help' },
+  { label: 'whoami', command: 'whoami' },
+  { label: 'research', command: 'research' },
+  { label: 'paper', command: 'paper' },
+  { label: 'tanet', command: 'tanet' },
+  { label: 'history', command: 'history' },
+  { label: 'ls /', command: 'ls /' }
+]
+
+const commandSuggestions = computed(() => {
+  const input = currentInput.value
+  const { parts, hasTrailingSpace } = splitCommandInput(input)
+
+  if (!input.trim()) {
+    return quickCommands.slice(0, 4).map((item) => ({
+      label: item.command,
+      value: item.command,
+      meta: 'quick'
+    }))
+  }
+
+  if (parts.length <= 1 && !hasTrailingSpace) {
+    return availableCommands
+      .filter((command) => command.startsWith(parts[0] || ''))
+      .slice(0, 5)
+      .map((command) => ({
+        label: command,
+        value: command,
+        meta: 'command'
+      }))
+  }
+
+  const baseCommand = parts[0]
+  if (!['cd', 'ls', 'cat'].includes(baseCommand)) {
+    return []
+  }
+
+  const rawValue = hasTrailingSpace ? '' : input.slice(input.indexOf(baseCommand) + baseCommand.length).trimStart()
+  const normalizedValue = normalizeInputPath(rawValue)
+  const lastSlashIndex = normalizedValue.lastIndexOf('/')
+  const typedDirectory = lastSlashIndex >= 0 ? normalizedValue.slice(0, lastSlashIndex + 1) : ''
+  const typedName = lastSlashIndex >= 0 ? normalizedValue.slice(lastSlashIndex + 1) : normalizedValue
+  const directoryPath = normalizePath(resolvePath(typedDirectory || '.'))
+
+  return getDirectoryEntries(directoryPath)
+    .filter((entry) => entry.startsWith(typedName))
+    .slice(0, 5)
+    .map((entry) => {
+      const normalizedEntry = baseCommand === 'cd' ? entry.replace(/\/$/, '') : entry
+      return {
+        label: `${baseCommand} ${typedDirectory}${normalizedEntry}`.trim(),
+        value: `${baseCommand} ${typedDirectory}${normalizedEntry}`.trim(),
+        meta: directoryPath
+      }
+    })
+})
 
 // 自動滾動到底部
 const scrollToBottom = () => {
@@ -110,13 +247,182 @@ const scrollToBottom = () => {
   })
 }
 
+const focusInput = () => {
+  nextTick(() => {
+    inputRef.value?.focus()
+  })
+}
+
+const runShortcut = (command) => {
+  currentInput.value = command
+  executeCommand()
+  focusInput()
+}
+
+const applySuggestion = (value) => {
+  currentInput.value = value
+  focusInput()
+}
+
+const formatPrompt = (directory) => `${shellUser}@${shellHost}:${directory}$`
+const formatTimestamp = (timestamp) => new Date(timestamp).toLocaleTimeString('zh-TW', {
+  hour: '2-digit',
+  minute: '2-digit'
+})
+
+const getCommandClass = (output) => {
+  if (output.command === 'motd') return 'terminal-command terminal-command-system'
+  if (output.command === 'tab') return 'terminal-command terminal-command-hint'
+  return 'terminal-command'
+}
+
+const getResultClass = (output) => {
+  if (output.command === 'motd') return 'terminal-result terminal-result-system'
+  if (output.command === 'tab') return 'terminal-result terminal-result-hint'
+  return 'terminal-result'
+}
+
+const normalizeInputPath = (value) => value.replace(/^["']|["']$/g, '')
+
+const getDirectoryEntries = (directory) => {
+  switch (directory) {
+    case '/':
+      return [
+        ...rootFiles,
+        ...validDirectories.filter((path) => path !== '/').map((path) => `${path.split('/').pop()}/`)
+      ]
+    case '/skills':
+      return skills.map((skill) => skill.title)
+    case '/conferences':
+      return conferences.map((conference) => conference.title)
+    case '/publications':
+      return publications.map((publication) => publication.title)
+    case '/experiences':
+      return experiences.map((experience) => `${experience.position}@${experience.company}`)
+    default:
+      return []
+  }
+}
+
+const getCommonPrefix = (values) => {
+  if (!values.length) return ''
+
+  let prefix = values[0]
+
+  for (let i = 1; i < values.length; i += 1) {
+    while (!values[i].startsWith(prefix) && prefix) {
+      prefix = prefix.slice(0, -1)
+    }
+  }
+
+  return prefix
+}
+
+const splitCommandInput = (input) => {
+  const trimmed = input.replace(/\s+$/, '')
+  const hasTrailingSpace = /\s$/.test(input)
+  const parts = trimmed ? trimmed.split(/\s+/) : []
+
+  return { parts, hasTrailingSpace }
+}
+
+const autocompleteCommand = (value) => {
+  const matches = availableCommands.filter((command) => command.startsWith(value)).sort()
+
+  if (!matches.length) return null
+
+  if (matches.length === 1) {
+    return { nextValue: `${matches[0]} `, matches }
+  }
+
+  const commonPrefix = getCommonPrefix(matches)
+  return {
+    nextValue: commonPrefix.length > value.length ? commonPrefix : value,
+    matches
+  }
+}
+
+const autocompletePath = (baseCommand, rawValue) => {
+  const originalValue = rawValue || ''
+  const value = normalizeInputPath(originalValue)
+  const lastSlashIndex = value.lastIndexOf('/')
+  const typedDirectory = lastSlashIndex >= 0 ? value.slice(0, lastSlashIndex + 1) : ''
+  const typedName = lastSlashIndex >= 0 ? value.slice(lastSlashIndex + 1) : value
+  const directoryPath = normalizePath(resolvePath(typedDirectory || '.'))
+  const entries = getDirectoryEntries(directoryPath)
+  const matches = entries.filter((entry) => entry.startsWith(typedName)).sort()
+
+  if (!matches.length) return null
+
+  const commonPrefix = matches.length === 1 ? matches[0] : getCommonPrefix(matches)
+  const quoted = originalValue.startsWith('"') && originalValue.endsWith('"')
+  const prefixValue = typedDirectory
+  const completion = `${prefixValue}${commonPrefix}`
+  const shouldAppendSpace = matches.length === 1 && !completion.endsWith('/')
+  const nextRawValue = quoted ? `"${completion}${shouldAppendSpace ? '" ' : '"'}` : `${completion}${shouldAppendSpace ? ' ' : ''}`
+
+  if (baseCommand === 'cd' && matches.length === 1 && matches[0].endsWith('/')) {
+    return {
+      nextValue: quoted ? `"${prefixValue}${matches[0].replace(/\/$/, '')}" ` : `${prefixValue}${matches[0].replace(/\/$/, '')} `,
+      matches
+    }
+  }
+
+  return {
+    nextValue: nextRawValue,
+    matches
+  }
+}
+
+const handleTabCompletion = () => {
+  const input = currentInput.value
+  const { parts, hasTrailingSpace } = splitCommandInput(input)
+
+  if (!parts.length) {
+    addOutput('tab', availableCommands.join('    '), '')
+    scrollToBottom()
+    return
+  }
+
+  if (parts.length === 1 && !hasTrailingSpace) {
+    const completion = autocompleteCommand(parts[0])
+
+    if (!completion) return
+
+    currentInput.value = completion.nextValue
+
+    if (completion.matches.length > 1 && completion.nextValue === parts[0]) {
+      addOutput(input, completion.matches.join('    '), '')
+      scrollToBottom()
+    }
+
+    return
+  }
+
+  const command = parts[0]
+  if (!['cd', 'ls', 'cat'].includes(command)) return
+
+  const rawValue = hasTrailingSpace ? '' : input.slice(input.indexOf(command) + command.length).trimStart()
+  const completion = autocompletePath(command, rawValue)
+
+  if (!completion) return
+
+  currentInput.value = `${command} ${completion.nextValue}`.trimEnd()
+
+  const normalizedCurrent = normalizeInputPath(rawValue)
+  if (completion.matches.length > 1 && normalizeInputPath(completion.nextValue) === normalizedCurrent) {
+    addOutput(input, completion.matches.join('    '), '')
+    scrollToBottom()
+  }
+}
+
 // 指令處理器
 const executeCommand = () => {
   const command = currentInput.value.trim()
   
   if (!command) {
-    addOutput('', '', '')
     currentInput.value = ''
+    focusInput()
     return
   }
 
@@ -127,7 +433,9 @@ const executeCommand = () => {
   historyIndex.value = commandHistory.value.length
 
   // 解析命令
-  const [cmd, ...args] = command.split(' ')
+  const [cmd = '', ...args] = command.split(' ')
+  const rawArgString = command.slice(cmd.length).trim()
+  const normalizedArgString = normalizeInputPath(rawArgString)
   
   // 檢查危險命令 rm -rf /
   const commandLower = command.toLowerCase()
@@ -162,32 +470,38 @@ const executeCommand = () => {
         break
 
       case 'cd':
-        const cdResult = handleCdCommand(args[0] || '')
+        const cdResult = handleCdCommand(normalizedArgString)
         if (cdResult.error) {
           error = cdResult.error
         } else {
+          addOutput(command, '', '')
+          previousDirectory.value = currentDirectory.value
           currentDirectory.value = cdResult.directory
-          // cd 命令不顯示輸出，只改變目錄
+          // cd 命令不顯示輸出，但會保留上一個 prompt 的歷史
           currentInput.value = ''
+          scrollToBottom()
+          focusInput()
           return
         }
         break
 
       case 'cat':
-        if (!args[0]) {
+        if (!normalizedArgString) {
           error = terminalErrorMessages.catMissingOperand
         } else {
-          const filePath = resolvePath(args[0])
+          const filePath = resolvePath(normalizedArgString)
           result = handleCatCommand(filePath)
           if (!result) {
-            error = terminalErrorMessages.catNoSuchFile.replace('{file}', args[0])
+            error = terminalErrorMessages.catNoSuchFile.replace('{file}', normalizedArgString)
           }
         }
         break
 
       case 'ls':
-        const lsPath = args[0] || currentDirectory.value
-        result = handleLsCommand(lsPath)
+        const lsPath = normalizedArgString || currentDirectory.value
+        const lsResult = handleLsCommand(lsPath)
+        result = lsResult.result
+        error = lsResult.error
         break
 
       case 'help':
@@ -197,9 +511,28 @@ const executeCommand = () => {
           ).join('\n')
         break
 
+      case 'history':
+        result = commandHistory.value.map((entry, index) => `${index + 1}  ${entry}`).join('\n')
+        break
+
+      case 'date':
+        result = new Date().toString()
+        break
+
+      case 'uname':
+        result = rawArgString === '-a'
+          ? 'PortfolioOS 1.0.0 juihsuan terminal-shell x86_64'
+          : 'PortfolioOS'
+        break
+
+      case 'echo':
+        result = rawArgString
+        break
+
       case 'clear':
         outputHistory.value = []
         currentInput.value = ''
+        focusInput()
         return
 
       case 'shutdown':
@@ -268,8 +601,7 @@ const executeCommand = () => {
         if (command.startsWith('./')) {
           if (command === './quick_links.sh') {
             result = quickLinks.map((link, idx) => {
-              const path = link.type === 'mailto' ? `mailto:${personalInfo.email}` : 
-                          link.type === 'external' ? personalInfo.github : link.path
+              const path = link.type === 'mailto' ? link.path : link.path
               return `[${idx + 1}] ${link.label} - ${path}`
             }).join('\n')
           } else {
@@ -290,6 +622,7 @@ const executeCommand = () => {
   addOutput(command, result, error)
   currentInput.value = ''
   scrollToBottom()
+  focusInput()
 }
 
 const addOutput = (command, result, error) => {
@@ -304,6 +637,14 @@ const addOutput = (command, result, error) => {
 
 // 解析路徑（支援相對路徑和絕對路徑）
 const resolvePath = (path) => {
+  if (!path) {
+    return currentDirectory.value
+  }
+
+  if (path === '~') {
+    return '/'
+  }
+
   if (path.startsWith('/')) {
     // 絕對路徑
     return path
@@ -346,8 +687,7 @@ const handleCdCommand = (target) => {
   }
   
   if (target === '-') {
-    // cd - 回到上一個目錄（簡化處理，回到根目錄）
-    return { directory: '/', error: null }
+    return { directory: previousDirectory.value, error: null }
   }
   
   // 解析路徑
@@ -355,8 +695,6 @@ const handleCdCommand = (target) => {
   targetPath = normalizePath(targetPath)
   
   // 檢查目錄是否存在
-  const validDirectories = ['/', '/skills', '/conferences', '/publications', '/experiences']
-  
   if (validDirectories.includes(targetPath)) {
     return { directory: targetPath, error: null }
   } else {
@@ -367,14 +705,13 @@ const handleCdCommand = (target) => {
 const handleCatCommand = (filePath) => {
   // 標準化路徑
   const normalizedPath = normalizePath(filePath)
-  
-  // 提取文件名
-  const filename = normalizedPath.split('/').pop()
-  
+
   switch (normalizedPath) {
     case '/about.txt':
-    case '/README.txt':
       return terminalFileContents['about.txt']
+
+    case '/README.txt':
+      return terminalFileContents['README.txt']
 
     case '/research.txt':
       return terminalFileContents['research.txt'].template
@@ -464,28 +801,38 @@ const handleLsCommand = (directory) => {
   
   switch (cleanPath) {
     case '/':
-      return terminalLsOutputs['/']
+      return { result: terminalLsOutputs['/'], error: '' }
 
     case '/skills':
-      return skills.map(skill => skill.title).join('\n')
+      return { result: skills.map(skill => skill.title).join('\n'), error: '' }
 
     case '/conferences':
-      return conferences.map(conf => `${conf.title} (${conf.date})`).join('\n')
+      return { result: conferences.map(conf => `${conf.title} (${conf.date})`).join('\n'), error: '' }
 
     case '/publications':
-      return publications.map(pub => `${pub.title} (${pub.year})`).join('\n')
+      return { result: publications.map(pub => `${pub.title} (${pub.year})`).join('\n'), error: '' }
 
     case '/experiences':
-      return experiences.map(exp => `${exp.position}@${exp.company} (${exp.startDate}${exp.isCurrent ? '-仍在職' : `-${exp.endDate}`})`).join('\n')
+      return { result: experiences.map(exp => `${exp.position}@${exp.company} (${exp.startDate}${exp.isCurrent ? '-仍在職' : `-${exp.endDate}`})`).join('\n'), error: '' }
 
     default:
-      return terminalErrorMessages.lsCannotAccess.replace('{dir}', directory)
+      if (rootFiles.includes(cleanPath.replace(/^\//, ''))) {
+        return { result: cleanPath.replace(/^\//, ''), error: '' }
+      }
+
+      return {
+        result: '',
+        error: terminalErrorMessages.lsCannotAccess.replace('{dir}', directory)
+      }
   }
 }
 
 const handleKeyDown = (event) => {
   // 上下箭頭瀏覽歷史
-  if (event.key === 'ArrowUp') {
+  if (event.key === 'Tab') {
+    event.preventDefault()
+    handleTabCompletion()
+  } else if (event.key === 'ArrowUp') {
     event.preventDefault()
     if (commandHistory.value.length > 0) {
       if (historyIndex.value > 0) {
@@ -505,9 +852,8 @@ const handleKeyDown = (event) => {
   } else if (event.key === 'l' && event.ctrlKey) {
     // Ctrl+L 清空終端
     event.preventDefault()
-    executeCommand()
-    currentInput.value = 'clear'
-    executeCommand()
+    outputHistory.value = []
+    currentInput.value = ''
   }
 }
 
@@ -525,16 +871,11 @@ const handleCrashComplete = () => {
 
 onMounted(() => {
   // 顯示歡迎訊息
-  const readmeContent = terminalFileContents['README.txt']
-  const welcomeMsg = readmeContent + '\n\n' + terminalWelcomeMessages.join('\n')
-  addOutput('cat README.txt', welcomeMsg, '')
+  const welcomeMsg = `${terminalWelcomeMessages.join('\n')}\n\n${terminalFileContents['README.txt']}`
+  addOutput('motd', welcomeMsg, '')
   
   // 聚焦輸入框
-  nextTick(() => {
-    if (inputRef.value) {
-      inputRef.value.focus()
-    }
-  })
+  focusInput()
 })
 </script>
 
@@ -564,6 +905,56 @@ onMounted(() => {
 
 .output-item {
   margin-bottom: 0.5rem;
+  animation: shellOutputIn 0.28s ease;
+}
+
+.output-timestamp {
+  min-width: 3.4rem;
+  color: rgba(0, 255, 0, 0.32);
+  font-size: 11px;
+  line-height: 1.5rem;
+}
+
+.terminal-command {
+  color: rgba(57, 255, 20, 0.95);
+}
+
+.terminal-command-system {
+  color: rgba(143, 255, 143, 0.9);
+}
+
+.terminal-command-hint {
+  color: #7dd3fc;
+}
+
+.terminal-result {
+  color: rgba(180, 255, 180, 0.78);
+}
+
+.terminal-result-system {
+  color: rgba(143, 255, 143, 0.82);
+}
+
+.terminal-result-hint {
+  color: rgba(125, 211, 252, 0.9);
+}
+
+.terminal-error {
+  color: #f87171;
+}
+
+.suggestion-chip {
+  background: rgba(0, 255, 0, 0.04);
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.suggestion-chip:hover {
+  background: rgba(0, 255, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.suggestion-label {
+  color: rgba(180, 255, 180, 0.82);
 }
 
 input {
@@ -591,5 +982,47 @@ input::placeholder {
 .terminal-output::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 255, 0, 0.5);
 }
-</style>
 
+.terminal-window-bar {
+  position: relative;
+}
+
+.terminal-window-bar::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.18), transparent);
+}
+
+.window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+.window-dot-red {
+  background: #ff5f56;
+}
+
+.window-dot-amber {
+  background: #ffbd2e;
+}
+
+.window-dot-green {
+  background: #27c93f;
+}
+
+@keyframes shellOutputIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

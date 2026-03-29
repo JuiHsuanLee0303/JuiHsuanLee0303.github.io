@@ -9,16 +9,27 @@
       "endDate": null,
       "isCurrent": true,
       "responsibilities": [
-        "開發 Agile PLM MCP Server：開發 Agile PLM MCP Server，實現以自然語言與 Agile PLM 互動的 AI 系統。",
-        "建置 AI 系統：主導端到端 AI 解決方案的開發，涵蓋檢索增強生成（RAG）架構、自然語言處理（NLP）/大型語言模型（LLM）應用，以及系統部署，支援實際商業需求。",
-        "開發 Polarion AI 客製程式：開發 Polarion AI 客製程式，將客製 AI 功能嵌入 Polarion 系統中。",
-        "協助導入 Teamcenter AI Chat 模組：協助導入 Teamcenter AI Chat 模組，實現以自然語言與 Teamcenter 互動的 AI 系統。"
+        "主導 Agile PLM MCP Server 核心功能開發，將多數常用操作封裝為自然語言可執行流程。",
+        "主導 Anselm AI 介面開發，整合 Agent Skill、MCP、RAG、Local LLM 與企業權限邏輯，建立企業級 AI 平台使用體驗。",
+        "參與 AI 解決方案端到端規劃與交付，涵蓋 RAG 架構、LLM 應用整合與企業場景部署。",
+        "研究 Local LLM 在企業端的落地方式，涵蓋 llama.cpp、vLLM、ollama 與 LM Studio 等推論與部署選項。",
+        "延伸 AI 能力至 Polarion 與 Teamcenter 等企業系統，降低既有系統操作門檻並提升知識查詢效率。"
+      ],
+      "impactNotes": [
+        "Agile PLM MCP Server 已覆蓋多數使用者常用操作，支援以自然語言完成系統操作、複合查詢與多維度搜尋。",
+        "Anselm AI 作為整合 Agent Skill、MCP、RAG 與 Local LLM 的企業級平台，已於多家公司測試並完成 PoC。",
+        "Anselm AI 與 Agile PLM MCP Server 可一同捆售，除對外方案外，公司內部約 20 位使用者也已實際使用。"
       ],
       "technologies": [
         "Agile PLM",
         "MCP Server",
         "RAG",
         "LLM",
+        "Local LLM",
+        "llama.cpp",
+        "vLLM",
+        "ollama",
+        "LM Studio",
         "Polarion",
         "Teamcenter"
       ]
@@ -32,10 +43,14 @@
       "endDate": "2025-12",
       "isCurrent": false,
       "responsibilities": [
-        "開發 Model Context Protocol (MCP) Server：設計與實作 MCP Server，實現大型語言模型與企業系統的整合，包括 JWT 驗證機制、檢索管線設計及向量資料庫串接",
-        "建置 AI 系統：主導端到端 AI 解決方案的開發，涵蓋檢索增強生成（RAG）架構、自然語言處理（NLP）/大型語言模型（LLM）應用，以及系統部署，支援實際商業需求",
-        "與跨部門團隊合作，確保 AI 系統設計能符合企業需求，並兼顧可擴展性、穩定性與維護性",
-        "參與研究型原型開發與產品級 AI 應用，將前沿 AI 技術轉化為企業可落地的解決方案"
+        "設計與實作 MCP Server，串接大型語言模型與企業系統，處理 JWT 驗證、檢索管線與向量資料庫整合。",
+        "參與端到端 AI 系統開發，涵蓋 RAG、NLP / LLM 應用與企業需求導向的服務設計。",
+        "與跨部門團隊合作，兼顧可擴展性、穩定性與維護性，將 AI 能力轉為可被採用的企業工具。",
+        "參與研究型原型與產品級 AI 應用開發，累積企業導入 AI 的實務經驗。"
+      ],
+      "impactNotes": [
+        "Agile PLM MCP Server 已完成多數使用者常用操作開發，讓使用者能透過自然語言進行系統操作、複合查詢與多維度搜尋。",
+        "參與建立從模型到企業系統的整合基礎，支撐產品化與客戶 PoC 推進。"
       ],
       "technologies": [
         "MCP Server",
@@ -55,7 +70,11 @@
       "endDate": "2026-01",
       "isCurrent": false,
       "responsibilities": [
-        "開發並維護學雜費減免與弱勢助學金系統：開發並維護學雜費減免與弱勢助學金系統，協助學生簡化申請流程以及簡化承辦人員作業。"
+        "開發並維護學雜費減免與弱勢助學金系統，支援學生申請流程與承辦單位作業管理。"
+      ],
+      "impactNotes": [
+        "系統服務全校學生，每學期約支援 500 筆申請案件處理。",
+        "系統自 113 學年度下學期開始上線，協助學校正式承接減免與弱勢助學金申請流程。"
       ],
       "technologies": [
         "Node.js",
@@ -67,4 +86,3 @@
     }
   ]
 }
-

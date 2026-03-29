@@ -17,6 +17,9 @@
   --terminal-green-dim: #00ff0080;
   --terminal-bg: #000000;
   --terminal-bg-alt: #0a0a0a;
+  --terminal-radius-panel: 1.5rem;
+  --terminal-radius-card: 1rem;
+  --terminal-radius-pill: 9999px;
 }
 
 * {
@@ -30,11 +33,22 @@ html, body {
   color: var(--terminal-green);
   font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', 'Monaco', 'Consolas', monospace;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 #app {
   min-height: 100vh;
   background-color: var(--terminal-bg);
+}
+
+::selection {
+  background: rgba(57, 255, 20, 0.22);
+  color: #f3fff3;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(57, 255, 20, 0.9);
+  outline-offset: 2px;
 }
 
 /* 終端機綠色文字 */
@@ -116,6 +130,12 @@ a:hover {
   text-decoration: underline;
 }
 
+a,
+button,
+input {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
 /* 終端機風格按鈕 */
 button {
   font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
@@ -159,12 +179,30 @@ select {
   background-color: var(--terminal-bg-alt);
   border: 1px solid var(--terminal-green-dim);
   padding: 1rem;
-  transition: all 0.3s ease;
+  border-radius: var(--terminal-radius-card);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
 }
 
 .terminal-card:hover {
   border-color: var(--terminal-green);
-  box-shadow: 0 0 20px var(--terminal-green-dim);
+  box-shadow: 0 0 20px var(--terminal-green-dim), 0 16px 35px rgba(0, 0, 0, 0.25);
+}
+
+.terminal-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(57, 255, 20, 0.08) 30%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.terminal-card:hover::after {
+  transform: translateX(120%);
 }
 
 /* 終端機風格代碼塊 */
@@ -173,7 +211,7 @@ code {
   background-color: var(--terminal-bg-alt);
   color: var(--terminal-green);
   padding: 0.2rem 0.4rem;
-  border-radius: 3px;
+  border-radius: 0.5rem;
   border: 1px solid var(--terminal-green-dim);
 }
 
@@ -182,7 +220,7 @@ pre {
   background-color: var(--terminal-bg-alt);
   color: var(--terminal-green);
   padding: 1rem;
-  border-radius: 5px;
+  border-radius: var(--terminal-radius-card);
   border: 1px solid var(--terminal-green-dim);
   overflow-x: auto;
 }
@@ -225,7 +263,7 @@ hr {
   border: 1px solid var(--terminal-green-dim);
   color: var(--terminal-green-dim);
   font-size: 0.875rem;
-  border-radius: 3px;
+  border-radius: 0.5rem;
 }
 
 /* 終端機風格徽章 */
@@ -235,6 +273,17 @@ hr {
   background-color: var(--terminal-green-dim);
   color: var(--terminal-bg);
   font-size: 0.75rem;
-  border-radius: 3px;
+  border-radius: 0.5rem;
   font-weight: bold;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

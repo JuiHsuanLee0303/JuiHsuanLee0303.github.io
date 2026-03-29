@@ -1,110 +1,105 @@
 {
   "typewriterTexts": [
-    "AI 應用顧問",
-    "AI 工程師",
-    "全端工程師",
-    "水肺潛水員"
+    "AI Engineer",
+    "LLM / RAG Engineer",
+    "LLM / AI Agent Builder",
+    "Enterprise AI Integrator"
   ],
   "skills": [
     {
       "id": 1,
-      "title": "前端開發",
-      "description": "精通現代前端技術，創造響應式的使用者介面",
+      "title": "LLM / RAG 系統",
+      "description": "設計檢索增強生成與知識工作流，並評估 cloud / local LLM 部署策略，讓模型回答更可靠、可追溯、可落地",
       "gradient": "from-blue-500 to-cyan-500",
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
       "technologies": [
-        { "name": "HTML/CSS", "color": "blue", "experience": "3年以上經驗，熟悉響應式設計與現代CSS特性" },
-        { "name": "JavaScript", "color": "blue", "experience": "3年以上經驗，精通ES6+、非同步程式設計與模組化開發" },
-        { "name": "Vue.js", "color": "blue", "experience": "2年以上經驗，熟悉Vue 2/3、Composition API與狀態管理" },
-        { "name": "TypeScript", "color": "blue", "experience": "2年以上經驗，使用TypeScript開發大型專案，熟悉型別系統" },
-        { "name": "Tailwind CSS", "color": "blue", "experience": "2年以上經驗，使用Tailwind CSS建構現代化UI介面" },
-        { "name": "React", "color": "blue", "experience": "1年經驗，熟悉Hooks、Context API與React生態系" }
+        { "name": "Large Language Models", "color": "blue", "experience": "聚焦企業場景中的 LLM 應用設計與任務導向整合" },
+        { "name": "Retrieval-Augmented Generation", "color": "blue", "experience": "實作 RAG 系統，結合檢索管線、知識來源與回答生成" },
+        { "name": "Fine-tuning", "color": "blue", "experience": "進行指令微調與領域適配，提升模型在專業場景的可用性" },
+        { "name": "Prompt Engineering", "color": "blue", "experience": "設計面向專業任務的提示流程與回饋迭代機制" },
+        { "name": "Vector Database", "color": "blue", "experience": "串接向量索引與檢索策略，支援知識型 AI 問答系統" },
+        { "name": "Local LLM", "color": "blue", "experience": "研究企業端 local LLM 落地方式，涵蓋 llama.cpp、vLLM、ollama 與 LM Studio" }
       ],
       "skillLevels": [
-        { "name": "Vue.js", "level": 90, "experience": "主導多個 Vue 專案開發，包括此個人網站與企業級應用" },
-        { "name": "TypeScript", "level": 80, "experience": "在多個專案中採用TypeScript提升程式碼品質與維護性" },
-        { "name": "Tailwind CSS", "level": 90, "experience": "使用Tailwind CSS快速建構響應式與現代化的使用者介面" },
-        { "name": "React", "level": 65, "experience": "參與React專案開發，熟悉函數式元件與Hooks模式" }
+        { "name": "Large Language Models", "level": 90, "experience": "主導多個 LLM 應用專案，包括資安輔助系統與企業知識型助手" },
+        { "name": "Retrieval-Augmented Generation", "level": 88, "experience": "實作 RAG 架構，提升模型回答的正確性與上下文掌握能力" },
+        { "name": "Fine-tuning", "level": 90, "experience": "進行多個 LLM 微調專案，包括 instruction tuning 與領域適配" },
+        { "name": "Prompt Engineering", "level": 85, "experience": "建立可反覆優化的 prompt workflow 與專家審核流程" },
+        { "name": "Local LLM Deployment", "level": 86, "experience": "熟悉企業端 local LLM 評估與落地，能依需求選擇 llama.cpp、vLLM、ollama 或 LM Studio" }
       ]
     },
     {
       "id": 2,
-      "title": "後端開發",
-      "description": "建構穩定可靠的伺服器端應用程式與API服務",
+      "title": "AI Agent 與企業整合",
+      "description": "將模型能力接進企業系統與既有流程，讓 AI 真的能被部門與顧問團隊使用，並支援複合查詢與多維度搜尋",
       "gradient": "from-green-500 to-emerald-500",
       "icon": "M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20Z",
       "technologies": [
-        { "name": "Node.js", "color": "green", "experience": "3年以上經驗，建構高效能後端服務與API" },
-        { "name": "Python", "color": "green", "experience": "8年以上經驗，用於資料處理、AI開發與後端服務" },
-        { "name": "Express", "color": "green", "experience": "3年以上經驗，使用Express建構RESTful API與微服務架構" },
-        { "name": "FastAPI", "color": "green", "experience": "3年經驗，使用FastAPI開發高效能AI服務與API" },
-        { "name": "Django", "color": "green", "experience": "2年經驗，使用Django開發全端Web應用與管理系統" }
+        { "name": "MCP Server", "color": "green", "experience": "設計與實作 MCP Server，讓 LLM 能安全地與外部系統互動" },
+        { "name": "Agile PLM", "color": "green", "experience": "在企業流程場景中導入自然語言操作與 AI 問答能力" },
+        { "name": "Polarion", "color": "green", "experience": "將 AI 功能嵌入現有 PLM / ALM 流程，降低使用門檻" },
+        { "name": "Teamcenter", "color": "green", "experience": "協助企業系統串接 AI Chat 模組，補強知識查詢體驗" },
+        { "name": "JWT / API Integration", "color": "green", "experience": "處理驗證、工具串接與服務層設計，讓 agent 能在真實系統中運作" }
       ],
       "skillLevels": [
-        { "name": "Node.js", "level": 95, "experience": "主導多個Node.js後端專案，建構可擴展的API服務" },
-        { "name": "Python", "level": 90, "experience": "廣泛使用Python進行AI研究、資料分析與後端開發" },
-        { "name": "Express", "level": 95, "experience": "使用Express建構企業級後端服務，熟悉中介軟體與路由設計" },
-        { "name": "FastAPI", "level": 85, "experience": "使用FastAPI開發AI相關服務，熟悉非同步處理與API文件自動生成" },
-        { "name": "Django", "level": 75, "experience": "使用Django開發管理系統與全端應用，熟悉ORM與模板系統" }
+        { "name": "MCP Server", "level": 90, "experience": "主導設計 MCP-based integration，串接企業系統與 AI workflow" },
+        { "name": "Enterprise Integration", "level": 88, "experience": "在實際企業環境中處理系統整合、流程適配與部署需求" },
+        { "name": "Tool Calling", "level": 85, "experience": "建立模型與外部工具之間可控、可維護的互動方式" },
+        { "name": "System Design", "level": 84, "experience": "從需求、權限、服務層到使用場景，規劃可落地的 AI 系統架構" }
       ]
     },
     {
       "id": 3,
-      "title": "人工智慧",
-      "description": "熟悉人工智慧技術，包括大型語言模型、檢索增強生成、微調等",
+      "title": "全端與產品交付",
+      "description": "從前端體驗、後端 API 到部署，將 AI 原型做成可展示、可驗證、可持續迭代的產品",
       "gradient": "from-purple-500 to-pink-500",
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
       "technologies": [
-        { "name": "Machine Learning", "color": "blue", "experience": "3年以上經驗，熟悉監督式與非監督式學習演算法" },
-        { "name": "Deep Learning", "color": "blue", "experience": "2年以上經驗，使用TensorFlow與PyTorch開發深度學習模型" },
-        { "name": "Large Language Models", "color": "blue", "experience": "深入研究大型語言模型，包括GPT、BERT等模型的應用與微調" },
-        { "name": "Retrieval-Augmented Generation", "color": "blue", "experience": "實作RAG系統，結合向量資料庫與LLM提升回答準確性" },
-        { "name": "Model Context Protocol", "color": "blue", "experience": "熟悉Model Context Protocol，整合AI模型與外部工具" }
+        { "name": "Python", "color": "blue", "experience": "以 Python 做 AI 服務開發、資料處理與部署腳本整合" },
+        { "name": "Node.js", "color": "blue", "experience": "建立 API、系統服務與產品原型，支援企業應用需求" },
+        { "name": "FastAPI", "color": "blue", "experience": "開發高效能 AI service layer，支援模型與工具整合" },
+        { "name": "Vue.js", "color": "blue", "experience": "打造可展示 AI 能力的前端介面，協助產品驗證與對外溝通" },
+        { "name": "PostgreSQL", "color": "blue", "experience": "處理後端資料儲存與系統資料結構設計" }
       ],
       "skillLevels": [
-        { "name": "Large Language Models", "level": 90, "experience": "主導多個LLM應用專案，包括資安輔助系統與問答系統開發" },
-        { "name": "Retrieval-Augmented Generation", "level": 85, "experience": "實作RAG架構，結合檢索技術與生成模型提升系統效能" },
-        { "name": "Model Context Protocol", "level": 80, "experience": "熟悉Model Context Protocol，整合AI模型與外部工具" },
-        { "name": "Fine-tuning", "level": 90, "experience": "進行多個LLM微調專案，包括指令微調與領域適配" }
+        { "name": "Python", "level": 90, "experience": "廣泛使用 Python 進行 AI 研究、系統開發與服務整合" },
+        { "name": "Node.js", "level": 88, "experience": "建構 API 與後端服務，讓模型能力能夠穩定對外提供" },
+        { "name": "FastAPI", "level": 85, "experience": "使用 FastAPI 開發 AI service layer 與模型應用介面" },
+        { "name": "Vue.js", "level": 80, "experience": "以 Vue 建立展示型與內部工具型介面，加速 PoC 與溝通" }
       ]
     }
   ],
   "projects": [
     {
       "id": 1,
-      "title": "檢索增強生成與微調大語言模型於資安管理應用",
-      "description": "結合RAG技術與微調LLM，開發個人化資安輔助系統，提供合規檢查、風險評估與建議",
+      "title": "Anselm AI",
+      "description": "為企業打造能整合權限管理、Agent Skill、MCP、RAG 與 Local LLM 的 AI 平台，讓使用者可在受控環境中使用生成式 AI 能力。",
+      "role": "主導開發、規劃與 QA；目前唯一開發者",
+      "impact": "與 Agile PLM MCP Server 一同捆售，目前公司內部約 20 位使用者實際使用，並支援企業評估 Local LLM 落地方案。",
+      "status": "Internal Rollout (20 Users) + Client PoC",
       "gradient": "from-blue-400 to-purple-500",
       "technologies": [
-        { "name": "RAG", "color": "blue" },
-        { "name": "LLM", "color": "green" },
-        { "name": "Fine-tuning", "color": "yellow" }
+        { "name": "Vue + Vite + Tailwind CSS + TypeScript", "color": "blue" },
+        { "name": "Node.js + Express", "color": "green" },
+        { "name": "RAG + Qdrant + Elasticsearch + FastAPI", "color": "yellow" },
+        { "name": "Redis / PostgreSQL / MinIO", "color": "purple" },
+        { "name": "llama.cpp / vLLM / ollama / LM Studio", "color": "blue" }
       ],
       "icon": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
     },
     {
       "id": 2,
-      "title": "結合生成式AI與領域專家協同流程",
-      "description": "結合GenAI與專家審核機制建立高品質LLM指令微調資料集的協同方法",
+      "title": "Agile PLM MCP Server",
+      "description": "將 Agile PLM 中多數常用操作轉成自然語言可執行流程，讓使用者能以自然語言完成複合查詢、多維度搜尋與系統操作。",
+      "role": "負責 MCP Server 開發與測試",
+      "impact": "已於多家客戶完成 PoC，讓複雜的 PLM 操作可由自然語言觸發，成為企業 AI 導入方案的重要組件。",
+      "status": "Multi-client PoC",
       "gradient": "from-green-400 to-blue-500",
       "technologies": [
-        { "name": "Generative AI", "color": "blue" },
-        { "name": "Instruction Tuning", "color": "purple" },
-        { "name": "Domain Expert", "color": "green" }
+        { "name": "MCP Server", "color": "blue" },
+        { "name": "Node.js + TypeScript + Express", "color": "purple" }
       ],
       "icon": "M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z"
-    },
-    {
-      "id": 3,
-      "title": "人工智慧在資安應用趨勢研究",
-      "description": "採用系統性文獻回顧方法，分析AI在資安領域的應用現況、主要趨勢與未來研究方向",
-      "gradient": "from-purple-400 to-pink-500",
-      "technologies": [
-        { "name": "AI Security", "color": "blue" },
-        { "name": "Systematic Review", "color": "green" },
-        { "name": "Trend Analysis", "color": "purple" }
-      ],
-      "icon": "M12,2C13.65,2 15,3.35 15,5C15,6.65 13.65,8 12,8C10.35,8 9,6.65 9,5C9,3.35 10.35,2 12,2M21,9V7L15,1V3H9V1L3,7V9H21M21,10H3V18H21V10Z"
     }
   ]
-} 
+}

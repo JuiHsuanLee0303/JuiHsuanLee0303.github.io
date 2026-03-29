@@ -1,27 +1,46 @@
 <template>
-  <div class="min-h-screen bg-black text-terminal-green font-mono overflow-hidden relative">
-    <div class="container mx-auto px-6 py-12 relative z-10">
+  <div class="min-h-screen bg-transparent text-terminal-green font-mono relative">
+    <div class="container mx-auto px-4 md:px-6 py-8 md:py-12 relative z-10">
       <!-- ASCII藝術標題 -->
-      <header class="mb-12">
-        <div class="ascii-art text-xs md:text-sm mb-6 text-terminal-green/80">
-          <pre v-html="asciiArt"></pre>
+      <header :ref="setRevealSection" class="reveal-section mb-10 md:mb-12 grid gap-8 lg:grid-cols-[1.35fr_0.95fr] lg:items-stretch">
+        <div class="hero-panel h-full rounded-3xl border border-terminal-green/20 bg-black/45 p-5 md:p-8 shadow-[0_0_0_1px_rgba(0,255,0,0.04),0_20px_60px_rgba(0,0,0,0.35)]">
+          <div class="ascii-art text-[10px] md:text-sm mb-6 text-terminal-green/80">
+            <pre v-html="asciiArt"></pre>
+          </div>
+
+          <!-- 終端機提示符 -->
+          <div class="terminal-prompt mb-4">
+            <span class="prompt-symbol">$</span>
+            <span class="typing-text" :class="{ 'typing': isTyping }">whoami</span>
+            <span class="cursor-blink">_</span>
+          </div>
+
+          <div class="text-terminal-green text-lg md:text-xl mt-4">
+            <div class="mb-2">{{ personalInfo.name }}</div>
+            <div class="text-terminal-green/70 text-sm">// {{ personalInfo.title }}</div>
+          </div>
         </div>
-        
-        <!-- 終端機提示符 -->
-        <div class="terminal-prompt mb-4">
-          <span class="prompt-symbol">$</span>
-          <span class="typing-text" :class="{ 'typing': isTyping }">whoami</span>
-          <span class="cursor-blink">_</span>
-        </div>
-        
-        <div class="text-terminal-green text-lg md:text-xl mt-4">
-          <div class="mb-2">{{ personalInfo.name }}</div>
-          <div class="text-terminal-green/70 text-sm">// {{ personalInfo.title }}</div>
-        </div>
+
+        <aside class="hero-panel hero-panel--accent h-full rounded-3xl border border-terminal-green/20 bg-[linear-gradient(180deg,rgba(0,255,0,0.05),rgba(0,0,0,0.55))] p-5 md:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.35)]">
+          <div class="terminal-prompt mb-4">
+            <span class="prompt-symbol">$</span>
+            <span>status --summary</span>
+          </div>
+          <p class="text-terminal-green/80 leading-relaxed text-sm md:text-base">
+            專注於 LLM / AI Agent 系統設計，擅長把 RAG、MCP、Local LLM 與企業流程整合成可落地、可驗證、可持續擴展的 AI 應用。
+          </p>
+          <div class="mt-6 grid grid-cols-2 gap-3">
+            <div v-for="stat in quickStats" :key="stat.label" class="rounded-2xl border border-terminal-green/18 bg-black/40 px-4 py-4">
+              <div class="text-terminal-green/45 text-[11px] uppercase tracking-[0.2em]">{{ stat.label }}</div>
+              <div class="mt-2 text-2xl font-semibold text-terminal-green">{{ stat.value }}</div>
+              <div class="mt-1 text-xs text-terminal-green/60">{{ stat.description }}</div>
+            </div>
+          </div>
+        </aside>
       </header>
 
       <!-- 自我介紹 -->
-      <section class="mb-12">
+      <section :ref="setRevealSection" class="reveal-section mb-12">
         <div class="terminal-prompt mb-4">
           <span class="prompt-symbol">$</span>
           <span>cat about.txt</span>
@@ -36,7 +55,7 @@
       </section>
 
       <!-- 技能展示 -->
-      <section class="mb-12">
+      <section :ref="setRevealSection" class="reveal-section mb-12">
         <div class="terminal-prompt mb-4">
           <span class="prompt-symbol">$</span>
           <span>ls skills/</span>
@@ -45,12 +64,17 @@
           <div
             v-for="skill in skills"
             :key="skill.id"
-            class="terminal-card p-6 hover:border-terminal-green transition-all"
+            class="terminal-card group p-6 hover:-translate-y-1 hover:border-terminal-green transition-all"
           >
             <div class="mb-4">
-              <h3 class="text-xl font-bold text-terminal-green mb-2">
-                > {{ skill.title }}
-              </h3>
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="text-xl font-bold text-terminal-green mb-2">
+                  > {{ skill.title }}
+                </h3>
+                <span class="rounded-full border border-terminal-green/20 px-2 py-1 text-[11px] uppercase tracking-[0.16em] text-terminal-green/55">
+                  {{ skill.technologies.length }} Tech
+                </span>
+              </div>
               <p class="text-terminal-green/70 text-sm mb-4">
                 {{ skill.description }}
               </p>
@@ -62,6 +86,7 @@
                 class="text-terminal-green/60 text-xs relative group cursor-pointer"
                 @mouseenter="hoveredItem = { type: 'tech', name: tech.name, experience: tech.experience }"
                 @mouseleave="hoveredItem = null"
+                @click="toggleItemDetail({ type: 'tech', name: tech.name, experience: tech.experience })"
               >
                 - {{ tech.name }}
                 <div
@@ -85,6 +110,7 @@
                     class="text-terminal-green/70 cursor-pointer relative group"
                     @mouseenter="hoveredItem = { type: 'skill', name: level.name, experience: level.experience }"
                     @mouseleave="hoveredItem = null"
+                    @click="toggleItemDetail({ type: 'skill', name: level.name, experience: level.experience })"
                   >
                     {{ level.name }}
                     <div
@@ -106,15 +132,26 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="selectedItem && skillContainsSelectedItem(skill)"
+              class="mt-4 rounded-2xl border border-terminal-green/20 bg-terminal-green/6 p-3 text-xs text-terminal-green/75 md:hidden"
+            >
+              <div class="text-terminal-green/45 uppercase tracking-[0.2em]">Detail</div>
+              <div class="mt-2 font-semibold text-terminal-green">{{ selectedItem.name }}</div>
+              <div class="mt-1 leading-relaxed">{{ selectedItem.experience }}</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- 研究亮點 -->
-      <section class="mb-12">
+      <!-- 精選案例 -->
+      <section :ref="setRevealSection" class="reveal-section mb-12">
         <div class="terminal-prompt mb-4">
           <span class="prompt-symbol">$</span>
-          <span>cat research_highlights.txt</span>
+          <span>cat featured_case_studies.txt</span>
+        </div>
+        <div class="mb-4 rounded-2xl border border-terminal-green/18 bg-black/35 px-4 py-3 text-sm text-terminal-green/70">
+          這裡集中展示最能代表企業 AI 落地能力的案例，從平台設計、系統整合到實際使用情境都能快速看出技術主軸。
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div
@@ -122,12 +159,25 @@
             :key="project.id"
             class="terminal-card p-6 hover:border-terminal-green transition-all"
           >
+            <div class="mb-3 flex flex-wrap items-center gap-2">
+              <span v-if="project.status" class="rounded-full border border-terminal-green/20 px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-terminal-green/55">
+                {{ project.status }}
+              </span>
+            </div>
             <h3 class="text-xl font-bold text-terminal-green mb-2">
               > {{ project.title }}
             </h3>
             <p class="text-terminal-green/70 text-sm mb-4">
               {{ project.description }}
             </p>
+            <div v-if="project.role" class="mb-3 text-sm text-terminal-green/72">
+              <span class="text-terminal-green/45">Role:</span>
+              <span class="ml-2">{{ project.role }}</span>
+            </div>
+            <div v-if="project.impact" class="mb-4 text-sm text-terminal-green/72">
+              <span class="text-terminal-green/45">Impact:</span>
+              <span class="ml-2">{{ project.impact }}</span>
+            </div>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="tech in project.technologies"
@@ -142,19 +192,28 @@
       </section>
 
       <!-- 快速連結 -->
-      <section>
+      <section :ref="setRevealSection" class="reveal-section">
         <div class="terminal-prompt mb-4">
           <span class="prompt-symbol">$</span>
           <span>./quick_links.sh</span>
         </div>
-        <div class="terminal-card p-6">
-          <div class="space-y-2 text-terminal-green/80">
-            <div v-for="link in quickLinks" :key="link.id">
+        <div class="grid gap-4 md:grid-cols-2">
+          <div v-for="link in quickLinks" :key="link.id" class="terminal-card p-5">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <div class="text-terminal-green/45 text-xs uppercase tracking-[0.2em]">Link {{ link.id }}</div>
+                <div class="mt-2 text-terminal-green/70 text-sm">{{ getLinkDescription(link.type) }}</div>
+              </div>
+              <span class="rounded-full border border-terminal-green/20 px-2 py-1 text-[11px] text-terminal-green/55">
+                {{ link.type }}
+              </span>
+            </div>
+            <div class="mt-4 text-terminal-green/80">
               <span class="text-terminal-green">[{{ link.id }}]</span>
               <router-link
                 v-if="link.type === 'router'"
                 :to="link.path"
-                class="ml-2 hover:text-terminal-green underline"
+                class="ml-2 hover:text-terminal-green underline underline-offset-4"
               >
                 {{ link.label }}
               </router-link>
@@ -162,7 +221,8 @@
                 v-else
                 :href="link.path"
                 :target="link.type === 'external' ? '_blank' : undefined"
-                class="ml-2 hover:text-terminal-green underline"
+                :rel="link.type === 'external' ? 'noopener noreferrer' : undefined"
+                class="ml-2 hover:text-terminal-green underline underline-offset-4"
               >
                 {{ link.label }}
               </a>
@@ -184,7 +244,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import {
   typewriterTexts,
   skills as skillsData,
@@ -205,6 +265,44 @@ let typeTimeout = null
 const skills = ref(skillsData)
 const projects = ref(homeProjects)
 const hoveredItem = ref(null)
+const selectedItem = ref(null)
+const revealSections = ref([])
+let revealObserver = null
+
+const quickStats = computed(() => [
+  { label: 'Target', value: 'AI Eng.', description: '聚焦 AI Engineer 職缺' },
+  { label: 'Specialty', value: 'LLM / Agent', description: '主打模型應用落地' },
+  { label: 'Users', value: '20+', description: 'Anselm AI 內部使用者' },
+  { label: 'Infra', value: 'Local LLM', description: '支援企業端部署評估' }
+])
+
+const getLinkDescription = (type) => {
+  if (type === 'router') return '快速跳到站內重點頁面'
+  if (type === 'mailto') return '直接透過電子郵件聯繫'
+  return '開啟外部平台與作品資訊'
+}
+
+const toggleItemDetail = (item) => {
+  if (selectedItem.value?.type === item.type && selectedItem.value?.name === item.name) {
+    selectedItem.value = null
+    return
+  }
+
+  selectedItem.value = item
+}
+
+const skillContainsSelectedItem = (skill) => {
+  if (!selectedItem.value) return false
+
+  return skill.technologies.some((tech) => tech.name === selectedItem.value.name) ||
+    skill.skillLevels.some((level) => level.name === selectedItem.value.name)
+}
+
+const setRevealSection = (element) => {
+  if (element && !revealSections.value.includes(element)) {
+    revealSections.value.push(element)
+  }
+}
 
 const typeWriter = () => {
   const currentText = typewriterTexts[currentTextIndex.value]
@@ -233,6 +331,17 @@ const typeWriter = () => {
 }
 
 onMounted(() => {
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible')
+        revealObserver?.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' })
+
+  revealSections.value.forEach((section) => revealObserver?.observe(section))
+
   setTimeout(() => {
     isTyping.value = true
     setTimeout(() => {
@@ -245,10 +354,22 @@ onUnmounted(() => {
   if (typeTimeout) {
     clearTimeout(typeTimeout)
   }
+  revealObserver?.disconnect()
 })
 </script>
 
 <style scoped>
+.reveal-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .ascii-art {
   font-family: 'Courier New', monospace;
   white-space: pre;
@@ -328,6 +449,17 @@ onUnmounted(() => {
   animation: fadeIn 0.2s ease-in;
 }
 
+.hero-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  animation: fadeRise 0.7s ease both;
+}
+
+.hero-panel--accent {
+  animation-delay: 0.08s;
+}
+
 .experience-tooltip::after {
   content: '';
   position: absolute;
@@ -351,5 +483,16 @@ onUnmounted(() => {
 .group:hover .text-terminal-green\/60 {
   color: rgba(0, 255, 0, 0.8);
   transition: color 0.2s ease;
+}
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

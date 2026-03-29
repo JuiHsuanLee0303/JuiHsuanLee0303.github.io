@@ -2,15 +2,18 @@
   "personalInfo": {
     "name": "Jui-Hsuan Lee",
     "chineseName": "李睿軒",
-    "title": "全端工程師 | AI 工程師 | AI 應用顧問",
+    "title": "AI Engineer | LLM / RAG Engineer",
     "email": "juihsuanlee0303@gmail.com",
-    "github": "https://github.com"
+    "github": "https://github.com/JuiHsuanLee0303",
+    "linkedin": "https://www.linkedin.com/in/jui-hsuan-lee-a0672ab8/",
+    "website": "https://juihsuanlee0303.github.io/"
   },
   "asciiArt": "██╗    ██╗ █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗\n██║    ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║\n██║ █╗ ██║███████║██████╔╝██████╔╝█████╗  ██╔██╗ ██║\n██║███╗██║██╔══██║██╔══██╗██╔══██╗██╔══╝  ██║╚██╗██║\n╚███╔███╔╝██║  ██║██║  ██║██║  ██║███████╗██║ ╚████║\n ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝",
   "aboutText": [
-    "> 歡迎來到我的個人網站",
-    "> 我專注於人工智慧、自然語言處理、資訊安全等領域的研究",
-    "> 致力於 LLM 研究與開發 AI 應用，推動技術創新"
+    "> 我專注於 LLM / RAG 與 AI Agent 系統設計",
+    "> 擅長將大型語言模型整合進企業流程，打造可落地的 AI 應用",
+    "> 熟悉 Local LLM 在企業端的落地方式，包含 llama.cpp、vLLM、ollama 與 LM Studio",
+    "> 目前聚焦企業知識助手、MCP 工具整合、Local LLM 與資安場景的 AI 方案"
   ],
   "quickLinks": [
     {
@@ -27,16 +30,21 @@
     },
     {
       "id": 3,
-      "label": "聯絡我",
-      "type": "mailto",
-      "path": "mailto:juihsuanlee0303@gmail.com"
+      "label": "LinkedIn",
+      "type": "external",
+      "path": "https://www.linkedin.com/in/jui-hsuan-lee-a0672ab8/"
     },
     {
       "id": 4,
       "label": "GitHub",
       "type": "external",
-      "path": "https://github.com"
+      "path": "https://github.com/JuiHsuanLee0303"
+    },
+    {
+      "id": 5,
+      "label": "Email",
+      "type": "mailto",
+      "path": "mailto:juihsuanlee0303@gmail.com"
     }
   ]
 }
-
