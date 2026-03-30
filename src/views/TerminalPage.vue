@@ -89,17 +89,42 @@
           </div>
         </div>
 
+        <div
+          v-if="vimState.active"
+          class="vim-overlay border-t border-terminal-green/15 bg-black/90 backdrop-blur-sm"
+          @click.stop
+        >
+          <div class="vim-toolbar">
+            <div class="vim-title">"{{ vimState.filename }}" [{{ vimState.mode.toUpperCase() }}]</div>
+            <div class="vim-meta">{{ vimStatusText }}</div>
+          </div>
+          <textarea
+            ref="vimTextareaRef"
+            v-model="vimState.content"
+            :readonly="vimState.mode !== 'insert'"
+            @keydown="handleVimKeydown"
+            class="vim-editor"
+            spellcheck="false"
+          />
+          <div class="vim-statusline">
+            <span>{{ vimModeLabel }}</span>
+            <span v-if="vimState.mode === 'command'">:{{ vimState.commandBuffer }}</span>
+            <span v-else>{{ vimState.statusMessage }}</span>
+          </div>
+        </div>
+
         <div class="border-t border-terminal-green/15 bg-black/55 px-4 py-3 md:px-5 md:py-4">
           <div class="flex items-center">
-            <span class="prompt-symbol mr-2">{{ formatPrompt(currentDirectory) }}</span>
+            <span class="prompt-symbol mr-2">{{ activePrompt }}</span>
             <input
               ref="inputRef"
               v-model="currentInput"
               @keydown="handleKeyDown"
               @keyup.enter="executeCommand"
               type="text"
+              :disabled="vimState.active"
               class="flex-1 bg-transparent border-none outline-none text-terminal-green font-mono"
-              placeholder="Try: help, whoami, research, paper, tanet"
+              :placeholder="inputPlaceholder"
               autofocus
             />
             <span class="cursor-blink ml-1">_</span>
@@ -142,6 +167,7 @@ import CrashAnimation from '../components/CrashAnimation.vue'
 const shutdown = inject('shutdown')
 const inputRef = ref(null)
 const outputContainer = ref(null)
+const vimTextareaRef = ref(null)
 const currentInput = ref('')
 const outputHistory = ref([])
 const commandHistory = ref([])
@@ -149,6 +175,21 @@ const historyIndex = ref(-1)
 const currentDirectory = ref('/')
 const previousDirectory = ref('/')
 const showCrashAnimation = ref(false)
+const pyodide = ref(null)
+const pyodideLoading = ref(false)
+const pyodideReady = ref(false)
+const pythonMode = ref(false)
+const virtualFiles = ref({
+  'notes.txt': 'Welcome to browser vim.\n\nPress i to enter insert mode.\nPress Esc to return to normal mode.\nUse :w to save, :q to quit, :wq to save and quit.\n'
+})
+const vimState = ref({
+  active: false,
+  filename: 'notes.txt',
+  content: '',
+  mode: 'normal',
+  commandBuffer: '',
+  statusMessage: 'READY'
+})
 const shellUser = 'juihsuan'
 const shellHost = 'portfolio'
 const validDirectories = ['/', '/skills', '/conferences', '/publications', '/experiences']
@@ -180,17 +221,46 @@ const availableCommands = [
   'howdoyouturnthison'
 ]
 
+availableCommands.push('python', 'python3', 'vim', 'vi', 'exit', 'quit')
+
 const quickCommands = [
   { label: 'help', command: 'help' },
   { label: 'whoami', command: 'whoami' },
+  { label: 'python', command: 'python' },
+  { label: 'vim notes.txt', command: 'vim notes.txt' },
   { label: 'research', command: 'research' },
   { label: 'paper', command: 'paper' },
-  { label: 'tanet', command: 'tanet' },
-  { label: 'history', command: 'history' },
   { label: 'ls /', command: 'ls /' }
 ]
 
+const activePrompt = computed(() => {
+  if (pythonMode.value) return '>>>'
+  return formatPrompt(currentDirectory.value)
+})
+
+const inputPlaceholder = computed(() => {
+  if (vimState.value.active) return 'vim mode active'
+  if (pythonMode.value) return 'Python REPL ready'
+  return 'Try: help, python, vim notes.txt, research'
+})
+
+const vimModeLabel = computed(() => {
+  if (vimState.value.mode === 'insert') return '-- INSERT --'
+  if (vimState.value.mode === 'command') return '-- COMMAND --'
+  return '-- NORMAL --'
+})
+
+const vimStatusText = computed(() => {
+  const lineCount = vimState.value.content.split('\n').length
+  const charCount = vimState.value.content.length
+  return `${lineCount} lines, ${charCount} chars`
+})
+
 const commandSuggestions = computed(() => {
+  if (pythonMode.value || vimState.value.active) {
+    return []
+  }
+
   const input = currentInput.value
   const { parts, hasTrailingSpace } = splitCommandInput(input)
 
@@ -375,6 +445,8 @@ const autocompletePath = (baseCommand, rawValue) => {
 }
 
 const handleTabCompletion = () => {
+  if (pythonMode.value || vimState.value.active) return
+
   const input = currentInput.value
   const { parts, hasTrailingSpace } = splitCommandInput(input)
 
@@ -416,8 +488,414 @@ const handleTabCompletion = () => {
   }
 }
 
+const normalizeVirtualFilePath = (path) => {
+  const normalized = normalizePath(path || '/notes.txt')
+  return normalized.replace(/^\//, '')
+}
+
+const loadPyodideScript = () => new Promise((resolve, reject) => {
+  if (window.loadPyodide) {
+    resolve()
+    return
+  }
+
+  const existingScript = document.querySelector('script[data-pyodide-loader="true"]')
+  if (existingScript) {
+    existingScript.addEventListener('load', resolve, { once: true })
+    existingScript.addEventListener('error', () => reject(new Error('Failed to load Pyodide loader.')), { once: true })
+    return
+  }
+
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js'
+  script.async = true
+  script.dataset.pyodideLoader = 'true'
+  script.onload = () => resolve()
+  script.onerror = () => reject(new Error('Failed to load Pyodide loader.'))
+  document.head.appendChild(script)
+})
+
+const ensurePyodide = async () => {
+  if (pyodide.value) return pyodide.value
+  if (pyodideLoading.value) {
+    while (pyodideLoading.value && !pyodide.value) {
+      await new Promise((resolve) => setTimeout(resolve, 50))
+    }
+    return pyodide.value
+  }
+
+  pyodideLoading.value = true
+  try {
+    await loadPyodideScript()
+    pyodide.value = await window.loadPyodide({
+      stdout: () => {},
+      stderr: () => {}
+    })
+    pyodideReady.value = true
+    return pyodide.value
+  } finally {
+    pyodideLoading.value = false
+  }
+}
+
+const ensurePyodideWorkspace = async (runtime) => {
+  try {
+    runtime.FS.mkdir('/workspace')
+  } catch {
+    // Directory already exists.
+  }
+
+  await runtime.runPythonAsync(`
+import os
+os.chdir("/workspace")
+`)
+}
+
+const writeVirtualFileToPyodide = (runtime, relativePath, content) => {
+  const normalizedPath = relativePath.replace(/^\/+/, '')
+  const segments = normalizedPath.split('/').filter(Boolean)
+  const fileName = segments.pop()
+  let currentPath = '/workspace'
+
+  for (const segment of segments) {
+    currentPath = `${currentPath}/${segment}`
+    try {
+      runtime.FS.mkdir(currentPath)
+    } catch {
+      // Directory already exists.
+    }
+  }
+
+  runtime.FS.writeFile(`${currentPath}/${fileName}`, content)
+}
+
+const syncVirtualFilesToPyodide = async (runtime) => {
+  await ensurePyodideWorkspace(runtime)
+
+  for (const [path, content] of Object.entries(virtualFiles.value)) {
+    writeVirtualFileToPyodide(runtime, path, content)
+  }
+}
+
+const readVirtualFilesFromPyodide = (runtime, directory = '/workspace', prefix = '') => {
+  const entries = runtime.FS.readdir(directory).filter((entry) => !['.', '..'].includes(entry))
+  const files = {}
+
+  for (const entry of entries) {
+    const absolutePath = `${directory}/${entry}`
+    const relativePath = prefix ? `${prefix}/${entry}` : entry
+    const stat = runtime.FS.stat(absolutePath)
+    const isDirectory = runtime.FS.isDir(stat.mode)
+
+    if (isDirectory) {
+      Object.assign(files, readVirtualFilesFromPyodide(runtime, absolutePath, relativePath))
+      continue
+    }
+
+    files[relativePath] = runtime.FS.readFile(absolutePath, { encoding: 'utf8' })
+  }
+
+  return files
+}
+
+const syncVirtualFilesFromPyodide = (runtime) => {
+  virtualFiles.value = {
+    ...virtualFiles.value,
+    ...readVirtualFilesFromPyodide(runtime)
+  }
+}
+
+const runPythonCommand = async (command) => {
+  const runtime = await ensurePyodide()
+  await syncVirtualFilesToPyodide(runtime)
+  let stdoutBuffer = ''
+  let stderrBuffer = ''
+
+  runtime.setStdout({
+    batched: (output) => {
+      stdoutBuffer += `${output}\n`
+    }
+  })
+  runtime.setStderr({
+    batched: (output) => {
+      stderrBuffer += `${output}\n`
+    }
+  })
+
+  try {
+    let result = await runtime.runPythonAsync(`
+import io
+import contextlib
+import traceback
+_codex_stdout = io.StringIO()
+_codex_stderr = io.StringIO()
+with contextlib.redirect_stdout(_codex_stdout), contextlib.redirect_stderr(_codex_stderr):
+    _codex_value = eval(compile(${JSON.stringify(command)}, "<terminal>", "eval"), globals())
+_codex_stdout.getvalue()
+`)
+    let finalOutput = `${stdoutBuffer}${result || ''}`.trim()
+
+    if (!finalOutput) {
+      try {
+        result = await runtime.runPythonAsync(`
+import io
+import contextlib
+_codex_stdout = io.StringIO()
+_codex_stderr = io.StringIO()
+with contextlib.redirect_stdout(_codex_stdout), contextlib.redirect_stderr(_codex_stderr):
+    exec(compile(${JSON.stringify(command)}, "<terminal>", "exec"), globals())
+_codex_stdout.getvalue()
+`)
+        finalOutput = `${stdoutBuffer}${result || ''}`.trim()
+      } catch (execError) {
+        return {
+          result: stdoutBuffer.trim(),
+          error: execError.message.replace(/^PythonError:\s*/, '') || stderrBuffer.trim()
+        }
+      }
+    }
+
+    syncVirtualFilesFromPyodide(runtime)
+    return {
+      result: finalOutput || '(no output)',
+      error: stderrBuffer.trim()
+    }
+  } catch (error) {
+    try {
+      const execResult = await runtime.runPythonAsync(`
+import io
+import contextlib
+_codex_stdout = io.StringIO()
+_codex_stderr = io.StringIO()
+with contextlib.redirect_stdout(_codex_stdout), contextlib.redirect_stderr(_codex_stderr):
+    exec(compile(${JSON.stringify(command)}, "<terminal>", "exec"), globals())
+_codex_stdout.getvalue()
+`)
+      syncVirtualFilesFromPyodide(runtime)
+      return {
+        result: `${stdoutBuffer}${execResult || ''}`.trim() || '(no output)',
+        error: stderrBuffer.trim()
+      }
+    } catch (execError) {
+      syncVirtualFilesFromPyodide(runtime)
+      return {
+        result: stdoutBuffer.trim(),
+        error: execError.message.replace(/^PythonError:\s*/, '') || error.message.replace(/^PythonError:\s*/, '') || stderrBuffer.trim()
+      }
+    }
+  }
+}
+
+const runPythonFile = async (rawPath) => {
+  const runtime = await ensurePyodide()
+  await syncVirtualFilesToPyodide(runtime)
+
+  const normalizedPath = normalizeVirtualFilePath(resolvePath(normalizeInputPath(rawPath)))
+  if (!(normalizedPath in virtualFiles.value)) {
+    return {
+      result: '',
+      error: `python: can't open file '${rawPath}': No such file or directory`
+    }
+  }
+
+  let stdoutBuffer = ''
+  let stderrBuffer = ''
+
+  runtime.setStdout({
+    batched: (output) => {
+      stdoutBuffer += `${output}\n`
+    }
+  })
+  runtime.setStderr({
+    batched: (output) => {
+      stderrBuffer += `${output}\n`
+    }
+  })
+
+  try {
+    await runtime.runPythonAsync(`
+import os
+import runpy
+import sys
+sys.argv = [${JSON.stringify(normalizedPath)}]
+runpy.run_path(os.path.join("/workspace", ${JSON.stringify(normalizedPath)}), run_name="__main__")
+`)
+    syncVirtualFilesFromPyodide(runtime)
+    return {
+      result: stdoutBuffer.trim() || '(no output)',
+      error: stderrBuffer.trim()
+    }
+  } catch (error) {
+    syncVirtualFilesFromPyodide(runtime)
+    return {
+      result: stdoutBuffer.trim(),
+      error: error.message.replace(/^PythonError:\s*/, '') || stderrBuffer.trim()
+    }
+  }
+}
+
+const enterPythonMode = async () => {
+  if (pythonMode.value) return
+
+  addOutput('python', pyodideReady.value ? 'Python 3 (Pyodide) REPL. Type exit to leave.' : 'Loading Pyodide runtime...', '')
+  scrollToBottom()
+
+  try {
+    await ensurePyodide()
+    pyodideReady.value = true
+    pythonMode.value = true
+    addOutput('python', 'Python 3 (Pyodide) ready. Try: print("hello")', '')
+  } catch (error) {
+    addOutput('python', '', error.message || 'Failed to initialize Python runtime.')
+  }
+
+  scrollToBottom()
+  focusInput()
+}
+
+const exitPythonMode = () => {
+  pythonMode.value = false
+  addOutput('exit', 'Leaving Python REPL.', '')
+  scrollToBottom()
+  focusInput()
+}
+
+const openVim = (rawFilename) => {
+  const filename = normalizeVirtualFilePath(resolvePath(normalizeInputPath(rawFilename || 'notes.txt')))
+  if (!(filename in virtualFiles.value)) {
+    virtualFiles.value[filename] = ''
+  }
+
+  vimState.value = {
+    active: true,
+    filename,
+    content: virtualFiles.value[filename],
+    mode: 'normal',
+    commandBuffer: '',
+    statusMessage: `"${filename}" ${virtualFiles.value[filename].split('\n').length}L`
+  }
+
+  addOutput(`vim ${filename}`, `Opened "${filename}" in browser vim.`, '')
+  nextTick(() => {
+    vimTextareaRef.value?.focus()
+  })
+}
+
+const closeVim = (message = 'Vim closed.') => {
+  vimState.value = {
+    active: false,
+    filename: 'notes.txt',
+    content: '',
+    mode: 'normal',
+    commandBuffer: '',
+    statusMessage: 'READY'
+  }
+  addOutput('vim', message, '')
+  focusInput()
+  scrollToBottom()
+}
+
+const saveVimFile = () => {
+  const { filename, content } = vimState.value
+  virtualFiles.value[filename] = content
+  vimState.value.statusMessage = `"${filename}" written`
+}
+
+const executeVimCommand = () => {
+  const command = vimState.value.commandBuffer.trim()
+
+  if (command === 'w') {
+    saveVimFile()
+    vimState.value.mode = 'normal'
+    vimState.value.commandBuffer = ''
+    return
+  }
+
+  if (command === 'q') {
+    vimState.value.commandBuffer = ''
+    closeVim(`Closed "${vimState.value.filename}".`)
+    return
+  }
+
+  if (command === 'wq' || command === 'x') {
+    saveVimFile()
+    const filename = vimState.value.filename
+    vimState.value.commandBuffer = ''
+    closeVim(`Saved and closed "${filename}".`)
+    return
+  }
+
+  vimState.value.statusMessage = `Not an editor command: ${command}`
+  vimState.value.commandBuffer = ''
+  vimState.value.mode = 'normal'
+}
+
+const handleVimKeydown = (event) => {
+  if (!vimState.value.active) return
+
+  if (vimState.value.mode === 'insert') {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      vimState.value.mode = 'normal'
+      vimState.value.statusMessage = 'NORMAL'
+    }
+    return
+  }
+
+  if (vimState.value.mode === 'command') {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      executeVimCommand()
+      return
+    }
+
+    if (event.key === 'Backspace') {
+      event.preventDefault()
+      vimState.value.commandBuffer = vimState.value.commandBuffer.slice(0, -1)
+      return
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      vimState.value.mode = 'normal'
+      vimState.value.commandBuffer = ''
+      vimState.value.statusMessage = 'NORMAL'
+      return
+    }
+
+    if (event.key.length === 1) {
+      event.preventDefault()
+      vimState.value.commandBuffer += event.key
+    }
+    return
+  }
+
+  if (vimState.value.mode === 'normal') {
+    if (event.key === 'i') {
+      event.preventDefault()
+      vimState.value.mode = 'insert'
+      vimState.value.statusMessage = 'INSERT'
+      return
+    }
+
+    if (event.key === ':') {
+      event.preventDefault()
+      vimState.value.mode = 'command'
+      vimState.value.commandBuffer = ''
+      return
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      return
+    }
+
+    event.preventDefault()
+  }
+}
+
 // 指令處理器
-const executeCommand = () => {
+const executeCommand = async () => {
   const command = currentInput.value.trim()
   
   if (!command) {
@@ -431,6 +909,21 @@ const executeCommand = () => {
     commandHistory.value.push(command)
   }
   historyIndex.value = commandHistory.value.length
+
+  if (pythonMode.value) {
+    if (['exit', 'quit'].includes(command.toLowerCase())) {
+      currentInput.value = ''
+      exitPythonMode()
+      return
+    }
+
+    const pythonResult = await runPythonCommand(command)
+    addOutput(command, pythonResult.result, pythonResult.error)
+    currentInput.value = ''
+    scrollToBottom()
+    focusInput()
+    return
+  }
 
   // 解析命令
   const [cmd = '', ...args] = command.split(' ')
@@ -534,6 +1027,33 @@ const executeCommand = () => {
         currentInput.value = ''
         focusInput()
         return
+
+      case 'python':
+      case 'python3':
+        if (normalizedArgString) {
+          const pythonFileResult = await runPythonFile(normalizedArgString)
+          addOutput(command, pythonFileResult.result, pythonFileResult.error)
+          currentInput.value = ''
+          scrollToBottom()
+          focusInput()
+          return
+        }
+
+        currentInput.value = ''
+        await enterPythonMode()
+        return
+
+      case 'vim':
+      case 'vi':
+        currentInput.value = ''
+        openVim(normalizedArgString || 'notes.txt')
+        scrollToBottom()
+        return
+
+      case 'exit':
+      case 'quit':
+        result = 'Nothing to exit right now.'
+        break
 
       case 'shutdown':
       case 'poweroff':
@@ -705,6 +1225,11 @@ const handleCdCommand = (target) => {
 const handleCatCommand = (filePath) => {
   // 標準化路徑
   const normalizedPath = normalizePath(filePath)
+  const virtualFileKey = normalizedPath.replace(/^\//, '')
+
+  if (virtualFileKey in virtualFiles.value) {
+    return virtualFiles.value[virtualFileKey]
+  }
 
   switch (normalizedPath) {
     case '/about.txt':
@@ -801,7 +1326,10 @@ const handleLsCommand = (directory) => {
   
   switch (cleanPath) {
     case '/':
-      return { result: terminalLsOutputs['/'], error: '' }
+      return {
+        result: [terminalLsOutputs['/'], ...Object.keys(virtualFiles.value).filter((file) => !rootFiles.includes(file))].join('\n'),
+        error: ''
+      }
 
     case '/skills':
       return { result: skills.map(skill => skill.title).join('\n'), error: '' }
@@ -816,7 +1344,7 @@ const handleLsCommand = (directory) => {
       return { result: experiences.map(exp => `${exp.position}@${exp.company} (${exp.startDate}${exp.isCurrent ? '-仍在職' : `-${exp.endDate}`})`).join('\n'), error: '' }
 
     default:
-      if (rootFiles.includes(cleanPath.replace(/^\//, ''))) {
+      if (rootFiles.includes(cleanPath.replace(/^\//, '')) || cleanPath.replace(/^\//, '') in virtualFiles.value) {
         return { result: cleanPath.replace(/^\//, ''), error: '' }
       }
 
@@ -828,6 +1356,11 @@ const handleLsCommand = (directory) => {
 }
 
 const handleKeyDown = (event) => {
+  if (vimState.value.active) {
+    event.preventDefault()
+    return
+  }
+
   // 上下箭頭瀏覽歷史
   if (event.key === 'Tab') {
     event.preventDefault()
@@ -863,6 +1396,20 @@ watch(currentInput, () => {
     // 用戶正在輸入新命令
   }
 })
+
+watch(
+  () => vimState.value.active,
+  (active) => {
+    if (active) {
+      nextTick(() => {
+        vimTextareaRef.value?.focus()
+      })
+      return
+    }
+
+    focusInput()
+  }
+)
 
 const handleCrashComplete = () => {
   // 損毀動畫完成後，停留在藍屏狀態
@@ -993,6 +1540,53 @@ input::placeholder {
   inset: auto 0 0 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.18), transparent);
+}
+
+.vim-overlay {
+  display: flex;
+  flex-direction: column;
+  min-height: 18rem;
+}
+
+.vim-toolbar,
+.vim-statusline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.75rem;
+  color: rgba(180, 255, 180, 0.75);
+}
+
+.vim-toolbar {
+  border-bottom: 1px solid rgba(0, 255, 0, 0.12);
+}
+
+.vim-statusline {
+  border-top: 1px solid rgba(0, 255, 0, 0.12);
+  color: rgba(143, 255, 143, 0.82);
+}
+
+.vim-title {
+  color: #39ff14;
+}
+
+.vim-editor {
+  flex: 1;
+  min-height: 14rem;
+  resize: none;
+  border: none;
+  outline: none;
+  background: rgba(0, 0, 0, 0.92);
+  color: rgba(180, 255, 180, 0.9);
+  padding: 1rem;
+  font: inherit;
+  line-height: 1.7;
+  caret-color: #39ff14;
+}
+
+.vim-editor[readonly] {
+  caret-color: transparent;
 }
 
 .window-dot {
