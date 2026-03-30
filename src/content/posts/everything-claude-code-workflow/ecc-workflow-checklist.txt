@@ -1,0 +1,8 @@
+Everything Claude Code workflow notes
+=====================================
+
+1. Plan before execution
+2. Use TDD to constrain implementation
+3. Run review agents early, not only at the end
+4. Treat verification as a quality gate
+5. Use hooks and memory to turn one session into reusable knowledge

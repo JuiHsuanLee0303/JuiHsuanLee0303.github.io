@@ -30,18 +30,24 @@
     },
     {
       "id": 3,
+      "label": "筆記文章",
+      "type": "router",
+      "path": "/notes"
+    },
+    {
+      "id": 4,
       "label": "LinkedIn",
       "type": "external",
       "path": "https://www.linkedin.com/in/jui-hsuan-lee-a0672ab8/"
     },
     {
-      "id": 4,
+      "id": 5,
       "label": "GitHub",
       "type": "external",
       "path": "https://github.com/JuiHsuanLee0303"
     },
     {
-      "id": 5,
+      "id": 6,
       "label": "Email",
       "type": "mailto",
       "path": "mailto:juihsuanlee0303@gmail.com"

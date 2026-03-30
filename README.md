@@ -21,6 +21,7 @@ Live site:
 - `Home`: positioning, featured case studies, skills, and contact links
 - `Research`: conferences, publications, abstracts, and PDF links
 - `Experience`: timeline-based work experience and highlights
+- `Notes`: Markdown blog posts with per-post folders, embedded images, and downloadable attachments
 - `Terminal`: interactive shell-style portfolio exploration
 
 ## Local Development
@@ -69,7 +70,9 @@ The deploy script will:
 ```text
 src/
   components/    Shared UI components
+  content/posts/ Markdown blog posts, images, and attachments
   data/          Content and portfolio data
+  lib/blog/      Markdown rendering and post loading
   router/        Route and metadata handling
   views/         Page-level Vue views
 public/
@@ -85,6 +88,26 @@ Most portfolio content is managed in:
 - `src/data/experience.json`
 - `src/data/research.json`
 - `src/data/terminal.json`
+
+Blog posts live in per-post folders under:
+
+- `src/content/posts/<slug>/index.md`
+- `src/content/posts/<slug>/...attachments`
+
+Example:
+
+```text
+src/content/posts/gstack-intro/
+  index.md
+  gstack-cover.svg
+  gstack-notes.txt
+```
+
+Inside the Markdown file, use relative paths such as `![diagram](./gstack-cover.svg)` or `[download](./gstack-notes.txt)`.
+
+For the full article workflow and publishing checklist, see:
+
+- `docs/blog-authoring-guide.md`
 
 ## Notes
 

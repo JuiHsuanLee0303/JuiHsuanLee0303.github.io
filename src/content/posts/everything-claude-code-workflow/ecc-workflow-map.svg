@@ -1,0 +1,26 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" rx="36" fill="#041104"/>
+  <rect x="44" y="44" width="1112" height="632" rx="28" stroke="#24FF66" stroke-opacity="0.24" stroke-width="2"/>
+  <text x="88" y="118" fill="#A8FFA8" font-family="'Courier New', monospace" font-size="34">ECC Workflow</text>
+  <text x="88" y="156" fill="#6DEB6D" font-family="'Courier New', monospace" font-size="22">from planning to reusable learning</text>
+
+  <rect x="92" y="270" width="170" height="180" rx="24" fill="#091709" stroke="#24FF66" stroke-opacity="0.16"/>
+  <rect x="308" y="270" width="170" height="180" rx="24" fill="#091709" stroke="#24FF66" stroke-opacity="0.16"/>
+  <rect x="524" y="270" width="170" height="180" rx="24" fill="#091709" stroke="#24FF66" stroke-opacity="0.16"/>
+  <rect x="740" y="270" width="170" height="180" rx="24" fill="#091709" stroke="#24FF66" stroke-opacity="0.16"/>
+  <rect x="956" y="270" width="170" height="180" rx="24" fill="#091709" stroke="#24FF66" stroke-opacity="0.16"/>
+
+  <text x="136" y="370" fill="#39FF14" font-family="'Courier New', monospace" font-size="28">Plan</text>
+  <text x="362" y="370" fill="#39FF14" font-family="'Courier New', monospace" font-size="28">TDD</text>
+  <text x="558" y="370" fill="#39FF14" font-family="'Courier New', monospace" font-size="28">Review</text>
+  <text x="770" y="370" fill="#39FF14" font-family="'Courier New', monospace" font-size="28">Verify</text>
+  <text x="1000" y="370" fill="#39FF14" font-family="'Courier New', monospace" font-size="28">Learn</text>
+
+  <path d="M262 360H308" stroke="#39FF14" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10"/>
+  <path d="M478 360H524" stroke="#39FF14" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10"/>
+  <path d="M694 360H740" stroke="#39FF14" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10"/>
+  <path d="M910 360H956" stroke="#39FF14" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10"/>
+
+  <rect x="92" y="520" width="1034" height="98" rx="24" fill="#0A1A0A"/>
+  <text x="128" y="580" fill="#D8FFD8" font-family="'Courier New', monospace" font-size="24">workflow defaults matter more than one-off prompts</text>
+</svg>

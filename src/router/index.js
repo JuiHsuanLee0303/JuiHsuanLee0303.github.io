@@ -33,6 +33,22 @@ const routes = [
       description: '以互動終端機形式探索個人網站內容、研究與工作資訊。'
     }
   },
+  {
+    path: '/notes',
+    component: () => import('../views/NotesPage.vue'),
+    meta: {
+      title: '筆記文章',
+      description: '以部落格形式整理 Markdown 筆記、圖片與附件，集中展示技術文章與個人知識庫。'
+    }
+  },
+  {
+    path: '/notes/:slug',
+    component: () => import('../views/NoteDetailPage.vue'),
+    meta: {
+      title: '筆記文章',
+      description: '閱讀單篇筆記文章與附帶資源。'
+    }
+  },
 ]
 
 const siteTitle = 'Jui-Hsuan Lee'

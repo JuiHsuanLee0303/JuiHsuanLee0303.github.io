@@ -1,0 +1,7 @@
+gstack notes
+============
+
+1. Use it as a workflow, not as a loose set of prompts
+2. Start with office-hours, review, qa, and ship
+3. Add heavier planning/design skills only when the problem space is fuzzy
+4. The value comes from role separation and step ordering
