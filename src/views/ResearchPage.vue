@@ -300,8 +300,6 @@ const filteredPublications = computed(() => {
   
   if (activeFilter.value === 'conference') {
     result = result.filter(p => p.type === '會議論文')
-  } else if (activeFilter.value === 'thesis') {
-    result = result.filter(p => p.type === '碩士學位論文')
   } else if (activeFilter.value === '2025' || activeFilter.value === '2024') {
     result = result.filter(p => p.year.toString() === activeFilter.value)
   }
