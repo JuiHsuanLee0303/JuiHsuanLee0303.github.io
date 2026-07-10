@@ -77,6 +77,15 @@
           <div class="mt-2 text-terminal-green/60">{{ bootAnimationData.completion.redirect }}</div>
         </div>
       </div>
+
+      <button
+        type="button"
+        data-testid="boot-skip"
+        @click="skip"
+        class="absolute bottom-6 right-6 rounded-lg border border-terminal-green/40 bg-black/60 px-4 py-2 text-xs text-terminal-green/80 hover:border-terminal-green hover:text-terminal-green"
+      >
+        跳過開機動畫 [Enter]
+      </button>
     </div>
   </Transition>
 </template>
@@ -214,13 +223,44 @@ const startProgress = () => {
   }, 100)
 }
 
+let finished = false
+
+const finish = () => {
+  if (finished) return
+  finished = true
+  clearAllTimers()
+  isVisible.value = false
+  props.onComplete()
+}
+
+const skip = () => finish()
+
+const handleKeydown = (event) => {
+  if (event.key === 'Enter' || event.key === 'Escape') {
+    skip()
+  }
+}
+
 onMounted(() => {
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (prefersReducedMotion) {
+    // 尊重「減少動態」偏好，直接進站
+    finish()
+    return
+  }
+
+  window.addEventListener('keydown', handleKeydown)
   // 開始動畫序列
   startStage1()
 })
 
 onUnmounted(() => {
   clearAllTimers()
+  window.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
