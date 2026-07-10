@@ -95,6 +95,10 @@ const toggleMobileMenu = () => {
 }
 
 const handleShutdown = () => {
+    const confirmed = window.confirm('要關閉這個「系統」嗎？會播放關機動畫，之後可以再開機。')
+    if (!confirmed) {
+        return
+    }
     if (shutdown) {
         shutdown()
     }
