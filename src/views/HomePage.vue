@@ -36,6 +36,31 @@
               <div class="mt-1 text-xs text-terminal-green/60">{{ stat.description }}</div>
             </div>
           </div>
+
+          <div data-testid="hero-cta" class="mt-6 flex flex-wrap gap-3">
+            <a
+              :href="`mailto:${personalInfo.email}`"
+              class="inline-flex items-center gap-2 rounded-xl border border-terminal-green/60 bg-terminal-green/15 px-4 py-2 text-sm font-semibold text-terminal-green hover:bg-terminal-green/25"
+            >
+              ✉ 聯絡我
+            </a>
+            <a
+              :href="personalInfo.linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-xl border border-terminal-green/25 px-4 py-2 text-sm text-terminal-green/85 hover:border-terminal-green/60 hover:text-terminal-green"
+            >
+              LinkedIn
+            </a>
+            <a
+              :href="personalInfo.github"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-xl border border-terminal-green/25 px-4 py-2 text-sm text-terminal-green/85 hover:border-terminal-green/60 hover:text-terminal-green"
+            >
+              GitHub
+            </a>
+          </div>
         </aside>
       </header>
 
@@ -80,57 +105,28 @@
               </p>
             </div>
             <div class="space-y-2">
-              <div
+              <button
                 v-for="tech in skill.technologies"
                 :key="tech.name"
-                class="text-terminal-green/60 text-xs relative group cursor-pointer"
+                type="button"
+                data-testid="skill-tech"
+                class="block w-full text-left text-terminal-green/75 text-xs relative group cursor-pointer"
                 @mouseenter="hoveredItem = { type: 'tech', name: tech.name, experience: tech.experience }"
                 @mouseleave="hoveredItem = null"
+                @focus="hoveredItem = { type: 'tech', name: tech.name, experience: tech.experience }"
+                @blur="hoveredItem = null"
                 @click="toggleItemDetail({ type: 'tech', name: tech.name, experience: tech.experience })"
               >
                 - {{ tech.name }}
-                <div
+                <span
                   v-if="hoveredItem && hoveredItem.type === 'tech' && hoveredItem.name === tech.name"
                   class="experience-tooltip"
                 >
-                  <div class="text-terminal-green text-xs p-2">
+                  <span class="block text-terminal-green text-xs p-2">
                     {{ tech.experience }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 space-y-2">
-              <div
-                v-for="level in skill.skillLevels"
-                :key="level.name"
-                class="text-xs"
-              >
-                <div class="flex justify-between mb-1 relative">
-                  <span
-                    class="text-terminal-green/70 cursor-pointer relative group"
-                    @mouseenter="hoveredItem = { type: 'skill', name: level.name, experience: level.experience }"
-                    @mouseleave="hoveredItem = null"
-                    @click="toggleItemDetail({ type: 'skill', name: level.name, experience: level.experience })"
-                  >
-                    {{ level.name }}
-                    <div
-                      v-if="hoveredItem && hoveredItem.type === 'skill' && hoveredItem.name === level.name"
-                      class="experience-tooltip"
-                    >
-                      <div class="text-terminal-green text-xs p-2">
-                        {{ level.experience }}
-                      </div>
-                    </div>
                   </span>
-                  <span class="text-terminal-green/50">{{ level.level }}%</span>
-                </div>
-                <div class="w-full bg-terminal-green/10 border border-terminal-green/30 h-2">
-                  <div
-                    class="bg-terminal-green h-full transition-all duration-1000"
-                    :style="{ width: `${level.level}%` }"
-                  ></div>
-                </div>
-              </div>
+                </span>
+              </button>
             </div>
             <div
               v-if="selectedItem && skillContainsSelectedItem(skill)"
