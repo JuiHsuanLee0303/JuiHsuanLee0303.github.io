@@ -35,4 +35,16 @@ describe('researchFilters (src/data/ui.json)', () => {
 
     expect(dead, `dead filters yield empty results: ${dead.join(', ')}`).toEqual([])
   })
+
+  it('exposes a 碩士學位論文 (thesis) filter now that thesis data exists', () => {
+    expect(ui.researchFilters.some((f) => f.value === 'thesis')).toBe(true)
+  })
+
+  it('the master\'s thesis is present with a detail link and a downloadable PDF', () => {
+    const thesis = research.publications.find((p) => p.type === '碩士學位論文')
+
+    expect(thesis, 'a 碩士學位論文 publication must exist').toBeTruthy()
+    expect(thesis.detailLink, 'thesis needs a detail link').toMatch(/^https?:\/\//)
+    expect(thesis.pdfLink, 'thesis needs a PDF link').toMatch(/^https?:\/\//)
+  })
 })
