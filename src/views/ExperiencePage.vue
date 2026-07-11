@@ -118,7 +118,7 @@
               <div v-if="expandedExperiences[experience.id]" class="mt-6 space-y-6">
                 <!-- 工作職責 -->
                 <div>
-                  <div class="text-terminal-green/50 mb-3 text-sm">職責:</div>
+                  <div class="text-terminal-green/70 mb-3 text-sm">職責:</div>
                   <ul class="space-y-3">
                     <li
                       v-for="(responsibility, index) in experience.responsibilities"
@@ -133,7 +133,7 @@
 
                 <!-- 技術關鍵字 -->
                 <div v-if="experience.technologies && experience.technologies.length > 0">
-                  <div class="text-terminal-green/50 mb-3 text-sm">技術:</div>
+                  <div class="text-terminal-green/70 mb-3 text-sm">技術:</div>
                   <div class="flex flex-wrap gap-2">
                     <span
                       v-for="tech in experience.technologies"
@@ -146,7 +146,7 @@
                 </div>
 
                 <div v-if="experience.impactNotes && experience.impactNotes.length > 0">
-                  <div class="text-terminal-green/50 mb-3 text-sm">成效重點:</div>
+                  <div class="text-terminal-green/70 mb-3 text-sm">成效重點:</div>
                   <ul class="space-y-2">
                     <li
                       v-for="(note, index) in experience.impactNotes"

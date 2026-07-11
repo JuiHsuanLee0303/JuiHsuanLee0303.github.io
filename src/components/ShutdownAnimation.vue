@@ -14,8 +14,16 @@
           <div v-if="stage >= 3" class="text-terminal-green/60">[OK] Display service stopped</div>
           <div v-if="stage >= 4" class="text-terminal-green/60 mt-4">Saving system state...</div>
           <div v-if="stage >= 5" class="text-terminal-green/60">System halted.</div>
-          <div v-if="stage >= 6" class="text-terminal-green/40 mt-6 text-xs">
-            Please refresh the page to restart.
+          <div v-if="stage >= 6" class="mt-6 flex flex-col items-start gap-3">
+            <button
+              type="button"
+              data-testid="power-on"
+              @click="powerOn"
+              class="rounded-lg border border-terminal-green/50 bg-terminal-green/10 px-5 py-2 text-terminal-green hover:bg-terminal-green/20"
+            >
+              ⏻ Power On
+            </button>
+            <span class="text-terminal-green/40 text-xs">或重新整理頁面以重新啟動</span>
           </div>
         </div>
       </div>
@@ -35,6 +43,8 @@ const props = defineProps({
 
 const isVisible = ref(true)
 const stage = ref(0)
+
+const powerOn = () => window.location.reload()
 
 let timers = []
 
