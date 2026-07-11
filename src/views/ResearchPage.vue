@@ -182,6 +182,10 @@
                 <span class="text-terminal-green/70">作者:</span>
                 <span class="ml-2">{{ publication.authors.join(', ') }}</span>
               </div>
+              <div v-if="publication.advisor">
+                <span class="text-terminal-green/70">指導教授:</span>
+                <span class="ml-2">{{ publication.advisor }}</span>
+              </div>
               <div v-if="publication.journal">
                 <span class="text-terminal-green/70">期刊:</span>
                 <span class="ml-2">{{ publication.journal }}</span>
@@ -251,6 +255,15 @@
                   [下載PDF]
                 </a>
                 <a
+                  v-if="publication.detailLink"
+                  :href="publication.detailLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-terminal-green hover:text-terminal-green/70 underline"
+                >
+                  [論文詳情]
+                </a>
+                <a
                   v-if="publication.doi"
                   :href="`https://doi.org/${publication.doi}`"
                   target="_blank"
@@ -300,6 +313,8 @@ const filteredPublications = computed(() => {
   
   if (activeFilter.value === 'conference') {
     result = result.filter(p => p.type === '會議論文')
+  } else if (activeFilter.value === 'thesis') {
+    result = result.filter(p => p.type === '碩士學位論文')
   } else if (activeFilter.value === '2025' || activeFilter.value === '2024') {
     result = result.filter(p => p.year.toString() === activeFilter.value)
   }
