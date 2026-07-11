@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#000000"/>
+  <defs>
+    <pattern id="g" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#00ff00" stroke-opacity="0.06"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect x="40" y="40" width="1120" height="550" rx="20" fill="#000000" fill-opacity="0.5"
+        stroke="#00ff00" stroke-opacity="0.3"/>
+  <g font-family="'Fira Code','JetBrains Mono',monospace" fill="#00ff00">
+    <text x="90" y="150" font-size="30" fill-opacity="0.7">$ whoami</text>
+    <text x="90" y="270" font-size="86" font-weight="700">Jui-Hsuan Lee</text>
+    <text x="90" y="338" font-size="38" fill-opacity="0.85">李睿軒 · AI Engineer</text>
+    <text x="90" y="418" font-size="29" fill-opacity="0.6">LLM / RAG / AI Agent · Enterprise AI Integration</text>
+    <text x="90" y="540" font-size="26" fill-opacity="0.45">juihsuanlee0303.github.io</text>
+  </g>
+</svg>
