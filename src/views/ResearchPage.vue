@@ -82,29 +82,29 @@
               <h3 class="text-xl font-bold text-terminal-green flex-1">
                 {{ conference.title }}
               </h3>
-              <span class="text-terminal-green/50 text-xs ml-4">
+              <span class="text-terminal-green/70 text-xs ml-4">
                 {{ conference.date }}
               </span>
             </div>
             <div class="space-y-2 text-sm text-terminal-green/80">
               <div>
-                <span class="text-terminal-green/50">地點:</span>
+                <span class="text-terminal-green/70">地點:</span>
                 <span class="ml-2">{{ conference.location }}</span>
               </div>
               <div>
-                <span class="text-terminal-green/50">類型:</span>
+                <span class="text-terminal-green/70">類型:</span>
                 <span class="ml-2">{{ conference.type }}</span>
               </div>
               <div>
-                <span class="text-terminal-green/50">報告形式:</span>
+                <span class="text-terminal-green/70">報告形式:</span>
                 <span class="ml-2">{{ conference.presentationType }}</span>
               </div>
               <div v-if="conference.paperTitle" class="mt-4">
-                <span class="text-terminal-green/50">論文標題:</span>
+                <span class="text-terminal-green/70">論文標題:</span>
                 <p class="mt-1 text-terminal-green/70 font-semibold">{{ conference.paperTitle }}</p>
               </div>
               <div v-if="conference.authors && conference.authors.length > 0" class="mt-4">
-                <span class="text-terminal-green/50">作者:</span>
+                <span class="text-terminal-green/70">作者:</span>
                 <p class="mt-1 text-terminal-green/70">{{ conference.authors.join(', ') }}</p>
               </div>
               <div v-if="conference.abstract" class="mt-4">
@@ -112,7 +112,7 @@
                   @click="toggleConferenceAbstract(conference.id)"
                   class="flex items-center gap-2 text-terminal-green/70 hover:text-terminal-green transition-colors mb-2"
                 >
-                  <span class="text-terminal-green/50">摘要:</span>
+                  <span class="text-terminal-green/70">摘要:</span>
                   <span
                     class="abstract-chevron"
                     :class="{ 'abstract-chevron-expanded': expandedConferences[conference.id] }"
@@ -169,7 +169,7 @@
               <h3 class="text-xl font-bold text-terminal-green flex-1">
                 {{ publication.title }}
               </h3>
-              <span class="text-terminal-green/50 text-xs ml-4">
+              <span class="text-terminal-green/70 text-xs ml-4">
                 {{ publication.year }}
               </span>
             </div>
@@ -179,23 +179,23 @@
             </div>
             <div class="space-y-2 text-sm text-terminal-green/80">
               <div>
-                <span class="text-terminal-green/50">作者:</span>
+                <span class="text-terminal-green/70">作者:</span>
                 <span class="ml-2">{{ publication.authors.join(', ') }}</span>
               </div>
               <div v-if="publication.journal">
-                <span class="text-terminal-green/50">期刊:</span>
+                <span class="text-terminal-green/70">期刊:</span>
                 <span class="ml-2">{{ publication.journal }}</span>
                 <span v-if="publication.volume" class="ml-2">
                   (Vol. {{ publication.volume }}, pp. {{ publication.pages }})
                 </span>
               </div>
               <div v-if="publication.conference">
-                <span class="text-terminal-green/50">會議:</span>
+                <span class="text-terminal-green/70">會議:</span>
                 <span class="ml-2">{{ publication.conference }}</span>
                 <span v-if="publication.venue" class="ml-2">({{ publication.venue }})</span>
               </div>
               <div v-if="publication.doi">
-                <span class="text-terminal-green/50">DOI:</span>
+                <span class="text-terminal-green/70">DOI:</span>
                 <a
                   :href="`https://doi.org/${publication.doi}`"
                   target="_blank"
@@ -210,7 +210,7 @@
                   @click="togglePublicationAbstract(publication.id)"
                   class="flex items-center gap-2 text-terminal-green/70 hover:text-terminal transition-colors mb-2"
                 >
-                  <span class="text-terminal-green/50">摘要:</span>
+                  <span class="text-terminal-green/70">摘要:</span>
                   <span
                     class="abstract-chevron"
                     :class="{ 'abstract-chevron-expanded': expandedPublications[publication.id] }"
@@ -229,7 +229,7 @@
                 </transition>
               </div>
               <div v-if="publication.keywords && publication.keywords.length > 0" class="mt-4">
-                <span class="text-terminal-green/50">關鍵字:</span>
+                <span class="text-terminal-green/70">關鍵字:</span>
                 <div class="mt-2 flex flex-wrap gap-2">
                   <span
                     v-for="keyword in publication.keywords"
